@@ -102,7 +102,7 @@ export function GlobalClickEffects() {
 
     document.addEventListener('click', handleClick);
     return () => document.removeEventListener('click', handleClick);
-  }, [effectsEnabled]);
+  }, [effectsEnabled, lowPowerMode]);
 
   return (
     <>
