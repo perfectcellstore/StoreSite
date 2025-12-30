@@ -135,7 +135,7 @@ export function Navigation() {
           )}
 
           {/* Mobile Menu */}
-          <Sheet>
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="sm" className="hover:bg-bio-green-500/10 hover:text-bio-green-500">
                 <Menu className="h-5 w-5" />
