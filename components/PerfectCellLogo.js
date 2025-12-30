@@ -186,6 +186,9 @@ export function PerfectCellLogo() {
       {/* Hover glow */}
       <div className="absolute inset-0 rounded-full bg-bio-green-500 opacity-0 hover:opacity-30 blur-md transition-opacity duration-300 pointer-events-none" />
 
+      {/* Chatbot Modal */}
+      <ChatbotModal isOpen={showChatbot} onClose={() => setShowChatbot(false)} />
+
       <style jsx>{`
         @keyframes cell-super-jump {
           0% {
