@@ -5,7 +5,7 @@
 ### Admin Credentials
 - **Email**: perfectcellstore@gmail.com
 - **Password**: admin123456
-- **Admin Dashboard**: https://perfectsell-ecom.preview.emergentagent.com/admin
+- **Admin Dashboard**: https://rating-repair.preview.emergentagent.com/admin
 
 ---
 
