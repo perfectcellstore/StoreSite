@@ -3,12 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { useCustomization } from '@/lib/contexts/CustomizationContext';
-import { useEffects } from '@/lib/contexts/EffectsContext';
 
 export function AnimatedBackground() {
   const pathname = usePathname();
   const { customization } = useCustomization();
-  const { lowPowerMode } = useEffects();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -40,8 +38,8 @@ export function AnimatedBackground() {
   // Only show on homepage
   const isHomepage = pathname === '/';
 
-  // Don't render if disabled, reduced motion preferred, low power mode, not homepage, or not in specified placement
-  if (!animationSettings.enabled || prefersReducedMotion || lowPowerMode || !isHomepage) {
+  // Don't render if disabled, reduced motion preferred, or not homepage
+  if (!animationSettings.enabled || prefersReducedMotion || !isHomepage) {
     return null;
   }
 
