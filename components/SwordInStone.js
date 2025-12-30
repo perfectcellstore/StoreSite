@@ -80,7 +80,7 @@ export function SwordInStone({ onClose }) {
             {/* Stone */}
             <svg
               viewBox="0 0 200 200"
-              className="absolute bottom-0 w-64 h-64"
+              className="absolute bottom-0 w-48 h-48 sm:w-64 sm:h-64"
             >
               {/* Stone base */}
               <ellipse cx="100" cy="160" rx="80" ry="30" fill="#555" />
