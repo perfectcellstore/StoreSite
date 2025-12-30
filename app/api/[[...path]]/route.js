@@ -881,7 +881,7 @@ export async function DELETE(request, { params }) {
       
       // Recalculate aggregate rating
       const allReviews = await db.collection('reviews')
-        .find({ productId, hidden: false })
+        .find({ productId })
         .toArray();
       
       const totalReviews = allReviews.length;
