@@ -209,9 +209,6 @@ export function ProductReviews({ productId, onReviewUpdate }) {
   };
 
   const visibleReviews = reviews.filter(review => !review.hidden || (user && user.role === 'admin'));
-  const averageRating = reviews.length > 0
-    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
-    : 0;
 
   if (loading) {
     return (
@@ -226,12 +223,15 @@ export function ProductReviews({ productId, onReviewUpdate }) {
       {/* Rating Summary */}
       <div className="flex items-center gap-6">
         <div className="text-center">
-          <div className="text-4xl font-bold text-bio-green-500">{averageRating}</div>
+          <div className="text-4xl font-bold text-bio-green-500">
+            {productData.averageRating > 0 ? productData.averageRating.toFixed(1) : '0.0'}
+          </div>
           <div className="flex items-center justify-center mt-1">
-            {renderStars(Math.round(averageRating))}
+            {renderStars(Math.round(productData.averageRating))}
           </div>
           <div className="text-sm text-muted-foreground mt-1">
-            {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+            {productData.reviewCount === 0 ? 'No reviews yet' : 
+             `${productData.reviewCount} ${productData.reviewCount === 1 ? 'review' : 'reviews'}`}
           </div>
         </div>
       </div>
