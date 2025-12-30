@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { useCustomization } from '@/lib/contexts/CustomizationContext';
+import { useEffects } from '@/lib/contexts/EffectsContext';
 
 export function AnimatedBackground() {
   const { customization } = useCustomization();
+  const { lowPowerMode } = useEffects();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -33,8 +35,8 @@ export function AnimatedBackground() {
     placement: 'global',
   };
 
-  // Don't render if disabled, reduced motion preferred, or not in specified placement
-  if (!animationSettings.enabled || prefersReducedMotion) {
+  // Don't render if disabled, reduced motion preferred, low power mode, or not in specified placement
+  if (!animationSettings.enabled || prefersReducedMotion || lowPowerMode) {
     return null;
   }
 
