@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
   const [sparks, setSparks] = useState([]);
   const [flash, setFlash] = useState(false);
+  const lastFlashTime = useRef(0);
+  const flashCooldown = 300; // Minimum time between flashes in ms
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -29,10 +31,15 @@ export function GlobalClickEffects() {
       
       setSparks(prev => [...prev, spark]);
 
-      // 40% chance for lightning flash
-      if (Math.random() < 0.4) {
-        setFlash(true);
-        setTimeout(() => setFlash(false), 200);
+      // Throttled flash effect - only allow one flash per cooldown period
+      const now = Date.now();
+      if (now - lastFlashTime.current >= flashCooldown) {
+        // 40% chance for lightning flash
+        if (Math.random() < 0.4) {
+          setFlash(true);
+          lastFlashTime.current = now;
+          setTimeout(() => setFlash(false), 150); // Reduced from 200ms for quicker fade
+        }
       }
 
       // Remove spark after animation
@@ -93,11 +100,11 @@ export function GlobalClickEffects() {
 
   return (
     <>
-      {/* Lightning Flash Effect - Reduced Intensity */}
+      {/* Lightning Flash Effect - Further Reduced Intensity with Throttling */}
       {flash && (
         <div className="fixed inset-0 pointer-events-none z-[9999]">
-          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-15" 
-               style={{ animation: 'lightning-flash 0.2s ease-out' }} />
+          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-10" 
+               style={{ animation: 'lightning-flash 0.15s ease-out' }} />
         </div>
       )}
 
