@@ -102,7 +102,15 @@ module.exports = {
                                 to: {
                                         height: '0'
                                 }
-                        }
+                        },
+                        'glow-pulse': {
+                                '0%, 100%': { boxShadow: '0 0 20px rgba(34, 197, 94, 0.4)' },
+                                '50%': { boxShadow: '0 0 40px rgba(34, 197, 94, 0.8)' },
+                        },
+                        'float': {
+                                '0%, 100%': { transform: 'translateY(0px)' },
+                                '50%': { transform: 'translateY(-10px)' },
+                        },
                 },
                 animation: {
                         'accordion-down': 'accordion-down 0.2s ease-out',
