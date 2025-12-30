@@ -180,7 +180,7 @@ export function Navigation() {
                     className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
-                    Click Effects: {effectsEnabled ? 'ON' : 'OFF'}
+                    {t('clickEffects')}: {effectsEnabled ? t('on') : t('off')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -192,7 +192,7 @@ export function Navigation() {
                     className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
                   >
                     <Sword className="mr-2 h-4 w-4" />
-                    ??? Secret ???
+                    {t('secret')}
                   </Button>
                 </div>
               </div>
