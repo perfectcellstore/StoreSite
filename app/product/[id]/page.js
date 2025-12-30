@@ -1,0 +1,250 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { useCurrency } from '@/lib/contexts/CurrencyContext';
+import { useCart } from '@/lib/contexts/CartContext';
+import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ShoppingCart, MessageCircle, Check } from 'lucide-react';
+
+export default function ProductDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const { t, language } = useLanguage();
+  const { formatPrice } = useCurrency();
+  const { addToCart } = useCart();
+  
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  useEffect(() => {
+    if (params.id) {
+      fetchProduct();
+    }
+  }, [params.id]);
+
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/products/${params.id}`);
+      const data = await response.json();
+      setProduct(data.product);
+    } catch (error) {
+      console.error('Failed to fetch product:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product, quantity);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (product) {
+      addToCart(product, quantity);
+      router.push('/cart');
+    }
+  };
+
+  const handleWhatsAppBuy = () => {
+    if (product) {
+      const productName = language === 'ar' && product.nameAr ? product.nameAr : product.name;
+      const message = `Hi! I'm interested in: ${productName} (${formatPrice(product.price)})`;
+      const whatsappUrl = `https://wa.me/9647733797713?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="flex justify-center items-center h-96">
+          <div className="animate-spin h-12 w-12 border-4 border-bio-green-500 border-t-transparent rounded-full"></div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 py-20 text-center">
+          <h2 className="text-3xl font-bold mb-4">Product not found</h2>
+          <Button onClick={() => router.push('/shop')}>Back to Shop</Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  const productName = language === 'ar' && product.nameAr ? product.nameAr : product.name;
+  const productDescription = language === 'ar' && product.descriptionAr ? product.descriptionAr : product.description;
+  const images = product.images && product.images.length > 0 ? product.images : [product.image];
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navigation />
+      
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Images */}
+          <div className="space-y-4">
+            <Card className="overflow-hidden bg-card/50 border-border/40">
+              <div className="aspect-square relative">
+                <Image
+                  src={images[selectedImage]}
+                  alt={productName}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </Card>
+            
+            {images.length > 1 && (
+              <div className="grid grid-cols-4 gap-4">
+                {images.map((img, idx) => (
+                  <Card
+                    key={idx}
+                    className={`cursor-pointer overflow-hidden transition-all ${
+                      selectedImage === idx
+                        ? 'border-bio-green-500 border-2'
+                        : 'border-border/40 hover:border-bio-green-500/50'
+                    }`}
+                    onClick={() => setSelectedImage(idx)}
+                  >
+                    <div className="aspect-square relative">
+                      <Image src={img} alt={`${productName} ${idx + 1}`} fill className="object-cover" />
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Product Info */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-4xl font-bold mb-2">{productName}</h1>
+              <div className="flex items-center gap-4 mb-4">
+                <p className="text-4xl font-bold text-bio-green-500">{formatPrice(product.price)}</p>
+                {product.stock > 0 ? (
+                  <div className="flex items-center gap-2 px-3 py-1 bg-bio-green-500/10 rounded-full">
+                    <Check className="h-4 w-4 text-bio-green-500" />
+                    <span className="text-sm text-bio-green-500">{t('inStock')}</span>
+                  </div>
+                ) : (
+                  <div className="px-3 py-1 bg-destructive/10 rounded-full">
+                    <span className="text-sm text-destructive">{t('outOfStock')}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Quantity */}
+            {product.stock > 0 && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Quantity</label>
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="border-border hover:border-bio-green-500"
+                  >
+                    -
+                  </Button>
+                  <span className="text-lg font-semibold w-12 text-center">{quantity}</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                    className="border-border hover:border-bio-green-500"
+                  >
+                    +
+                  </Button>
+                  <span className="text-sm text-muted-foreground">({product.stock} available)</span>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+                className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg py-6 btn-glow"
+              >
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                {t('addToCart')}
+              </Button>
+              
+              <Button
+                onClick={handleBuyNow}
+                disabled={product.stock === 0}
+                variant="outline"
+                className="w-full border-bio-green-500 text-bio-green-500 hover:bg-bio-green-500 hover:text-white text-lg py-6"
+              >
+                {t('buyNow')}
+              </Button>
+              
+              <Button
+                onClick={handleWhatsAppBuy}
+                variant="outline"
+                className="w-full border-border hover:border-bio-green-500 hover:bg-bio-green-500/10 text-lg py-6"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                {t('buyViaWhatsApp')}
+              </Button>
+            </div>
+
+            {/* Product Details Tabs */}
+            <Tabs defaultValue="description" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 bg-muted">
+                <TabsTrigger value="description">{t('description')}</TabsTrigger>
+                <TabsTrigger value="specifications">{t('specifications')}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="description" className="space-y-4 pt-4">
+                <p className="text-muted-foreground leading-relaxed">{productDescription}</p>
+              </TabsContent>
+              <TabsContent value="specifications" className="space-y-4 pt-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground">Category</span>
+                    <span className="font-medium">{product.category}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground">Stock</span>
+                    <span className="font-medium">{product.stock} units</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-border">
+                    <span className="text-muted-foreground">Product ID</span>
+                    <span className="font-medium text-xs">{product.id}</span>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
+
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+}
