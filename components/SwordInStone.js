@@ -104,7 +104,7 @@ export function SwordInStone({ onClose }) {
           {/* Content */}
           <div className="p-6">
             <h2 className="text-2xl font-bold text-center mb-4 gradient-text">
-              The Legendary Sword
+              {t('theLegendarySword')}
             </h2>
 
             {/* Compact Sword in Stone - FLIPPED */}
