@@ -209,43 +209,43 @@ export function SwordInStone({ onClose }) {
 
           {/* Message */}
           {showMessage ? (
-            <div className="text-center space-y-4 animate-fade-in">
-              <p className="text-2xl font-bold text-bio-green-500">
+            <div className="text-center space-y-3 sm:space-y-4 animate-fade-in">
+              <p className="text-xl sm:text-2xl font-bold text-bio-green-500">
                 ⚔️ You Are Worthy! ⚔️
               </p>
-              <p className="text-lg text-gray-300">
+              <p className="text-base sm:text-lg text-gray-300">
                 The legendary blade recognizes your spirit!
               </p>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-xs sm:text-sm text-gray-400 mb-4">
                 You have discovered the secret of Perfect Sell
               </p>
               
               {/* Promo Code Reveal */}
-              <div className="bg-gray-800/50 border-2 border-bio-green-500 rounded-lg p-6 mt-6">
-                <p className="text-sm text-gray-400 mb-2">Your Reward:</p>
-                <p className="text-3xl font-bold text-bio-green-500 mb-2">20% OFF</p>
-                <p className="text-sm text-gray-400 mb-4">Use this exclusive promo code:</p>
+              <div className="bg-gray-800/50 border-2 border-bio-green-500 rounded-lg p-4 sm:p-6 mt-4 sm:mt-6">
+                <p className="text-xs sm:text-sm text-gray-400 mb-2">Your Reward:</p>
+                <p className="text-2xl sm:text-3xl font-bold text-bio-green-500 mb-2">20% OFF</p>
+                <p className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">Use this exclusive promo code:</p>
                 
                 <div className="flex items-center justify-center gap-2">
-                  <div className="bg-gray-900 border border-bio-green-500/50 rounded px-6 py-3">
-                    <span className="text-2xl font-mono font-bold text-white tracking-wider">2026</span>
+                  <div className="bg-gray-900 border border-bio-green-500/50 rounded px-4 sm:px-6 py-2 sm:py-3">
+                    <span className="text-xl sm:text-2xl font-mono font-bold text-white tracking-wider">2026</span>
                   </div>
                   <button
                     onClick={handleCopyPromo}
-                    className="bg-bio-green-500 hover:bg-bio-green-600 text-white p-3 rounded transition-all hover:scale-105"
+                    className="bg-bio-green-500 hover:bg-bio-green-600 text-white p-2 sm:p-3 rounded transition-all hover:scale-105"
                     title="Copy to clipboard"
                   >
-                    <Copy className="h-5 w-5" />
+                    <Copy className="h-4 w-4 sm:h-5 sm:w-5" />
                   </button>
                 </div>
                 
                 {copiedPromo && (
-                  <p className="text-sm text-bio-green-500 mt-2 animate-fade-in">
+                  <p className="text-xs sm:text-sm text-bio-green-500 mt-2 animate-fade-in">
                     ✓ Copied to clipboard!
                   </p>
                 )}
                 
-                <p className="text-xs text-gray-500 mt-4">
+                <p className="text-xs text-gray-500 mt-3 sm:mt-4">
                   Use this code at checkout to get your discount
                 </p>
               </div>
@@ -255,7 +255,7 @@ export function SwordInStone({ onClose }) {
               <button
                 onClick={handlePull}
                 disabled={isPulling}
-                className={`px-8 py-4 rounded-lg font-bold text-lg transition-all ${
+                className={`px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all ${
                   isPulling
                     ? 'bg-gray-600 cursor-not-allowed'
                     : 'bg-bio-green-500 hover:bg-bio-green-600 hover:scale-105 btn-glow'
@@ -263,7 +263,7 @@ export function SwordInStone({ onClose }) {
               >
                 {isPulling ? 'Pulling...' : 'Pull the Sword! ⚔️'}
               </button>
-              <p className="text-sm text-gray-400 mt-4">
+              <p className="text-xs sm:text-sm text-gray-400 mt-3 sm:mt-4">
                 Only the worthy can pull this legendary blade...
               </p>
             </div>
