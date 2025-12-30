@@ -290,6 +290,38 @@ agent_communication:
       
       Feature enhancement complete - EUR support fully integrated without affecting existing currencies.
       
+  - agent: "main"
+    message: |
+      CURRENCY BUTTON DISPLAY BUG FIXED
+      
+      ISSUE REPORTED:
+      - Currency button was showing "USD" when EUR was selected
+      - Prices were displaying correctly in EUR format (€XX.XX)
+      - But button label showed wrong currency name
+      
+      ROOT CAUSE:
+      - Mobile menu had old conditional logic: {currency === 'USD' ? 'IQD' : 'USD'}
+      - This logic only handled 2 currencies, not 3
+      - Desktop button was correct, mobile button was broken
+      
+      FIX APPLIED:
+      1. Navigation Component (Navigation.js):
+         - Changed mobile currency button from conditional to: {currency}
+         - Now matches desktop behavior
+         - Both desktop and mobile show current currency name correctly
+      
+      VERIFICATION:
+      ✅ Desktop button shows: USD when USD selected
+      ✅ Desktop button shows: IQD when IQD selected
+      ✅ Desktop button shows: EUR when EUR selected
+      ✅ Mobile button shows: USD when USD selected
+      ✅ Mobile button shows: IQD when IQD selected
+      ✅ Mobile button shows: EUR when EUR selected
+      ✅ Prices still convert correctly
+      ✅ Currency cycle still works: USD → IQD → EUR → USD
+      
+      Bug fixed - currency button now displays correct currency name on both desktop and mobile.
+      
       USER REQUEST:
       - Remove hide/unhide button
       - Keep only delete button
