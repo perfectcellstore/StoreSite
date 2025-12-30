@@ -142,12 +142,12 @@ export function GlobalClickEffects() {
               }}
             >
               <div
-                className={`w-2 h-2 rounded-full`}
+                className={`w-1.5 h-1.5 rounded-full`}
                 style={{
                   background: i % 2 === 0 ? '#22c55e' : '#fbbf24',
                   animation: `spark-shoot-super 0.8s ease-out forwards`,
                   animationDelay: `${i * 0.02}s`,
-                  boxShadow: `0 0 8px 4px ${i % 2 === 0 ? 'rgba(34, 197, 94, 0.8)' : 'rgba(251, 191, 36, 0.8)'}`
+                  boxShadow: `0 0 4px 2px ${i % 2 === 0 ? 'rgba(34, 197, 94, 0.4)' : 'rgba(251, 191, 36, 0.4)'}`
                 }}
               />
             </div>
