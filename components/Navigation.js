@@ -1,17 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { useCurrency } from '@/lib/contexts/CurrencyContext';
 import { useCart } from '@/lib/contexts/CartContext';
 import { useAuth } from '@/lib/contexts/AuthContext';
+import { useEffects } from '@/lib/contexts/EffectsContext';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Menu, User, LogOut, LayoutDashboard, Globe, DollarSign } from 'lucide-react';
+import { ShoppingCart, Menu, User, LogOut, LayoutDashboard, Globe, DollarSign, Sparkles, Sword } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { PerfectCellLogo } from '@/components/PerfectCellLogo';
+import { SwordInStone } from '@/components/SwordInStone';
 
 export function Navigation() {
   const pathname = usePathname();
