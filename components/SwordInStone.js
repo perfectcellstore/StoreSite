@@ -236,18 +236,17 @@ export function SwordInStone({ onClose }) {
             {/* Message/Button */}
             {showMessage ? (
               <div className="text-center space-y-3 animate-fade-in">
-                <p className="text-xl font-bold text-bio-green-500">⚔️ You Are Worthy! ⚔️</p>
-                <p className="text-sm text-gray-300">The legendary blade recognizes your spirit!</p>
+                <p className="text-xl font-bold text-bio-green-500">{t('youAreWorthy')}</p>
+                <p className="text-sm text-gray-300">{t('legendaryBladeRecognizes')}</p>
                 <p className="text-xs text-gray-400 italic">
-                  The ancient power flows through you. This sacred sword, forged in the fires of evolution, 
-                  has chosen its champion. With this blade comes great responsibility and even greater rewards.
+                  {t('ancientPowerFlows')}
                 </p>
                 
                 {/* Promo Code */}
                 <div className="bg-gray-800/50 border-2 border-bio-green-500 rounded-lg p-4 mt-3">
-                  <p className="text-xs text-gray-400 mb-1">🎁 Your Legendary Reward:</p>
-                  <p className="text-2xl font-bold text-bio-green-500 mb-2">20% OFF</p>
-                  <p className="text-xs text-gray-400 mb-3">Sacred promo code revealed:</p>
+                  <p className="text-xs text-gray-400 mb-1">{t('yourLegendaryReward')}</p>
+                  <p className="text-2xl font-bold text-bio-green-500 mb-2">{t('twentyPercentOff')}</p>
+                  <p className="text-xs text-gray-400 mb-3">{t('sacredPromoCode')}</p>
                   
                   <div className="flex items-center justify-center gap-2">
                     <div className="bg-gray-900 border border-bio-green-500/50 rounded px-4 py-2">
@@ -263,11 +262,11 @@ export function SwordInStone({ onClose }) {
                   </div>
                   
                   {copiedPromo && (
-                    <p className="text-xs text-bio-green-500 mt-2">✓ Copied to your inventory!</p>
+                    <p className="text-xs text-bio-green-500 mt-2">{t('copiedToInventory')}</p>
                   )}
                   
                   <p className="text-xs text-gray-500 mt-3">
-                    ⚡ Use this code at checkout to unlock your discount
+                    {t('useCodeAtCheckout')}
                   </p>
                 </div>
               </div>
@@ -280,9 +279,9 @@ export function SwordInStone({ onClose }) {
                     isPulling ? 'bg-gray-600' : 'bg-bio-green-500 hover:bg-bio-green-600'
                   } text-white`}
                 >
-                  {isPulling ? 'Pulling...' : 'Pull the Sword! ⚔️'}
+                  {isPulling ? t('pulling') : t('pullTheSword')}
                 </button>
-                <p className="text-xs text-gray-400 mt-2">Only the worthy can pull this blade...</p>
+                <p className="text-xs text-gray-400 mt-2">{t('onlyTheWorthy')}</p>
               </div>
             )}
           </div>
