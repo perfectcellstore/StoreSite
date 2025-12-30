@@ -524,6 +524,11 @@ export default function AdminPage() {
               ))}
             </div>
           </TabsContent>
+
+          {/* Store Customization Tab - NEW ADDITIVE FEATURE */}
+          <TabsContent value="customization">
+            <StoreCustomization />
+          </TabsContent>
         </Tabs>
       </div>
 
