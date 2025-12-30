@@ -86,6 +86,9 @@ export function Navigation() {
             {currency}
           </Button>
 
+          {/* Notification Bell - Only show when logged in */}
+          {user && <NotificationBell />}
+
           {/* Cart */}
           <Link href="/cart">
             <Button variant="ghost" size="sm" className="relative hover:bg-bio-green-500/10 hover:text-bio-green-500">
