@@ -236,12 +236,16 @@ export function SwordInStone({ onClose }) {
               <div className="text-center space-y-3 animate-fade-in">
                 <p className="text-xl font-bold text-bio-green-500">⚔️ You Are Worthy! ⚔️</p>
                 <p className="text-sm text-gray-300">The legendary blade recognizes your spirit!</p>
+                <p className="text-xs text-gray-400 italic">
+                  The ancient power flows through you. This sacred sword, forged in the fires of evolution, 
+                  has chosen its champion. With this blade comes great responsibility and even greater rewards.
+                </p>
                 
                 {/* Promo Code */}
                 <div className="bg-gray-800/50 border-2 border-bio-green-500 rounded-lg p-4 mt-3">
-                  <p className="text-xs text-gray-400 mb-1">Your Reward:</p>
+                  <p className="text-xs text-gray-400 mb-1">🎁 Your Legendary Reward:</p>
                   <p className="text-2xl font-bold text-bio-green-500 mb-2">20% OFF</p>
-                  <p className="text-xs text-gray-400 mb-3">Promo code:</p>
+                  <p className="text-xs text-gray-400 mb-3">Sacred promo code revealed:</p>
                   
                   <div className="flex items-center justify-center gap-2">
                     <div className="bg-gray-900 border border-bio-green-500/50 rounded px-4 py-2">
@@ -257,8 +261,12 @@ export function SwordInStone({ onClose }) {
                   </div>
                   
                   {copiedPromo && (
-                    <p className="text-xs text-bio-green-500 mt-2">✓ Copied!</p>
+                    <p className="text-xs text-bio-green-500 mt-2">✓ Copied to your inventory!</p>
                   )}
+                  
+                  <p className="text-xs text-gray-500 mt-3">
+                    ⚡ Use this code at checkout to unlock your discount
+                  </p>
                 </div>
               </div>
             ) : (
