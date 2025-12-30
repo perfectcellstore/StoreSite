@@ -252,6 +252,8 @@ agent_communication:
       - Hidden reviews should have a clear label for admin
       - Hidden reviews should NOT affect the average rating calculation
       - Hidden reviews act as deleted ones for rating purposes, but admin can still see them
+      - Admin can UNHIDE reviews to make them visible again (toggle functionality)
+      - Only DELETED reviews are permanently removed
       
       IMPLEMENTATION:
       1. Backend (route.js):
@@ -260,6 +262,7 @@ agent_communication:
          - Modified PUT /products/{id}/reviews/{id}/toggle to recalculate aggregates when hiding/showing
          - Ensured aggregate calculations exclude hidden reviews (lines 675, 842, 759)
          - Fixed route ordering: toggle route comes before general product update route
+         - Toggle endpoint allows both HIDE and UNHIDE operations
       
       2. Frontend (ProductReviews.js):
          - Enhanced handleToggleVisibility to update aggregate data from backend response
@@ -268,6 +271,7 @@ agent_communication:
          - Improved visual display: hidden reviews have yellow border and prominent label
          - Label: "HIDDEN - Only visible to admin" in yellow badge
          - Added hover tooltips on admin buttons for clarity
+         - Eye icon toggles between hide/unhide states
       
       TESTING COMPLETED:
       - Created 3 reviews: 5★ (Alice), 3★ (Bob), 2★ (Charlie)
@@ -277,7 +281,9 @@ agent_communication:
       - New count: 2 (excludes hidden review) ✓
       - Verified customers don't see hidden review
       - Verified admin sees hidden review with label
-      - Unhid review: average returned to 3.3, count to 3 ✓
+      - UNHID review: average returned to 3.3, count to 3 ✓
+      - Re-HID review: average back to 4.0, count back to 2 ✓
+      - Toggle functionality works in both directions ✓
       
       VERIFICATION:
       ✓ Hidden reviews excluded from average calculation
@@ -287,5 +293,17 @@ agent_communication:
       ✓ Toggle functionality updates aggregates in real-time
       ✓ Frontend synchronizes after toggle operation
       ✓ Product page refreshes to show updated rating
+      ✓ Admin can UNHIDE reviews to restore visibility
+      ✓ Only DELETE permanently removes reviews (hide is reversible)
       
       Feature is fully functional and ready for production use.
+      
+  - agent: "main"
+    message: |
+      FINAL CLEANUP COMPLETED
+      - Removed all test reviews from database (3 reviews deleted)
+      - Reset reviewCount and averageRating fields on all products
+      - Verified: reviews collection is empty (0 documents)
+      - Verified: products have null reviewCount and averageRating
+      - System is clean and ready for real customer reviews
+      - Toggle hide/unhide functionality confirmed working before cleanup
