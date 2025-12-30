@@ -244,10 +244,7 @@ export function PerfectCellLogo() {
       {/* Hover glow */}
       <div className="absolute inset-0 rounded-full bg-bio-green-500 opacity-0 hover:opacity-30 blur-md transition-opacity duration-300 pointer-events-none" />
 
-      {/* Chatbot Modal */}
-      <ChatbotModal isOpen={showChatbot} onClose={() => setShowChatbot(false)} />
-
-      <style jsx>{`
+      <style jsx global>{`
         @keyframes cell-super-jump {
           0% {
             transform: translateY(0) rotate(0deg) scale(1);
@@ -271,15 +268,15 @@ export function PerfectCellLogo() {
 
         @keyframes heart-float-super {
           0% {
-            transform: translateX(-50%) translateY(0) scale(0) rotate(0deg);
+            transform: translateY(0) scale(0) rotate(0deg);
             opacity: 0;
           }
           15% {
             opacity: 1;
-            transform: translateX(-50%) translateY(-10px) scale(1) rotate(10deg);
+            transform: translateY(-10px) scale(1) rotate(10deg);
           }
           100% {
-            transform: translateX(-50%) translateY(-60px) scale(1.3) rotate(-20deg);
+            transform: translateY(-80px) scale(1.3) rotate(-20deg);
             opacity: 0;
           }
         }
@@ -294,7 +291,7 @@ export function PerfectCellLogo() {
           }
           100% {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(45deg) translateY(-35px) scale(1.5);
+            transform: translate(-50%, -50%) rotate(45deg) translateY(-50px) scale(1.5);
           }
         }
 
@@ -309,6 +306,6 @@ export function PerfectCellLogo() {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 }
