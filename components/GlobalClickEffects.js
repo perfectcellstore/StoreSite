@@ -9,7 +9,7 @@ export function GlobalClickEffects() {
   const [flash, setFlash] = useState(false);
   const lastFlashTime = useRef(0);
   const isFlashing = useRef(false);
-  const flashCooldown = 600; // Increased from 300ms to 600ms
+  const flashCooldown = 1000; // Increased from 600ms to 1000ms (1 second)
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -32,11 +32,11 @@ export function GlobalClickEffects() {
       
       setSparks(prev => [...prev, spark]);
 
-      // Aggressive throttling - only allow one flash at a time with longer cooldown
+      // Ultra-conservative throttling - only allow one flash at a time with 1 second cooldown
       const now = Date.now();
       if (!isFlashing.current && now - lastFlashTime.current >= flashCooldown) {
-        // 30% chance for lightning flash (reduced from 40%)
-        if (Math.random() < 0.3) {
+        // 20% chance for lightning flash (reduced from 30%)
+        if (Math.random() < 0.2) {
           isFlashing.current = true;
           setFlash(true);
           lastFlashTime.current = now;
@@ -44,7 +44,7 @@ export function GlobalClickEffects() {
           setTimeout(() => {
             setFlash(false);
             isFlashing.current = false;
-          }, 120); // Reduced from 150ms
+          }, 100); // Reduced from 120ms to 100ms
         }
       }
 
