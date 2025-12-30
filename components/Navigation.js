@@ -9,7 +9,7 @@ import { useCart } from '@/lib/contexts/CartContext';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Menu, User, LogOut, LayoutDashboard, Globe, DollarSign, Sparkles, Sword, Zap } from 'lucide-react';
+import { ShoppingCart, Menu, User, LogOut, LayoutDashboard, Globe, DollarSign, Sparkles, Sword } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { PerfectCellLogo } from '@/components/PerfectCellLogo';
