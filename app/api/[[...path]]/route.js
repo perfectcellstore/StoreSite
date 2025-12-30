@@ -353,17 +353,6 @@ export async function GET(request, { params }) {
       return NextResponse.json({ customization });
     }
 
-    // Get Product Reviews
-    if (pathname.match(/^products\/[\w-]+\/reviews$/)) {
-      const productId = pathname.split('/')[1];
-      const reviews = await db.collection('reviews')
-        .find({ productId })
-        .sort({ createdAt: -1 })
-        .toArray();
-      
-      return NextResponse.json({ reviews });
-    }
-
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
