@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, Copy } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 export function SwordInStone({ onClose }) {
+  const { t } = useLanguage();
   const [isPulling, setIsPulling] = useState(false);
   const [isPulled, setIsPulled] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
