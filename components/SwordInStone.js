@@ -9,6 +9,16 @@ export function SwordInStone({ onClose }) {
   const [showMessage, setShowMessage] = useState(false);
   const [copiedPromo, setCopiedPromo] = useState(false);
 
+  // Scroll to top when modal opens
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   const handlePull = () => {
     if (isPulled) return;
     
