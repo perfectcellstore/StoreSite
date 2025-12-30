@@ -135,7 +135,17 @@ export function ProductReviews({ productId, onReviewUpdate }) {
           title: 'Review Deleted',
           description: 'Review has been removed'
         });
-        fetchReviews();
+        
+        // Refresh reviews and product data
+        await Promise.all([
+          fetchReviews(),
+          fetchProductData()
+        ]);
+        
+        // Notify parent component
+        if (onReviewUpdate) {
+          onReviewUpdate();
+        }
       }
     } catch (error) {
       toast({
