@@ -182,12 +182,12 @@ export function GlobalClickEffects() {
           {[...Array(8)].map((_, i) => (
             <div
               key={`electric-${i}`}
-              className="absolute w-1 h-6 bg-white"
+              className="absolute w-0.5 h-4 bg-white opacity-60"
               style={{
                 transform: `rotate(${i * 45}deg)`,
                 animation: `electric-spark 0.5s ease-out forwards`,
                 animationDelay: `${i * 0.03}s`,
-                boxShadow: '0 0 10px 4px rgba(255, 255, 255, 0.8)'
+                boxShadow: '0 0 5px 2px rgba(255, 255, 255, 0.4)'
               }}
             />
           ))}
