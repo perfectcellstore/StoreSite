@@ -460,15 +460,30 @@ agent_communication:
       
   - agent: "main"
     message: |
-      LOW POWER MODE FEATURE ADDED
+      LOW POWER MODE FEATURE ADDED (FIXED - NON-LAGGY VERSION)
       
       REQUIREMENT:
       - Add a low power mode toggle in the menu
       - Can be switched on and off
-      - Should reduce resource-intensive effects
+      - Should ONLY disable click effects and animated background
+      - Should NOT affect regular UI transitions and animations
       - Save preference to localStorage
       
-      IMPLEMENTATION:
+      ISSUE WITH INITIAL IMPLEMENTATION:
+      - Initial version used aggressive CSS rules that disabled ALL animations/transitions
+      - This made the entire site laggy and janky
+      - CSS rule "* { animation-duration: 0s !important }" affected everything
+      - User reported: "Make low power mode only remove effects little things not make the entire site laggy"
+      
+      FIX APPLIED:
+      - Removed all aggressive CSS rules from globals.css
+      - Removed LowPowerModeWrapper component (no longer needed)
+      - Low power mode now ONLY affects:
+        1. Click effects (sparks, flashes, sounds) via GlobalClickEffects
+        2. Animated background via AnimatedBackground
+      - All regular UI remains smooth and performant
+      
+      IMPLEMENTATION (SIMPLIFIED):
       1. EffectsContext (EffectsContext.js):
          - Added lowPowerMode state (default: false)
          - Added toggleLowPowerMode function
@@ -480,66 +495,57 @@ agent_communication:
          - Added Low Power Mode toggle button in mobile menu
          - Button shows current state (On/Off)
          - Icon turns yellow when low power mode is active
-         - Added lowPowerMode to context destructuring
       
       3. GlobalClickEffects Component (GlobalClickEffects.js):
          - Added lowPowerMode check
-         - Disables all click effects when low power mode is enabled
+         - Disables click effects when low power mode is enabled
          - Prevents sparks, flashes, and sounds
-         - Added lowPowerMode to useEffect dependencies
       
       4. AnimatedBackground Component (AnimatedBackground.js):
          - Added lowPowerMode check
          - Disables animated background when low power mode is enabled
-         - Completely removes background animations
       
-      5. Global CSS (globals.css):
-         - Added .low-power-mode class
-         - Disables all animations: animation-duration: 0s
-         - Disables all transitions: transition-duration: 0s
-         - Removes hover effects (transform: none)
-         - Removes glow effects (box-shadow: none)
-         - Applied to all elements with !important
-      
-      6. Layout Integration (layout.js):
-         - Created LowPowerModeWrapper component
-         - Wrapper adds/removes low-power-mode class to body
-         - Dynamically updates when mode changes
-         - No page refresh required
-      
-      LOW POWER MODE EFFECTS:
+      LOW POWER MODE EFFECTS (MINIMAL & TARGETED):
       When enabled:
-      ✅ No click sparks or flashes
-      ✅ No click sounds
-      ✅ No animated background
-      ✅ No CSS animations (0s duration)
-      ✅ No CSS transitions (0s duration)
-      ✅ No hover transform effects
-      ✅ No glow effects
+      ❌ No click sparks
+      ❌ No screen flashes
+      ❌ No click sounds
+      ❌ No animated background
+      ✅ All UI transitions work normally
+      ✅ All hover effects work normally
+      ✅ All page animations work normally
+      ✅ Site remains smooth and responsive
       ✅ Preference saved to localStorage
       
       When disabled (normal mode):
-      ✅ All effects work normally
       ✅ Click effects enabled
       ✅ Animated background visible
-      ✅ All animations play
-      ✅ All transitions smooth
-      ✅ Hover effects active
+      ✅ All features work normally
+      
+      WHAT IS NOT AFFECTED:
+      ✅ Button hover effects (smooth transitions)
+      ✅ Card hover animations (translateY)
+      ✅ Page transitions
+      ✅ Modal animations
+      ✅ Dropdown animations
+      ✅ Loading spinners
+      ✅ Toast notifications
+      ✅ Navigation animations
+      ✅ All essential UI feedback
       
       BENEFITS:
-      - Reduces CPU/GPU usage
-      - Extends battery life on mobile devices
-      - Improves performance on older devices
-      - Reduces visual distractions
+      - Reduces CPU/GPU usage (only for decorative effects)
+      - Extends battery life slightly
+      - Removes visual distractions
       - Helpful for users with motion sensitivity
-      - Accessible from menu (easy to toggle)
+      - Zero impact on UI responsiveness
+      - Site remains smooth and fast
       
       TECHNICAL IMPLEMENTATION:
       - Uses React Context for state management
       - localStorage for persistence
-      - CSS class for performance (no JS calculations)
-      - !important flags ensure CSS takes priority
-      - useEffect hook for dynamic body class application
-      - Zero performance overhead when disabled
+      - Component-level checks (no global CSS)
+      - Zero performance overhead
+      - No jankiness or lag
       
-      Low power mode is fully functional and accessible from the mobile menu.
+      Low power mode now only disables decorative effects without affecting site performance.
