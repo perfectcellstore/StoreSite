@@ -114,9 +114,8 @@ export default function ShopPage() {
               <SelectValue placeholder={t('sortBy')} />
             </SelectTrigger>
             <SelectContent className="bg-card border-border">
-              <SelectItem value="name">{t('name')}</SelectItem>
-              <SelectItem value="price-asc">{t('price')} ({language === 'ar' ? 'منخفض إلى مرتفع' : 'Low to High'})</SelectItem>
-              <SelectItem value="price-desc">{t('price')} ({language === 'ar' ? 'مرتفع إلى منخفض' : 'High to Low'})</SelectItem>
+              <SelectItem value="price-asc">{t('priceLowToHigh')}</SelectItem>
+              <SelectItem value="price-desc">{t('priceHighToLow')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
