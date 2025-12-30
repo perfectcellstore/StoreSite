@@ -8,7 +8,8 @@ export function GlobalClickEffects() {
   const [sparks, setSparks] = useState([]);
   const [flash, setFlash] = useState(false);
   const lastFlashTime = useRef(0);
-  const flashCooldown = 300; // Minimum time between flashes in ms
+  const isFlashing = useRef(false);
+  const flashCooldown = 600; // Increased from 300ms to 600ms
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -31,14 +32,19 @@ export function GlobalClickEffects() {
       
       setSparks(prev => [...prev, spark]);
 
-      // Throttled flash effect - only allow one flash per cooldown period
+      // Aggressive throttling - only allow one flash at a time with longer cooldown
       const now = Date.now();
-      if (now - lastFlashTime.current >= flashCooldown) {
-        // 40% chance for lightning flash
-        if (Math.random() < 0.4) {
+      if (!isFlashing.current && now - lastFlashTime.current >= flashCooldown) {
+        // 30% chance for lightning flash (reduced from 40%)
+        if (Math.random() < 0.3) {
+          isFlashing.current = true;
           setFlash(true);
           lastFlashTime.current = now;
-          setTimeout(() => setFlash(false), 150); // Reduced from 200ms for quicker fade
+          
+          setTimeout(() => {
+            setFlash(false);
+            isFlashing.current = false;
+          }, 120); // Reduced from 150ms
         }
       }
 
@@ -100,11 +106,11 @@ export function GlobalClickEffects() {
 
   return (
     <>
-      {/* Lightning Flash Effect - Further Reduced Intensity with Throttling */}
+      {/* Lightning Flash Effect - Highly Reduced Intensity */}
       {flash && (
         <div className="fixed inset-0 pointer-events-none z-[9999]">
-          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-10" 
-               style={{ animation: 'lightning-flash 0.15s ease-out' }} />
+          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-5" 
+               style={{ animation: 'lightning-flash 0.12s ease-out' }} />
         </div>
       )}
 
