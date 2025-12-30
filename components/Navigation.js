@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { PerfectCellLogo } from '@/components/PerfectCellLogo';
 import { SwordInStone } from '@/components/SwordInStone';
+import { NotificationBell } from '@/components/NotificationBell';
 
 export function Navigation() {
   const pathname = usePathname();
