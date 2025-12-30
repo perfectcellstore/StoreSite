@@ -138,12 +138,12 @@ export function SwordInStone({ onClose }) {
                     <stop offset="100%" stopColor="#c0c0c0" />
                   </linearGradient>
                   <clipPath id="hideInStone">
-                    {/* Only show the part ABOVE y=180 (handle part) */}
+                    {/* Only show the part ABOVE y=180 (handle part) when NOT pulled */}
                     <rect x="0" y="0" width="200" height="180" />
                   </clipPath>
                 </defs>
                 
-                <g clipPath="url(#hideInStone)">
+                <g clipPath={isPulled ? 'none' : 'url(#hideInStone)'}>
                   {/* Pommel at TOP */}
                   <circle cx="100" cy="65" r="12" fill="#ffd700" stroke="#d4af37" strokeWidth="2" />
                   <circle cx="100" cy="65" r="6" fill="#22c55e" className={isPulled ? 'animate-pulse' : ''} />
@@ -154,10 +154,64 @@ export function SwordInStone({ onClose }) {
                   {/* Guard */}
                   <rect x="70" y="135" width="60" height="15" fill="#ffd700" stroke="#d4af37" strokeWidth="2" rx="3" />
                   
-                  {/* Blade pointing DOWN - from guard downward */}
+                  {/* Blade pointing DOWN - from guard downward - FULL BLADE VISIBLE WHEN PULLED */}
                   <path d="M 95 150 L 90 350 L 100 355 L 110 350 L 105 150 Z" fill="url(#blade)" stroke="#aaa" strokeWidth="1" className={isPulled ? 'animate-pulse' : ''} />
                 </g>
               </svg>
+
+              {/* Flames coming out of stone when pulling */}
+              {isPulling && (
+                <>
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={`flame-${i}`}
+                      className="absolute animate-flame"
+                      style={{
+                        left: `${45 + (i * 3)}%`,
+                        top: '50%',
+                        animationDelay: `${i * 0.1}s`,
+                      }}
+                    >
+                      <div 
+                        className="flame-particle"
+                        style={{
+                          width: '4px',
+                          height: '16px',
+                          background: 'linear-gradient(to top, #fbbf24, #f59e0b, transparent)',
+                          borderRadius: '50% 50% 0 0',
+                          filter: 'blur(1px)',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
+
+              {/* Energy burst when pulled */}
+              {isPulled && (
+                <>
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={`burst-${i}`}
+                      className="absolute animate-burst"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: `rotate(${i * 30}deg)`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '3px',
+                          height: '20px',
+                          background: 'linear-gradient(to top, transparent, #22c55e, transparent)',
+                          boxShadow: '0 0 8px #22c55e',
+                        }}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
 
               {/* Sparks when pulling */}
               {isPulling && (
