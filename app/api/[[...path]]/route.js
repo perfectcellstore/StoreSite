@@ -191,6 +191,22 @@ export async function GET(request, { params }) {
       });
     }
 
+    // Notifications Routes
+    if (pathname === 'notifications') {
+      const decoded = verifyToken(request);
+      if (!decoded) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      
+      const notifications = await db.collection('notifications')
+        .find({ userId: decoded.userId })
+        .sort({ createdAt: -1 })
+        .limit(50)
+        .toArray();
+      
+      return NextResponse.json({ notifications });
+    }
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
