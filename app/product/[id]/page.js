@@ -159,14 +159,14 @@ export default function ProductDetailPage() {
                     <span className="text-sm text-destructive">{t('outOfStock')}</span>
                   </div>
                 )}
-                {product.reviewCount > 0 && (
+                {(product.reviewCount || 0) > 0 && (
                   <div className="flex items-center gap-2 px-3 py-1 bg-card/80 rounded-full border border-border/40">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <svg
                           key={star}
                           className={`h-4 w-4 ${
-                            star <= Math.round(product.averageRating)
+                            star <= Math.round(product.averageRating || 0)
                               ? 'fill-yellow-400 text-yellow-400'
                               : 'fill-gray-300 text-gray-300'
                           }`}
@@ -179,7 +179,7 @@ export default function ProductDetailPage() {
                       ))}
                     </div>
                     <span className="text-sm text-muted-foreground">
-                      {product.averageRating.toFixed(1)} ({product.reviewCount})
+                      {(product.averageRating || 0).toFixed(1)} ({product.reviewCount || 0})
                     </span>
                   </div>
                 )}
