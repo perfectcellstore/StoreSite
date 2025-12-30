@@ -20,9 +20,11 @@ export default function RootLayout({ children }) {
           <CurrencyProvider>
             <AuthProvider>
               <CartProvider>
-                <GlobalClickEffects />
-                {children}
-                <Toaster />
+                <EffectsProvider>
+                  <GlobalClickEffects />
+                  {children}
+                  <Toaster />
+                </EffectsProvider>
               </CartProvider>
             </AuthProvider>
           </CurrencyProvider>
