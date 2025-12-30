@@ -56,17 +56,143 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
+        {/* Kamehameha Energy Waves Background - ANIMATED */}
         <div className="absolute inset-0 z-0">
-          <Image
-            src="https://images.unsplash.com/photo-1636136368699-cc412bb977d5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwzfHxtaWxpdGFyeSUyMHdlYXBvbnN8ZW58MHx8fGJsYWNrfDE3NjcxMjg0MDh8MA&ixlib=rb-4.1.0&q=85"
-            alt="Hero Background"
-            fill
-            className="object-cover opacity-40"
-            priority
+          {/* Base Dark Background */}
+          <div className="absolute inset-0 bg-black"></div>
+          
+          {/* Energy Wave Layer 1 - Main Kamehameha Beam */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16, 185, 129, 0.6) 0%, rgba(59, 130, 246, 0.4) 30%, transparent 60%)',
+              animation: 'kamehamehaWave1 8s ease-in-out infinite',
+              filter: 'blur(60px)',
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background"></div>
+          
+          {/* Energy Wave Layer 2 - Secondary Pulse */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(ellipse 60% 60% at 40% 50%, rgba(16, 185, 129, 0.5) 0%, rgba(6, 182, 212, 0.3) 40%, transparent 70%)',
+              animation: 'kamehamehaWave2 6s ease-in-out infinite',
+              animationDelay: '1s',
+              filter: 'blur(50px)',
+            }}
+          />
+          
+          {/* Energy Wave Layer 3 - Outer Aura */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.4) 0%, rgba(59, 130, 246, 0.3) 50%, transparent 80%)',
+              animation: 'kamehamehaWave3 10s ease-in-out infinite',
+              animationDelay: '2s',
+              filter: 'blur(80px)',
+            }}
+          />
+          
+          {/* Flowing Energy Streaks */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.3) 30%, rgba(59, 130, 246, 0.3) 60%, transparent 100%)',
+              animation: 'energyFlow1 15s linear infinite',
+              filter: 'blur(40px)',
+            }}
+          />
+          
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(-45deg, transparent 0%, rgba(6, 182, 212, 0.25) 40%, rgba(16, 185, 129, 0.25) 70%, transparent 100%)',
+              animation: 'energyFlow2 12s linear infinite',
+              animationDelay: '3s',
+              filter: 'blur(40px)',
+            }}
+          />
+          
+          {/* Central Energy Core */}
+          <div 
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: '600px',
+              height: '600px',
+              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.7) 0%, rgba(59, 130, 246, 0.5) 30%, transparent 60%)',
+              animation: 'energyCorePulse 5s ease-in-out infinite',
+              filter: 'blur(100px)',
+            }}
+          />
+          
+          {/* Gradient Overlay for Readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background"></div>
         </div>
+
+        {/* CSS Animations */}
+        <style jsx>{`
+          @keyframes kamehamehaWave1 {
+            0%, 100% { 
+              transform: scale(1) translate(0, 0);
+              opacity: 0.6;
+            }
+            50% { 
+              transform: scale(1.4) translate(5%, 0);
+              opacity: 0.9;
+            }
+          }
+          
+          @keyframes kamehamehaWave2 {
+            0%, 100% { 
+              transform: scale(1.2) translate(0, 0);
+              opacity: 0.5;
+            }
+            50% { 
+              transform: scale(1.6) translate(-5%, 0);
+              opacity: 0.8;
+            }
+          }
+          
+          @keyframes kamehamehaWave3 {
+            0%, 100% { 
+              transform: scale(1) rotate(0deg);
+              opacity: 0.4;
+            }
+            50% { 
+              transform: scale(1.3) rotate(10deg);
+              opacity: 0.7;
+            }
+          }
+          
+          @keyframes energyFlow1 {
+            0% { 
+              transform: translateX(-100%) rotate(45deg); 
+            }
+            100% { 
+              transform: translateX(100%) rotate(45deg); 
+            }
+          }
+          
+          @keyframes energyFlow2 {
+            0% { 
+              transform: translateX(100%) rotate(-45deg); 
+            }
+            100% { 
+              transform: translateX(-100%) rotate(-45deg); 
+            }
+          }
+          
+          @keyframes energyCorePulse {
+            0%, 100% { 
+              transform: translate(-50%, -50%) scale(1);
+              opacity: 0.7;
+            }
+            50% { 
+              transform: translate(-50%, -50%) scale(1.5);
+              opacity: 1;
+            }
+          }
+        `}</style>
 
         {/* Animated Particles */}
         <div className="absolute inset-0 z-0 bg-pattern"></div>
