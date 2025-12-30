@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Star, Trash2, EyeOff, Eye } from 'lucide-react';
 
-export function ProductReviews({ productId }) {
+export function ProductReviews({ productId, onReviewUpdate }) {
   const { toast } = useToast();
   const { user } = useAuth();
   const [reviews, setReviews] = useState([]);
@@ -20,10 +20,27 @@ export function ProductReviews({ productId }) {
   const [hoverRating, setHoverRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [reviewerName, setReviewerName] = useState('');
+  const [productData, setProductData] = useState({ reviewCount: 0, averageRating: 0 });
 
   useEffect(() => {
     fetchReviews();
+    fetchProductData();
   }, [productId]);
+
+  const fetchProductData = async () => {
+    try {
+      const response = await fetch(`/api/products/${productId}`);
+      const data = await response.json();
+      if (data.product) {
+        setProductData({
+          reviewCount: data.product.reviewCount || 0,
+          averageRating: data.product.averageRating || 0
+        });
+      }
+    } catch (error) {
+      console.error('Failed to fetch product data:', error);
+    }
+  };
 
   const fetchReviews = async () => {
     try {
