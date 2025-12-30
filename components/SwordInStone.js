@@ -274,13 +274,27 @@ export function SwordInStone({ onClose }) {
       <style jsx>{`
         @keyframes wiggle {
           0%, 100% {
-            transform: translateY(-120px) rotate(0deg);
+            transform: translateY(-80px) rotate(0deg);
           }
           25% {
-            transform: translateY(-120px) rotate(-5deg);
+            transform: translateY(-80px) rotate(-5deg);
           }
           75% {
-            transform: translateY(-120px) rotate(5deg);
+            transform: translateY(-80px) rotate(5deg);
+          }
+        }
+        
+        @media (min-width: 640px) {
+          @keyframes wiggle {
+            0%, 100% {
+              transform: translateY(-120px) rotate(0deg);
+            }
+            25% {
+              transform: translateY(-120px) rotate(-5deg);
+            }
+            75% {
+              transform: translateY(-120px) rotate(5deg);
+            }
           }
         }
 
