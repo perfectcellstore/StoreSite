@@ -65,6 +65,17 @@ export async function GET(request, { params }) {
       return NextResponse.json({ user: userWithoutPassword });
     }
 
+    // Get Product Reviews (must come before general product routes)
+    if (pathname.match(/^products\/[\w-]+\/reviews$/)) {
+      const productId = pathname.split('/')[1];
+      const reviews = await db.collection('reviews')
+        .find({ productId })
+        .sort({ createdAt: -1 })
+        .toArray();
+      
+      return NextResponse.json({ reviews });
+    }
+
     // Products Routes
     if (pathname === 'products') {
       const category = searchParams.get('category');
