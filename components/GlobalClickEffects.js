@@ -325,7 +325,7 @@ export function GlobalClickEffects() {
             opacity: 0;
           }
           50% {
-            opacity: 0.4;
+            opacity: 0.25;
           }
         }
       `}</style>
