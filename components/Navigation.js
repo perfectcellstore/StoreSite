@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart, Menu, User, LogOut, LayoutDashboard, Globe, DollarSign } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { PerfectCellLogo } from '@/components/PerfectCellLogo';
 
 export function Navigation() {
   const pathname = usePathname();
@@ -30,10 +31,11 @@ export function Navigation() {
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2">
+        <Link href="/" className="flex items-center space-x-3">
+          <PerfectCellLogo />
           <div className="relative">
             <div className="text-2xl font-bold gradient-text">Perfect Sell</div>
-            <div className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-bio-green-500 to-transparent"></div>
+            <div className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-bio-green-500 to-transparent animate-pulse"></div>
           </div>
         </Link>
 
