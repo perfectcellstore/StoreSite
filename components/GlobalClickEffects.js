@@ -17,41 +17,59 @@ export function GlobalClickEffects() {
       
       setSparks(prev => [...prev, spark]);
 
-      // Random chance for lightning flash (30% chance - increased!)
-      if (Math.random() < 0.3) {
+      // 40% chance for lightning flash (even more impressive!)
+      if (Math.random() < 0.4) {
         setFlash(true);
-        setTimeout(() => setFlash(false), 150);
+        setTimeout(() => setFlash(false), 200);
       }
 
       // Remove spark after animation
       setTimeout(() => {
         setSparks(prev => prev.filter(s => s.id !== spark.id));
-      }, 800);
+      }, 1200);
 
-      // Play Dragon Ball vanishing sound effect
+      // Play AUTHENTIC Dragon Ball vanishing/instant transmission sound
       try {
-        // Create audio context for better control
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         
-        // Create oscillator for the "whoosh" sound
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+        // Main whoosh oscillator
+        const oscillator1 = audioContext.createOscillator();
+        const gainNode1 = audioContext.createGain();
         
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        // Secondary harmonic for richness
+        const oscillator2 = audioContext.createOscillator();
+        const gainNode2 = audioContext.createGain();
         
-        // Start with high frequency and quickly drop (vanishing effect)
-        oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
-        oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
+        oscillator1.connect(gainNode1);
+        gainNode1.connect(audioContext.destination);
+        oscillator2.connect(gainNode2);
+        gainNode2.connect(audioContext.destination);
         
-        // Volume envelope
-        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-        gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.01);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        // Main frequency sweep (sharp drop like instant transmission)
+        oscillator1.frequency.setValueAtTime(2000, audioContext.currentTime);
+        oscillator1.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.4);
         
-        oscillator.type = 'sine';
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.3);
+        // Secondary harmonic (adds depth)
+        oscillator2.frequency.setValueAtTime(3000, audioContext.currentTime);
+        oscillator2.frequency.exponentialRampToValueAtTime(120, audioContext.currentTime + 0.4);
+        
+        // Volume envelopes
+        gainNode1.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode1.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.02);
+        gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+        
+        gainNode2.gain.setValueAtTime(0, audioContext.currentTime);
+        gainNode2.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.02);
+        gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+        
+        // Use sawtooth for more "electric" feel
+        oscillator1.type = 'sawtooth';
+        oscillator2.type = 'sine';
+        
+        oscillator1.start(audioContext.currentTime);
+        oscillator2.start(audioContext.currentTime);
+        oscillator1.stop(audioContext.currentTime + 0.4);
+        oscillator2.stop(audioContext.currentTime + 0.4);
       } catch (e) {
         console.log('Audio not supported');
       }
@@ -63,10 +81,11 @@ export function GlobalClickEffects() {
 
   return (
     <>
-      {/* Lightning Flash Effect */}
+      {/* Lightning Flash Effect - More Intense */}
       {flash && (
         <div className="fixed inset-0 pointer-events-none z-[9999]">
-          <div className="absolute inset-0 bg-bio-green-500 opacity-20 animate-lightning-flash" />
+          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-25" 
+               style={{ animation: 'lightning-flash 0.2s ease-out' }} />
         </div>
       )}
 
@@ -78,182 +97,247 @@ export function GlobalClickEffects() {
           style={{
             left: spark.x,
             top: spark.y,
-            transform: 'translate(-50%, -50%)', // CENTER THE EFFECT!
+            transform: 'translate(-50%, -50%)',
           }}
         >
-          {/* Expanding Energy Wave */}
+          {/* SUPER BRIGHT Central Flash */}
           <div className="absolute">
             <div 
-              className="w-4 h-4 bg-bio-green-500 rounded-full blur-md"
-              style={{ animation: 'energy-expand 0.8s ease-out forwards' }}
-            />
-          </div>
-
-          {/* Central Bright Flash */}
-          <div className="absolute">
-            <div 
-              className="w-6 h-6 bg-white rounded-full"
+              className="w-8 h-8 bg-white rounded-full"
               style={{ 
-                animation: 'flash-fade 0.3s ease-out forwards',
-                boxShadow: '0 0 20px 10px rgba(34, 197, 94, 0.8)'
+                animation: 'super-flash 0.4s ease-out forwards',
+                boxShadow: '0 0 40px 20px rgba(255, 255, 100, 1), 0 0 60px 30px rgba(34, 197, 94, 0.8)'
               }}
             />
           </div>
 
-          {/* Multiple Energy Rings */}
-          {[...Array(3)].map((_, ringIdx) => (
+          {/* Expanding Energy Shockwave */}
+          <div className="absolute">
+            <div 
+              className="w-6 h-6 bg-yellow-400 rounded-full blur-sm"
+              style={{ animation: 'shockwave-expand 1s ease-out forwards' }}
+            />
+          </div>
+
+          {/* Multiple Colored Energy Rings */}
+          {[...Array(4)].map((_, ringIdx) => (
             <div
               key={`ring-${ringIdx}`}
-              className="absolute border-2 border-bio-green-400 rounded-full"
+              className="absolute border-2 rounded-full"
               style={{
-                animation: `ring-expand-${ringIdx} 0.8s ease-out forwards`,
-                animationDelay: `${ringIdx * 0.1}s`,
-                opacity: 1 - (ringIdx * 0.2)
+                borderColor: ringIdx % 2 === 0 ? '#22c55e' : '#fbbf24',
+                animation: `ring-expand-super-${ringIdx} 1s ease-out forwards`,
+                animationDelay: `${ringIdx * 0.08}s`,
               }}
             />
           ))}
 
-          {/* 12-Point Star Sparks (more impressive!) */}
-          {[...Array(12)].map((_, i) => (
+          {/* 16-Point Star Burst (MORE SPARKS!) */}
+          {[...Array(16)].map((_, i) => (
             <div
               key={`spark-${i}`}
               className="absolute"
               style={{
-                transform: `rotate(${i * 30}deg)`,
+                transform: `rotate(${i * 22.5}deg)`,
               }}
             >
               <div
-                className="w-1.5 h-1.5 bg-bio-green-400 rounded-full"
+                className={`w-2 h-2 rounded-full`}
                 style={{
-                  animation: `spark-shoot 0.6s ease-out forwards`,
+                  background: i % 2 === 0 ? '#22c55e' : '#fbbf24',
+                  animation: `spark-shoot-super 0.8s ease-out forwards`,
                   animationDelay: `${i * 0.02}s`,
-                  boxShadow: '0 0 4px 2px rgba(34, 197, 94, 0.6)'
+                  boxShadow: `0 0 8px 4px ${i % 2 === 0 ? 'rgba(34, 197, 94, 0.8)' : 'rgba(251, 191, 36, 0.8)'}`
                 }}
               />
             </div>
           ))}
 
-          {/* Energy Particles */}
-          {[...Array(8)].map((_, i) => (
+          {/* Energy Particles with Color Variety */}
+          {[...Array(12)].map((_, i) => (
             <div
               key={`particle-${i}`}
-              className="absolute w-2 h-2 bg-yellow-400 rounded-full"
+              className="absolute w-2.5 h-2.5 rounded-full"
               style={{
-                transform: `rotate(${i * 45}deg)`,
-                animation: `particle-burst 0.7s ease-out forwards`,
-                animationDelay: `${i * 0.03}s`
+                background: ['#22c55e', '#fbbf24', '#86efac', '#fcd34d'][i % 4],
+                transform: `rotate(${i * 30}deg)`,
+                animation: `particle-burst-super 0.9s ease-out forwards`,
+                animationDelay: `${i * 0.025}s`,
+                boxShadow: '0 0 6px 3px rgba(255, 255, 255, 0.5)'
               }}
             />
           ))}
 
-          {/* Rotating Energy Aura */}
+          {/* Rotating Energy Spiral */}
           <div 
-            className="absolute w-16 h-16 border-2 border-bio-green-300 rounded-full"
+            className="absolute w-20 h-20 rounded-full"
             style={{ 
-              animation: 'aura-spin 0.8s ease-out forwards',
-              background: 'radial-gradient(circle, rgba(34, 197, 94, 0.2) 0%, transparent 70%)'
+              animation: 'spiral-spin 1s ease-out forwards',
+              background: 'conic-gradient(from 0deg, transparent, #22c55e, transparent, #fbbf24, transparent)',
+              opacity: 0.6
             }}
           />
+
+          {/* Dragon Ball Energy Aura */}
+          <div 
+            className="absolute w-24 h-24 border-4 border-bio-green-300 rounded-full"
+            style={{ 
+              animation: 'aura-pulse-super 1s ease-out forwards',
+              background: 'radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(251, 191, 36, 0.2) 50%, transparent 70%)',
+              boxShadow: '0 0 30px 10px rgba(34, 197, 94, 0.4)'
+            }}
+          />
+
+          {/* Electric Sparks */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`electric-${i}`}
+              className="absolute w-1 h-6 bg-white"
+              style={{
+                transform: `rotate(${i * 45}deg)`,
+                animation: `electric-spark 0.5s ease-out forwards`,
+                animationDelay: `${i * 0.03}s`,
+                boxShadow: '0 0 10px 4px rgba(255, 255, 255, 0.8)'
+              }}
+            />
+          ))}
         </div>
       ))}
 
       <style jsx>{`
-        @keyframes energy-expand {
-          0% {
-            transform: scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(20);
-            opacity: 0;
-          }
-        }
-
-        @keyframes flash-fade {
+        @keyframes super-flash {
           0% {
             transform: scale(1);
             opacity: 1;
           }
           100% {
-            transform: scale(3);
+            transform: scale(5);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-0 {
+        @keyframes shockwave-expand {
           0% {
-            width: 20px;
-            height: 20px;
-            margin: -10px;
+            transform: scale(0);
             opacity: 1;
           }
           100% {
-            width: 120px;
-            height: 120px;
-            margin: -60px;
+            transform: scale(30);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-1 {
+        @keyframes ring-expand-super-0 {
           0% {
-            width: 20px;
-            height: 20px;
-            margin: -10px;
+            width: 30px;
+            height: 30px;
+            margin: -15px;
             opacity: 1;
           }
           100% {
-            width: 150px;
-            height: 150px;
-            margin: -75px;
+            width: 160px;
+            height: 160px;
+            margin: -80px;
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-2 {
+        @keyframes ring-expand-super-1 {
           0% {
-            width: 20px;
-            height: 20px;
-            margin: -10px;
+            width: 30px;
+            height: 30px;
+            margin: -15px;
             opacity: 1;
           }
           100% {
-            width: 180px;
-            height: 180px;
-            margin: -90px;
+            width: 200px;
+            height: 200px;
+            margin: -100px;
             opacity: 0;
           }
         }
 
-        @keyframes spark-shoot {
+        @keyframes ring-expand-super-2 {
+          0% {
+            width: 30px;
+            height: 30px;
+            margin: -15px;
+            opacity: 1;
+          }
+          100% {
+            width: 240px;
+            height: 240px;
+            margin: -120px;
+            opacity: 0;
+          }
+        }
+
+        @keyframes ring-expand-super-3 {
+          0% {
+            width: 30px;
+            height: 30px;
+            margin: -15px;
+            opacity: 1;
+          }
+          100% {
+            width: 280px;
+            height: 280px;
+            margin: -140px;
+            opacity: 0;
+          }
+        }
+
+        @keyframes spark-shoot-super {
           0% {
             transform: translateY(0) scale(1);
             opacity: 1;
           }
           100% {
-            transform: translateY(-60px) scale(0.5);
+            transform: translateY(-80px) scale(0.3);
             opacity: 0;
           }
         }
 
-        @keyframes particle-burst {
+        @keyframes particle-burst-super {
           0% {
             transform: translateY(0) scale(1);
             opacity: 1;
           }
           100% {
-            transform: translateY(-50px) scale(0);
+            transform: translateY(-70px) scale(0);
             opacity: 0;
           }
         }
 
-        @keyframes aura-spin {
+        @keyframes spiral-spin {
           0% {
             transform: scale(0) rotate(0deg);
+            opacity: 0.8;
+          }
+          100% {
+            transform: scale(5) rotate(720deg);
+            opacity: 0;
+          }
+        }
+
+        @keyframes aura-pulse-super {
+          0% {
+            transform: scale(0);
             opacity: 1;
           }
           100% {
-            transform: scale(4) rotate(360deg);
+            transform: scale(5);
+            opacity: 0;
+          }
+        }
+
+        @keyframes electric-spark {
+          0% {
+            transform: translateY(0) scaleY(1);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-40px) scaleY(2);
             opacity: 0;
           }
         }
@@ -263,7 +347,7 @@ export function GlobalClickEffects() {
             opacity: 0;
           }
           50% {
-            opacity: 0.3;
+            opacity: 0.4;
           }
         }
       `}</style>
