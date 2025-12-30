@@ -111,10 +111,10 @@ export function GlobalClickEffects() {
             />
           </div>
 
-          {/* Expanding Energy Shockwave */}
+          {/* Expanding Energy Shockwave - Reduced Brightness */}
           <div className="absolute">
             <div 
-              className="w-6 h-6 bg-yellow-400 rounded-full blur-sm"
+              className="w-5 h-5 bg-yellow-400 rounded-full blur-sm opacity-60"
               style={{ animation: 'shockwave-expand 1s ease-out forwards' }}
             />
           </div>
