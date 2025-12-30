@@ -100,13 +100,13 @@ export function GlobalClickEffects() {
             transform: 'translate(-50%, -50%)',
           }}
         >
-          {/* SUPER BRIGHT Central Flash */}
+          {/* Central Flash - Reduced Brightness */}
           <div className="absolute">
             <div 
-              className="w-8 h-8 bg-white rounded-full"
+              className="w-6 h-6 bg-white rounded-full"
               style={{ 
                 animation: 'super-flash 0.4s ease-out forwards',
-                boxShadow: '0 0 40px 20px rgba(255, 255, 100, 1), 0 0 60px 30px rgba(34, 197, 94, 0.8)'
+                boxShadow: '0 0 20px 10px rgba(255, 255, 100, 0.5), 0 0 30px 15px rgba(34, 197, 94, 0.4)'
               }}
             />
           </div>
