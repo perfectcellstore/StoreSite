@@ -610,6 +610,13 @@ export async function POST(request, { params }) {
           heroSpacing: 'normal',
           sectionSpacing: 'normal',
         },
+        animation: {
+          enabled: true,
+          intensity: 'medium',
+          speed: 'medium',
+          opacity: 0.3,
+          placement: 'global',
+        },
         resetAt: new Date().toISOString(),
         resetBy: decoded.userId
       };
