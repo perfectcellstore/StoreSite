@@ -1,13 +1,18 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useEffects } from '@/lib/contexts/EffectsContext';
 
 export function GlobalClickEffects() {
+  const { effectsEnabled } = useEffects();
   const [sparks, setSparks] = useState([]);
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
     const handleClick = (e) => {
+      // Don't create effects if disabled
+      if (!effectsEnabled) return;
+      
       // Get viewport dimensions for responsive scaling
       const vw = window.innerWidth;
       const vh = window.innerHeight;
