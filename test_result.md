@@ -245,7 +245,50 @@ agent_communication:
       
   - agent: "main"
     message: |
-      HIDE/UNHIDE FUNCTIONALITY REMOVED - SIMPLIFIED TO DELETE ONLY
+      EURO (EUR) CURRENCY SUPPORT ADDED
+      
+      REQUIREMENT:
+      - Add EUR pricing alongside existing USD and IQD currencies
+      - Fixed exchange rate: 1 EUR = 1.17 USD
+      - Do not modify or remove existing currency functionality
+      - Support EUR in all product displays, cart, and checkout
+      
+      IMPLEMENTATION:
+      1. Currency Context (CurrencyContext.js):
+         - Added USD_TO_EUR_RATE constant (1 / 1.17 = 0.8547)
+         - Modified toggleCurrency to cycle through 3 currencies: USD → IQD → EUR → USD
+         - Updated convertPrice to handle EUR conversion
+         - Updated formatPrice to display EUR with € symbol (€XX.XX format)
+         - Existing USD and IQD logic completely preserved
+      
+      2. Currency Toggle Behavior:
+         - Click 1: USD → IQD
+         - Click 2: IQD → EUR
+         - Click 3: EUR → USD (cycles back)
+         - Currency preference saved to localStorage
+      
+      3. Automatic Support (no changes needed):
+         - Cart page: Already uses formatPrice, EUR works automatically
+         - Checkout page: Already uses formatPrice, EUR works automatically
+         - Product pages: Already uses formatPrice, EUR works automatically
+         - All calculations: Already uses convertPrice, EUR works automatically
+      
+      CONVERSION VERIFICATION:
+      - $99.99 USD = €85.46 EUR ✓
+      - $149.99 USD = €128.20 EUR ✓
+      - $199.99 USD = €170.93 EUR ✓
+      - Reverse check: €85.47 × 1.17 = $100.00 ✓
+      
+      TESTING:
+      ✅ EUR conversion formula correct
+      ✅ Currency toggle cycles through USD → IQD → EUR
+      ✅ EUR displays with € symbol
+      ✅ Existing USD functionality unchanged
+      ✅ Existing IQD functionality unchanged
+      ✅ localStorage saves EUR preference
+      ✅ All price displays support EUR automatically
+      
+      Feature enhancement complete - EUR support fully integrated without affecting existing currencies.
       
       USER REQUEST:
       - Remove hide/unhide button
