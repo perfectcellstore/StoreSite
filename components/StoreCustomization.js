@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { ImageUpload } from '@/components/ImageUpload';
-import { Palette, Type, Image as ImageIcon, Layout, RotateCcw, Save, Eye } from 'lucide-react';
+import { Palette, Type, Image as ImageIcon, Layout, RotateCcw, Save, Eye, Zap } from 'lucide-react';
 
 export function StoreCustomization() {
   const { toast } = useToast();
