@@ -81,10 +81,10 @@ export function GlobalClickEffects() {
 
   return (
     <>
-      {/* Lightning Flash Effect - More Intense */}
+      {/* Lightning Flash Effect - Reduced Intensity */}
       {flash && (
         <div className="fixed inset-0 pointer-events-none z-[9999]">
-          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-25" 
+          <div className="absolute inset-0 bg-gradient-to-r from-bio-green-400 via-yellow-300 to-bio-green-400 opacity-15" 
                style={{ animation: 'lightning-flash 0.2s ease-out' }} />
         </div>
       )}
