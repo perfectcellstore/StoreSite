@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ShoppingCart, MessageCircle, Check } from 'lucide-react';
+import { ProductReviews } from '@/components/ProductReviews';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -215,9 +216,10 @@ export default function ProductDetailPage() {
 
             {/* Product Details Tabs */}
             <Tabs defaultValue="description" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-muted">
+              <TabsList className="grid w-full grid-cols-3 bg-muted">
                 <TabsTrigger value="description">{t('description')}</TabsTrigger>
                 <TabsTrigger value="specifications">{t('specifications')}</TabsTrigger>
+                <TabsTrigger value="reviews">Reviews</TabsTrigger>
               </TabsList>
               <TabsContent value="description" className="space-y-4 pt-4">
                 <p className="text-muted-foreground leading-relaxed">{productDescription}</p>
@@ -237,6 +239,9 @@ export default function ProductDetailPage() {
                     <span className="font-medium text-xs">{product.id}</span>
                   </div>
                 </div>
+              </TabsContent>
+              <TabsContent value="reviews" className="pt-4">
+                <ProductReviews productId={product.id} />
               </TabsContent>
             </Tabs>
           </div>
