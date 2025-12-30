@@ -21,6 +21,8 @@ export function Navigation() {
   const { currency, toggleCurrency } = useCurrency();
   const { getCartCount } = useCart();
   const { user, logout } = useAuth();
+  const { effectsEnabled, toggleEffects } = useEffects();
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
   const cartCount = getCartCount();
 
   const navLinks = [
