@@ -103,10 +103,10 @@ export function SwordInStone({ onClose }) {
             {/* Sword */}
             <svg
               viewBox="0 0 200 400"
-              className={`w-32 h-96 transition-all duration-2000 z-10 ${
-                isPulling ? 'translate-y-[-120px] animate-wiggle' : ''
+              className={`w-24 h-64 sm:w-32 sm:h-96 transition-all duration-2000 z-10 ${
+                isPulling ? 'translate-y-[-80px] sm:translate-y-[-120px] animate-wiggle' : ''
               } ${
-                isPulled ? 'translate-y-[-200px] scale-110 rotate-12' : ''
+                isPulled ? 'translate-y-[-120px] sm:translate-y-[-200px] scale-110 rotate-12' : ''
               }`}
               style={{ 
                 filter: isPulled ? 'drop-shadow(0 0 30px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.3))'
