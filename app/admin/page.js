@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { ImageUpload } from '@/components/ImageUpload';
 import { Package, ShoppingBag, Users, DollarSign, Plus, Edit, Trash2, Eye } from 'lucide-react';
 
 export default function AdminPage() {
