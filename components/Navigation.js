@@ -196,6 +196,9 @@ export function Navigation() {
           </Sheet>
         </div>
       </div>
+
+      {/* Easter Egg Modal */}
+      {showEasterEgg && <SwordInStone onClose={() => setShowEasterEgg(false)} />}
     </nav>
   );
 }
