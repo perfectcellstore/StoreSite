@@ -191,15 +191,6 @@ export function Navigation() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={toggleLowPowerMode}
-                    className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
-                  >
-                    <Zap className={`mr-2 h-4 w-4 ${lowPowerMode ? 'text-yellow-500' : ''}`} />
-                    Low Power Mode: {lowPowerMode ? t('on') : t('off')}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
                     onClick={() => {
                       setSheetOpen(false);
                       setTimeout(() => setShowEasterEgg(true), 300);
