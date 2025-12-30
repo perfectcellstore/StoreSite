@@ -22,7 +22,7 @@ export function Navigation() {
   const { currency, toggleCurrency } = useCurrency();
   const { getCartCount } = useCart();
   const { user, logout } = useAuth();
-  const { effectsEnabled, toggleEffects } = useEffects();
+  const { effectsEnabled, toggleEffects, lowPowerMode, toggleLowPowerMode } = useEffects();
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const cartCount = getCartCount();
