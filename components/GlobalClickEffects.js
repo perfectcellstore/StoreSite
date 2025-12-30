@@ -168,16 +168,6 @@ export function GlobalClickEffects() {
             />
           ))}
 
-          {/* Rotating Energy Spiral - Reduced Brightness */}
-          <div 
-            className="absolute w-16 h-16 rounded-full"
-            style={{ 
-              animation: 'spiral-spin 1s ease-out forwards',
-              background: 'conic-gradient(from 0deg, transparent, #22c55e, transparent, #fbbf24, transparent)',
-              opacity: 0.3
-            }}
-          />
-
           {/* Electric Sparks - Reduced Brightness */}
           {[...Array(8)].map((_, i) => (
             <div
