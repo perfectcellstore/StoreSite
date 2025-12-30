@@ -185,16 +185,16 @@ export function PerfectCellLogo() {
             transform: translateY(0) rotate(0deg) scale(1);
           }
           25% {
-            transform: translateY(-35px) rotate(-15deg) scale(1.2);
+            transform: translateY(-25px) rotate(-15deg) scale(1.2);
           }
           50% {
-            transform: translateY(-45px) rotate(10deg) scale(1.25);
+            transform: translateY(-35px) rotate(10deg) scale(1.25);
           }
           65% {
-            transform: translateY(-25px) rotate(-8deg) scale(1.15);
+            transform: translateY(-20px) rotate(-8deg) scale(1.15);
           }
           80% {
-            transform: translateY(-10px) rotate(5deg) scale(1.05);
+            transform: translateY(-8px) rotate(5deg) scale(1.05);
           }
           100% {
             transform: translateY(0) rotate(0deg) scale(1);
@@ -211,7 +211,7 @@ export function PerfectCellLogo() {
             transform: translateX(-50%) translateY(-10px) scale(1) rotate(10deg);
           }
           100% {
-            transform: translateX(-50%) translateY(-80px) scale(1.3) rotate(-20deg);
+            transform: translateX(-50%) translateY(-60px) scale(1.3) rotate(-20deg);
             opacity: 0;
           }
         }
@@ -219,14 +219,14 @@ export function PerfectCellLogo() {
         @keyframes sparkle-pop {
           0% {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(0deg) translateY(-30px) scale(0);
+            transform: translate(-50%, -50%) rotate(0deg) translateY(-20px) scale(0);
           }
           50% {
             opacity: 1;
           }
           100% {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(45deg) translateY(-50px) scale(1.5);
+            transform: translate(-50%, -50%) rotate(45deg) translateY(-35px) scale(1.5);
           }
         }
 
