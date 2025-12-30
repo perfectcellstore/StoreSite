@@ -7,54 +7,78 @@ import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent } from '@/components/ui/card';
 
-const faqs = [
-  {
-    question: 'How do I place an order?',
-    answer: 'Browse our shop, add items to your cart, and proceed to checkout. Fill in your shipping information and confirm your order. We accept Cash on Delivery currently.'
-  },
-  {
-    question: 'What payment methods do you accept?',
-    answer: 'Currently, we accept Cash on Delivery (COD). Visa, Qi Card, and other payment methods will be available soon!'
-  },
-  {
-    question: 'How long does delivery take?',
-    answer: 'Delivery typically takes 1-3 days within Iraq. We will contact you via phone to confirm delivery details.'
-  },
-  {
-    question: 'How much is shipping?',
-    answer: 'Shipping is a fixed rate of 5,000 IQD to all provinces in Iraq.'
-  },
-  {
-    question: 'Do you ship internationally?',
-    answer: 'Currently, we only ship within Iraq. International shipping will be available in the future.'
-  },
-  {
-    question: 'Are the products authentic?',
-    answer: 'Yes! All our products are carefully curated and verified. We sell authentic collectibles, premium replicas, and officially licensed merchandise.'
-  },
-  {
-    question: 'Can I cancel or modify my order?',
-    answer: 'Yes, you can cancel or modify your order before it is shipped. Contact us immediately via WhatsApp at +964 773 379 7713.'
-  },
-  {
-    question: 'What is your return policy?',
-    answer: 'We accept returns within 7 days of delivery if the product is damaged or not as described. Contact us via WhatsApp to initiate a return.'
-  },
-  {
-    question: 'How can I track my order?',
-    answer: 'After your order is confirmed, we will contact you via phone with tracking information and delivery updates.'
-  },
-  {
-    question: 'Do you have promo codes?',
-    answer: 'Yes! We regularly offer promo codes for discounts. Follow us on Instagram @perfectsell_store for the latest codes and special offers!'
-  },
-  {
-    question: 'How can I contact customer support?',
-    answer: 'You can reach us via WhatsApp at +964 773 379 7713 or follow us on Instagram @perfectsell_store. We respond within 24 hours.'
-  }
-];
-
 export default function FAQPage() {
+  const { t, language } = useLanguage();
+
+  const faqs = [
+    {
+      question: t('howDoIPlaceOrder'),
+      answer: language === 'ar' 
+        ? 'تصفح متجرنا، أضف المنتجات إلى سلتك، وانتقل إلى الدفع. املأ معلومات الشحن وأكد طلبك. نقبل الدفع عند الاستلام حالياً.'
+        : 'Browse our shop, add items to your cart, and proceed to checkout. Fill in your shipping information and confirm your order. We accept Cash on Delivery currently.'
+    },
+    {
+      question: t('whatPaymentMethods'),
+      answer: language === 'ar'
+        ? 'حالياً، نقبل الدفع عند الاستلام (COD). ستتوفر بطاقة Visa وبطاقة Qi وطرق دفع أخرى قريباً!'
+        : 'Currently, we accept Cash on Delivery (COD). Visa, Qi Card, and other payment methods will be available soon!'
+    },
+    {
+      question: t('howLongDelivery'),
+      answer: language === 'ar'
+        ? 'يستغرق التوصيل عادةً من 1-3 أيام داخل العراق. سنتصل بك عبر الهاتف لتأكيد تفاصيل التوصيل.'
+        : 'Delivery typically takes 1-3 days within Iraq. We will contact you via phone to confirm delivery details.'
+    },
+    {
+      question: t('howMuchShipping'),
+      answer: language === 'ar'
+        ? 'الشحن بسعر ثابت 5,000 دينار عراقي لجميع المحافظات في العراق.'
+        : 'Shipping is a fixed rate of 5,000 IQD to all provinces in Iraq.'
+    },
+    {
+      question: t('doYouShipInternational'),
+      answer: language === 'ar'
+        ? 'حالياً، نشحن فقط داخل العراق. سيتوفر الشحن الدولي في المستقبل.'
+        : 'Currently, we only ship within Iraq. International shipping will be available in the future.'
+    },
+    {
+      question: t('areProductsAuthentic'),
+      answer: language === 'ar'
+        ? 'نعم! جميع منتجاتنا منتقاة بعناية ومعتمدة. نبيع مقتنيات أصلية ونسخ ممتازة وبضائع مرخصة رسمياً.'
+        : 'Yes! All our products are carefully curated and verified. We sell authentic collectibles, premium replicas, and officially licensed merchandise.'
+    },
+    {
+      question: t('canICancelOrder'),
+      answer: language === 'ar'
+        ? 'نعم، يمكنك إلغاء أو تعديل طلبك قبل شحنه. اتصل بنا فوراً عبر واتساب على +964 773 379 7713.'
+        : 'Yes, you can cancel or modify your order before it is shipped. Contact us immediately via WhatsApp at +964 773 379 7713.'
+    },
+    {
+      question: t('whatIsReturnPolicy'),
+      answer: language === 'ar'
+        ? 'نقبل الإرجاع خلال 7 أيام من التوصيل إذا كان المنتج تالفاً أو غير مطابق للوصف. اتصل بنا عبر واتساب لبدء عملية الإرجاع.'
+        : 'We accept returns within 7 days of delivery if the product is damaged or not as described. Contact us via WhatsApp to initiate a return.'
+    },
+    {
+      question: t('howTrackOrder'),
+      answer: language === 'ar'
+        ? 'بعد تأكيد طلبك، سنتصل بك عبر الهاتف بمعلومات التتبع وتحديثات التوصيل.'
+        : 'After your order is confirmed, we will contact you via phone with tracking information and delivery updates.'
+    },
+    {
+      question: t('doYouHavePromoCodes'),
+      answer: language === 'ar'
+        ? 'نعم! نقدم بانتظام أكواد خصم. تابعنا على إنستغرام @perfectsell_store للحصول على أحدث الأكواد والعروض الخاصة!'
+        : 'Yes! We regularly offer promo codes for discounts. Follow us on Instagram @perfectsell_store for the latest codes and special offers!'
+    },
+    {
+      question: t('howContactSupport'),
+      answer: language === 'ar'
+        ? 'يمكنك التواصل معنا عبر واتساب على +964 773 379 7713 أو متابعتنا على إنستغرام @perfectsell_store. نرد خلال 24 ساعة.'
+        : 'You can reach us via WhatsApp at +964 773 379 7713 or follow us on Instagram @perfectsell_store. We respond within 24 hours.'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
