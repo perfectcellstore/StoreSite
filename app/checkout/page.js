@@ -22,7 +22,8 @@ const SHIPPING_COST_USD = SHIPPING_COST_IQD / 1400;
 const PROMO_CODES = {
   'PERFECT10': { discount: 0.10, description: '10% off' },
   'CELL20': { discount: 0.20, description: '20% off' },
-  'WELCOME': { discount: 0.05, description: '5% off for new customers' }
+  'WELCOME': { discount: 0.05, description: '5% off for new customers' },
+  '2026': { discount: 0.20, description: '20% off - New Year Special!' }
 };
 
 export default function CheckoutPage() {
