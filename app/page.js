@@ -56,140 +56,168 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Kamehameha Energy Waves Background - ANIMATED */}
+        {/* Kamehameha Energy Blast Background - CONCENTRATED BEAM */}
         <div className="absolute inset-0 z-0">
           {/* Base Dark Background */}
           <div className="absolute inset-0 bg-black"></div>
           
-          {/* Energy Wave Layer 1 - Main Kamehameha Beam */}
+          {/* Main Kamehameha Beam - Horizontal Concentrated Blast */}
           <div 
-            className="absolute inset-0"
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-32"
             style={{
-              background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16, 185, 129, 0.6) 0%, rgba(59, 130, 246, 0.4) 30%, transparent 60%)',
-              animation: 'kamehamehaWave1 8s ease-in-out infinite',
+              background: 'linear-gradient(to right, rgba(16, 185, 129, 0) 0%, rgba(16, 185, 129, 0.9) 20%, rgba(16, 185, 129, 0.9) 80%, rgba(16, 185, 129, 0) 100%)',
+              boxShadow: '0 0 80px 40px rgba(16, 185, 129, 0.6), 0 0 120px 60px rgba(16, 185, 129, 0.4)',
+              animation: 'beamPulse 3s ease-in-out infinite',
+              filter: 'blur(20px)',
+            }}
+          />
+          
+          {/* Secondary Beam Layer - Thinner Concentrated Core */}
+          <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-16"
+            style={{
+              background: 'linear-gradient(to right, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 1) 25%, rgba(16, 185, 129, 1) 50%, rgba(59, 130, 246, 1) 75%, rgba(59, 130, 246, 0) 100%)',
+              boxShadow: '0 0 60px 30px rgba(59, 130, 246, 0.8)',
+              animation: 'beamPulse 2s ease-in-out infinite',
+              animationDelay: '0.5s',
+              filter: 'blur(10px)',
+            }}
+          />
+          
+          {/* Inner Core - Bright White Center */}
+          <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-6"
+            style={{
+              background: 'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0.9) 70%, rgba(255, 255, 255, 0) 100%)',
+              boxShadow: '0 0 40px 20px rgba(255, 255, 255, 0.9), 0 0 80px 40px rgba(16, 185, 129, 0.6)',
+              animation: 'beamIntensity 1.5s ease-in-out infinite',
+            }}
+          />
+          
+          {/* Energy Particles Along Beam */}
+          <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-40"
+            style={{
+              background: 'repeating-linear-gradient(90deg, transparent 0px, rgba(16, 185, 129, 0.3) 50px, transparent 100px)',
+              animation: 'particleFlow 2s linear infinite',
+              filter: 'blur(5px)',
+            }}
+          />
+          
+          {/* Blast Origin Glow - Left Side */}
+          <div 
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2"
+            style={{
+              width: '300px',
+              height: '300px',
+              background: 'radial-gradient(circle, rgba(16, 185, 129, 1) 0%, rgba(59, 130, 246, 0.8) 30%, rgba(16, 185, 129, 0.4) 50%, transparent 70%)',
+              boxShadow: '0 0 150px 80px rgba(16, 185, 129, 0.8)',
+              animation: 'originPulse 2s ease-in-out infinite',
+              filter: 'blur(40px)',
+            }}
+          />
+          
+          {/* Energy Waves Expanding from Beam */}
+          <div 
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: '100%',
+              height: '400px',
+              background: 'radial-gradient(ellipse 100% 40% at 50% 50%, rgba(16, 185, 129, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%)',
+              animation: 'waveExpand 4s ease-out infinite',
               filter: 'blur(60px)',
             }}
           />
           
-          {/* Energy Wave Layer 2 - Secondary Pulse */}
+          {/* Diagonal Energy Streaks */}
           <div 
             className="absolute inset-0"
             style={{
-              background: 'radial-gradient(ellipse 60% 60% at 40% 50%, rgba(16, 185, 129, 0.5) 0%, rgba(6, 182, 212, 0.3) 40%, transparent 70%)',
-              animation: 'kamehamehaWave2 6s ease-in-out infinite',
-              animationDelay: '1s',
-              filter: 'blur(50px)',
+              background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.15) 48%, rgba(255, 255, 255, 0.3) 50%, rgba(16, 185, 129, 0.15) 52%, transparent 100%)',
+              animation: 'streakFlow 8s linear infinite',
+              filter: 'blur(15px)',
             }}
           />
           
-          {/* Energy Wave Layer 3 - Outer Aura */}
           <div 
             className="absolute inset-0"
             style={{
-              background: 'radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.4) 0%, rgba(59, 130, 246, 0.3) 50%, transparent 80%)',
-              animation: 'kamehamehaWave3 10s ease-in-out infinite',
+              background: 'linear-gradient(-45deg, transparent 0%, rgba(59, 130, 246, 0.15) 48%, rgba(255, 255, 255, 0.2) 50%, rgba(59, 130, 246, 0.15) 52%, transparent 100%)',
+              animation: 'streakFlow 6s linear infinite',
               animationDelay: '2s',
-              filter: 'blur(80px)',
-            }}
-          />
-          
-          {/* Flowing Energy Streaks */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.3) 30%, rgba(59, 130, 246, 0.3) 60%, transparent 100%)',
-              animation: 'energyFlow1 15s linear infinite',
-              filter: 'blur(40px)',
-            }}
-          />
-          
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(-45deg, transparent 0%, rgba(6, 182, 212, 0.25) 40%, rgba(16, 185, 129, 0.25) 70%, transparent 100%)',
-              animation: 'energyFlow2 12s linear infinite',
-              animationDelay: '3s',
-              filter: 'blur(40px)',
-            }}
-          />
-          
-          {/* Central Energy Core */}
-          <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              width: '600px',
-              height: '600px',
-              background: 'radial-gradient(circle, rgba(16, 185, 129, 0.7) 0%, rgba(59, 130, 246, 0.5) 30%, transparent 60%)',
-              animation: 'energyCorePulse 5s ease-in-out infinite',
-              filter: 'blur(100px)',
+              filter: 'blur(15px)',
             }}
           />
           
           {/* Gradient Overlay for Readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/80"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-background/70"></div>
         </div>
 
         {/* CSS Animations */}
         <style jsx>{`
-          @keyframes kamehamehaWave1 {
+          @keyframes beamPulse {
             0%, 100% { 
-              transform: scale(1) translate(0, 0);
-              opacity: 0.6;
-            }
-            50% { 
-              transform: scale(1.4) translate(5%, 0);
-              opacity: 0.9;
-            }
-          }
-          
-          @keyframes kamehamehaWave2 {
-            0%, 100% { 
-              transform: scale(1.2) translate(0, 0);
-              opacity: 0.5;
-            }
-            50% { 
-              transform: scale(1.6) translate(-5%, 0);
-              opacity: 0.8;
-            }
-          }
-          
-          @keyframes kamehamehaWave3 {
-            0%, 100% { 
-              transform: scale(1) rotate(0deg);
-              opacity: 0.4;
-            }
-            50% { 
-              transform: scale(1.3) rotate(10deg);
               opacity: 0.7;
+              transform: translateY(-50%) scaleY(1);
+            }
+            50% { 
+              opacity: 1;
+              transform: translateY(-50%) scaleY(1.2);
             }
           }
           
-          @keyframes energyFlow1 {
+          @keyframes beamIntensity {
+            0%, 100% { 
+              opacity: 0.8;
+              filter: blur(0px);
+            }
+            50% { 
+              opacity: 1;
+              filter: blur(2px);
+            }
+          }
+          
+          @keyframes particleFlow {
             0% { 
-              transform: translateX(-100%) rotate(45deg); 
+              transform: translateX(0) translateY(-50%);
             }
             100% { 
-              transform: translateX(100%) rotate(45deg); 
+              transform: translateX(-100px) translateY(-50%);
             }
           }
           
-          @keyframes energyFlow2 {
-            0% { 
-              transform: translateX(100%) rotate(-45deg); 
-            }
-            100% { 
-              transform: translateX(-100%) rotate(-45deg); 
-            }
-          }
-          
-          @keyframes energyCorePulse {
+          @keyframes originPulse {
             0%, 100% { 
               transform: translate(-50%, -50%) scale(1);
-              opacity: 0.7;
+              opacity: 0.8;
             }
             50% { 
-              transform: translate(-50%, -50%) scale(1.5);
+              transform: translate(-50%, -50%) scale(1.3);
               opacity: 1;
+            }
+          }
+          
+          @keyframes waveExpand {
+            0% { 
+              transform: translate(-50%, -50%) scale(0.8);
+              opacity: 0;
+            }
+            50% { 
+              opacity: 0.6;
+            }
+            100% { 
+              transform: translate(-50%, -50%) scale(1.5);
+              opacity: 0;
+            }
+          }
+          
+          @keyframes streakFlow {
+            0% { 
+              transform: translateX(-100%);
+            }
+            100% { 
+              transform: translateX(100%);
             }
           }
         `}</style>
