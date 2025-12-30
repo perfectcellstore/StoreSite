@@ -330,6 +330,7 @@ export default function CheckoutPage() {
                             <p className="text-xs text-muted-foreground">{appliedPromo.description}</p>
                           </div>
                           <Button
+                            type="button"
                             size="sm"
                             variant="ghost"
                             onClick={handleRemovePromo}
