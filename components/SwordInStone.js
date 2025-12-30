@@ -53,25 +53,25 @@ export function SwordInStone({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm overflow-hidden">
-      <div className="relative max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="relative w-full max-w-lg my-8">
         {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute -top-2 -right-2 z-[10001] bg-bio-green-500 hover:bg-bio-green-600 text-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
           aria-label="Close"
         >
-          <X className="h-6 w-6" />
+          <X className="h-5 w-5" />
         </button>
 
         {/* Main Container */}
-        <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg p-8 border-2 border-bio-green-500/30 shadow-2xl">
-          <h2 className="text-3xl font-bold text-center mb-8">
+        <div className="bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg p-4 sm:p-8 border-2 border-bio-green-500/30 shadow-2xl">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-8">
             <span className="gradient-text">The Legendary Sword</span>
           </h2>
 
-          {/* SVG Sword in Stone */}
-          <div className="relative flex justify-center items-end h-96 mb-6">
+          {/* SVG Sword in Stone - Smaller for mobile */}
+          <div className="relative flex justify-center items-end h-64 sm:h-96 mb-4 sm:mb-6">
             {/* Mystical Glow */}
             <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${isPulling || isPulled ? 'opacity-100' : 'opacity-0'}`}>
               <div className="w-64 h-64 bg-bio-green-500/20 rounded-full blur-3xl animate-pulse"></div>
