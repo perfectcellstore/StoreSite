@@ -13,24 +13,36 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Check } from 'lucide-react';
+import { Check, Tag } from 'lucide-react';
+
+const SHIPPING_COST_IQD = 5000;
+const SHIPPING_COST_USD = SHIPPING_COST_IQD / 1400;
+
+// Promo codes
+const PROMO_CODES = {
+  'PERFECT10': { discount: 0.10, description: '10% off' },
+  'CELL20': { discount: 0.20, description: '20% off' },
+  'WELCOME': { discount: 0.05, description: '5% off for new customers' }
+};
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { t, language } = useLanguage();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, currency } = useCurrency();
   const { cart, getCartTotal, clearCart } = useCart();
   const { user } = useAuth();
   const { toast } = useToast();
   
   const [loading, setLoading] = useState(false);
+  const [promoCode, setPromoCode] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState(null);
   const [formData, setFormData] = useState({
     fullName: user?.name || '',
     email: user?.email || '',
     phone: '',
     address: '',
     city: '',
-    country: 'Iraq'
+    province: ''
   });
 
   const handleChange = (e) => {
@@ -38,6 +50,39 @@ export default function CheckoutPage() {
       ...formData,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleApplyPromo = () => {
+    const code = promoCode.toUpperCase();
+    if (PROMO_CODES[code]) {
+      setAppliedPromo({ code, ...PROMO_CODES[code] });
+      toast({
+        title: 'Promo Code Applied! 🎉',
+        description: `You got ${PROMO_CODES[code].description}!`
+      });
+    } else {
+      toast({
+        title: 'Invalid Code',
+        description: 'This promo code is not valid',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode('');
+    toast({
+      title: 'Promo Code Removed',
+      description: 'Discount has been removed'
+    });
+  };
+
+  const calculateTotal = () => {
+    const subtotal = getCartTotal();
+    const shipping = currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD;
+    const discount = appliedPromo ? subtotal * appliedPromo.discount : 0;
+    return subtotal + shipping - discount;
   };
 
   const handleSubmit = async (e) => {
@@ -55,6 +100,11 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
+      const subtotal = getCartTotal();
+      const shipping = currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD;
+      const discount = appliedPromo ? subtotal * appliedPromo.discount : 0;
+      const total = subtotal + shipping - discount;
+
       const orderData = {
         items: cart.map(item => ({
           productId: item.id,
@@ -64,7 +114,11 @@ export default function CheckoutPage() {
           image: item.image
         })),
         shippingInfo: formData,
-        total: getCartTotal(),
+        subtotal,
+        shipping,
+        discount,
+        promoCode: appliedPromo?.code || null,
+        total,
         userId: user?.id || null
       };
 
@@ -79,7 +133,7 @@ export default function CheckoutPage() {
       if (response.ok) {
         clearCart();
         toast({
-          title: 'Success!',
+          title: 'Order Placed! 🎉',
           description: 'Your order has been placed successfully'
         });
         router.push(`/order-success?orderId=${data.order.id}`);
