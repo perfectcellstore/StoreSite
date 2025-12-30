@@ -156,56 +156,6 @@ export function ProductReviews({ productId, onReviewUpdate }) {
     }
   };
 
-  const handleToggleVisibility = async (reviewId, currentlyHidden) => {
-    if (!user || user.role !== 'admin') return;
-
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`/api/products/${productId}/reviews/${reviewId}/toggle`, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        },
-        body: JSON.stringify({ hidden: !currentlyHidden })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        
-        // Update product data with new aggregates
-        if (data.aggregateData) {
-          setProductData({
-            reviewCount: data.aggregateData.reviewCount,
-            averageRating: data.aggregateData.averageRating
-          });
-        }
-        
-        toast({
-          title: currentlyHidden ? 'Review Shown' : 'Review Hidden',
-          description: currentlyHidden ? 'Review is now visible to customers' : 'Review is now hidden from customers'
-        });
-        
-        // Refresh reviews and product data
-        await Promise.all([
-          fetchReviews(),
-          fetchProductData()
-        ]);
-        
-        // Notify parent component
-        if (onReviewUpdate) {
-          onReviewUpdate();
-        }
-      }
-    } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to update review visibility',
-        variant: 'destructive'
-      });
-    }
-  };
-
   const renderStars = (count, interactive = false, onClick = null) => {
     return (
       <div className="flex gap-1">
@@ -228,7 +178,7 @@ export function ProductReviews({ productId, onReviewUpdate }) {
     );
   };
 
-  const visibleReviews = reviews.filter(review => !review.hidden || (user && user.role === 'admin'));
+  const visibleReviews = reviews;
 
   if (loading) {
     return (
