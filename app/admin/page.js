@@ -382,13 +382,19 @@ export default function AdminPage() {
                     </div>
 
                     <div>
-                      <Label>Image URL</Label>
+                      <Label>Product Image</Label>
+                      <ImageUpload
+                        value={productForm.image}
+                        onChange={(url) => setProductForm({ ...productForm, image: url })}
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Upload an image or enter a URL manually below
+                      </p>
                       <Input
                         value={productForm.image}
                         onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                        required
-                        className="bg-background border-border"
-                        placeholder="https://example.com/image.jpg"
+                        className="bg-background border-border mt-2"
+                        placeholder="Or paste image URL here"
                       />
                     </div>
 
