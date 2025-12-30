@@ -828,47 +828,6 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ order });
     }
 
-    // Toggle Review Visibility (Admin Only)
-    if (pathname.match(/^products\/[\w-]+\/reviews\/[\w-]+\/toggle$/)) {
-      const productId = pathname.split('/')[1];
-      const reviewId = pathname.split('/')[3];
-      
-      // Update review visibility
-      await db.collection('reviews').updateOne(
-        { id: reviewId },
-        { $set: { hidden: body.hidden } }
-      );
-      
-      // Recalculate aggregate rating excluding hidden reviews
-      const allReviews = await db.collection('reviews')
-        .find({ productId, hidden: false })
-        .toArray();
-      
-      const totalReviews = allReviews.length;
-      const averageRating = totalReviews > 0
-        ? allReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
-        : 0;
-      
-      // Update product with new aggregate data
-      await db.collection('products').updateOne(
-        { id: productId },
-        { 
-          $set: { 
-            reviewCount: totalReviews,
-            averageRating: parseFloat(averageRating.toFixed(1))
-          } 
-        }
-      );
-      
-      return NextResponse.json({ 
-        success: true,
-        aggregateData: {
-          reviewCount: totalReviews,
-          averageRating: parseFloat(averageRating.toFixed(1))
-        }
-      });
-    }
-
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
