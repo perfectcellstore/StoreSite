@@ -207,6 +207,72 @@ export async function GET(request, { params }) {
       return NextResponse.json({ notifications });
     }
 
+    // Get Store Customization (Admin Only)
+    if (pathname === 'customization') {
+      const decoded = verifyToken(request);
+      if (!decoded) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      
+      const user = await db.collection('users').findOne({ id: decoded.userId });
+      if (user?.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      
+      let customization = await db.collection('customization').findOne({ storeId: 'default' });
+      
+      // Return default customization if none exists
+      if (!customization) {
+        customization = {
+          storeId: 'default',
+          colors: {
+            primary: '#10b981',
+            secondary: '#1f2937',
+            accent: '#3b82f6',
+            background: '#0a0a0a',
+            backgroundSecondary: '#1a1a1a',
+            buttonNormal: '#10b981',
+            buttonHover: '#059669',
+            textHeading: '#ffffff',
+            textBody: '#d1d5db',
+            textLink: '#10b981',
+          },
+          typography: {
+            fontFamily: 'Inter, system-ui, sans-serif',
+            headingSize: '2.5rem',
+            bodySize: '1rem',
+            textAlign: 'center',
+          },
+          content: {
+            heroTitle: 'Perfect Sell',
+            heroSubtitle: 'Evolve Your Collection',
+            heroDescription: 'Discover epic collectibles, awesome replicas, and legendary gear that bring your favorite characters to life!',
+            featureTitle1: 'Authentic Quality',
+            featureDesc1: 'Every item verified for authenticity and premium quality',
+            featureTitle2: 'Fast Delivery',
+            featureDesc2: 'Quick and secure delivery to your location',
+            featureTitle3: 'Rare Finds',
+            featureDesc3: 'Exclusive and limited edition collectibles',
+          },
+          images: {
+            logo: '',
+            heroBanner: '',
+            aboutBanner: '',
+          },
+          layout: {
+            showHeroSection: true,
+            showFeaturesSection: true,
+            showCategoriesSection: true,
+            showAboutSection: true,
+            heroSpacing: 'normal',
+            sectionSpacing: 'normal',
+          },
+        };
+      }
+      
+      return NextResponse.json({ customization });
+    }
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
