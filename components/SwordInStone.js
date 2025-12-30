@@ -63,29 +63,30 @@ export function SwordInStone({ onClose }) {
             The Legendary Sword
           </h2>
 
-          {/* Compact Sword in Stone */}
-          <div className="relative h-48 flex items-end justify-center mb-4">
+          {/* Compact Sword in Stone - FLIPPED */}
+          <div className="relative h-56 flex items-center justify-center mb-4">
             {/* Glow */}
             <div className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ${isPulling || isPulled ? 'opacity-100' : 'opacity-0'}`}>
               <div className="w-32 h-32 bg-bio-green-500/20 rounded-full blur-2xl animate-pulse"></div>
             </div>
 
-            {/* Stone - Smaller */}
-            <svg viewBox="0 0 200 200" className="absolute bottom-0 w-32 h-32">
+            {/* Stone - Positioned higher */}
+            <svg viewBox="0 0 200 200" className="absolute top-8 w-32 h-32">
               <ellipse cx="100" cy="160" rx="80" ry="30" fill="#555" />
               <path d="M 40 160 L 30 100 Q 30 80 50 70 L 150 70 Q 170 80 170 100 L 160 160 Z" fill="#777" stroke="#555" strokeWidth="2" />
             </svg>
 
-            {/* Sword - Smaller */}
+            {/* Sword - FLIPPED UPSIDE DOWN with handle on top */}
             <svg
               viewBox="0 0 200 400"
-              className={`w-16 h-48 transition-all duration-2000 ${
-                isPulling ? 'translate-y-[-50px] animate-wiggle' : ''
+              className={`absolute w-16 h-48 transition-all duration-2000 ${
+                isPulling ? 'translate-y-[-10px] animate-wiggle' : ''
               } ${
-                isPulled ? 'translate-y-[-80px] scale-110 rotate-12' : ''
+                isPulled ? 'translate-y-[-60px] scale-110' : ''
               }`}
               style={{ 
-                filter: isPulled ? 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.3))'
+                filter: isPulled ? 'drop-shadow(0 0 20px rgba(34, 197, 94, 0.8))' : 'drop-shadow(0 0 8px rgba(34, 197, 94, 0.3))',
+                top: '20px'
               }}
             >
               <defs>
@@ -94,12 +95,26 @@ export function SwordInStone({ onClose }) {
                   <stop offset="50%" stopColor="#ffffff" />
                   <stop offset="100%" stopColor="#c0c0c0" />
                 </linearGradient>
+                <clipPath id="hideInStone">
+                  {/* Only show the part ABOVE y=180 (handle part) */}
+                  <rect x="0" y="0" width="200" height="180" />
+                </clipPath>
               </defs>
-              <path d="M 95 50 L 90 250 L 100 255 L 110 250 L 105 50 Z" fill="url(#blade)" stroke="#aaa" strokeWidth="1" />
-              <rect x="70" y="250" width="60" height="15" fill="#ffd700" stroke="#d4af37" strokeWidth="2" rx="3" />
-              <rect x="90" y="265" width="20" height="60" fill="#8B4513" stroke="#654321" strokeWidth="1" rx="2" />
-              <circle cx="100" cy="335" r="12" fill="#ffd700" stroke="#d4af37" strokeWidth="2" />
-              <circle cx="100" cy="335" r="6" fill="#22c55e" className={isPulled ? 'animate-pulse' : ''} />
+              
+              <g clipPath="url(#hideInStone)">
+                {/* Pommel at TOP */}
+                <circle cx="100" cy="65" r="12" fill="#ffd700" stroke="#d4af37" strokeWidth="2" />
+                <circle cx="100" cy="65" r="6" fill="#22c55e" className={isPulled ? 'animate-pulse' : ''} />
+                
+                {/* Handle below pommel */}
+                <rect x="90" y="75" width="20" height="60" fill="#8B4513" stroke="#654321" strokeWidth="1" rx="2" />
+                
+                {/* Guard */}
+                <rect x="70" y="135" width="60" height="15" fill="#ffd700" stroke="#d4af37" strokeWidth="2" rx="3" />
+                
+                {/* Blade pointing DOWN - from guard downward */}
+                <path d="M 95 150 L 90 350 L 100 355 L 110 350 L 105 150 Z" fill="url(#blade)" stroke="#aaa" strokeWidth="1" className={isPulled ? 'animate-pulse' : ''} />
+              </g>
             </svg>
 
             {/* Sparks when pulling */}
@@ -110,8 +125,8 @@ export function SwordInStone({ onClose }) {
                     key={i}
                     className="absolute w-1.5 h-1.5 bg-bio-green-500 rounded-full animate-ping"
                     style={{
-                      left: `${50 + Math.cos(i * 45 * Math.PI / 180) * 60}%`,
-                      top: `${50 + Math.sin(i * 45 * Math.PI / 180) * 60}%`,
+                      left: `${50 + Math.cos(i * 45 * Math.PI / 180) * 50}%`,
+                      top: `${40 + Math.sin(i * 45 * Math.PI / 180) * 50}%`,
                       animationDelay: `${i * 0.1}s`
                     }}
                   />
@@ -169,9 +184,9 @@ export function SwordInStone({ onClose }) {
 
       <style jsx>{`
         @keyframes wiggle {
-          0%, 100% { transform: translateY(-50px) rotate(0deg); }
-          25% { transform: translateY(-50px) rotate(-5deg); }
-          75% { transform: translateY(-50px) rotate(5deg); }
+          0%, 100% { transform: translateY(-10px) rotate(0deg); }
+          25% { transform: translateY(-10px) rotate(-3deg); }
+          75% { transform: translateY(-10px) rotate(3deg); }
         }
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(10px); }
