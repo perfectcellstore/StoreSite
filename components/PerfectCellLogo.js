@@ -1,11 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
+import { ChatbotModal } from './ChatbotModal';
 
 export function PerfectCellLogo() {
   const [isJumping, setIsJumping] = useState(false);
   const [hearts, setHearts] = useState([]);
   const [isSmiling, setIsSmiling] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -58,6 +60,11 @@ export function PerfectCellLogo() {
     } catch (e) {
       console.log('Audio not supported');
     }
+
+    // Open chatbot after animation
+    setTimeout(() => {
+      setShowChatbot(true);
+    }, 600);
   };
 
   return (
