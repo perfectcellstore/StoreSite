@@ -194,6 +194,13 @@ export function StoreCustomization() {
     }));
   };
 
+  const updateAnimation = (key, value) => {
+    setCustomization(prev => ({
+      ...prev,
+      animation: { ...prev.animation, [key]: value }
+    }));
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center p-12">
