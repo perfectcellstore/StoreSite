@@ -171,11 +171,31 @@ export function ProductReviews({ productId, onReviewUpdate }) {
       });
 
       if (response.ok) {
+        const data = await response.json();
+        
+        // Update product data with new aggregates
+        if (data.aggregateData) {
+          setProductData({
+            reviewCount: data.aggregateData.reviewCount,
+            averageRating: data.aggregateData.averageRating
+          });
+        }
+        
         toast({
           title: currentlyHidden ? 'Review Shown' : 'Review Hidden',
-          description: currentlyHidden ? 'Review is now visible' : 'Review is now hidden'
+          description: currentlyHidden ? 'Review is now visible to customers' : 'Review is now hidden from customers'
         });
-        fetchReviews();
+        
+        // Refresh reviews and product data
+        await Promise.all([
+          fetchReviews(),
+          fetchProductData()
+        ]);
+        
+        // Notify parent component
+        if (onReviewUpdate) {
+          onReviewUpdate();
+        }
       }
     } catch (error) {
       toast({
