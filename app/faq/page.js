@@ -10,15 +10,19 @@ import { Card, CardContent } from '@/components/ui/card';
 const faqs = [
   {
     question: 'How do I place an order?',
-    answer: 'Browse our shop, add items to your cart, and proceed to checkout. Fill in your shipping information and confirm your order. We only accept Cash on Delivery currently.'
+    answer: 'Browse our shop, add items to your cart, and proceed to checkout. Fill in your shipping information and confirm your order. We accept Cash on Delivery currently.'
   },
   {
     question: 'What payment methods do you accept?',
-    answer: 'Currently, we accept Cash on Delivery (COD). You pay when you receive your order. Qi Card payment will be available soon.'
+    answer: 'Currently, we accept Cash on Delivery (COD). Visa, Qi Card, and other payment methods will be available soon!'
   },
   {
     question: 'How long does delivery take?',
-    answer: 'Delivery typically takes 3-7 business days depending on your location within Iraq. We will contact you via phone to confirm delivery details.'
+    answer: 'Delivery typically takes 1-3 days within Iraq. We will contact you via phone to confirm delivery details.'
+  },
+  {
+    question: 'How much is shipping?',
+    answer: 'Shipping is a fixed rate of 5,000 IQD to all provinces in Iraq.'
   },
   {
     question: 'Do you ship internationally?',
@@ -26,7 +30,7 @@ const faqs = [
   },
   {
     question: 'Are the products authentic?',
-    answer: 'Yes, all our products are carefully curated and verified for authenticity. We only sell genuine collectibles, replicas, and merchandise.'
+    answer: 'Yes! All our products are carefully curated and verified. We sell authentic collectibles, premium replicas, and officially licensed merchandise.'
   },
   {
     question: 'Can I cancel or modify my order?',
@@ -41,8 +45,8 @@ const faqs = [
     answer: 'After your order is confirmed, we will contact you via phone with tracking information and delivery updates.'
   },
   {
-    question: 'Do you offer warranties?',
-    answer: 'Warranty depends on the product type. Collectibles and replicas typically do not have warranties, but we ensure all items are in perfect condition before shipping.'
+    question: 'Do you have promo codes?',
+    answer: 'Yes! We regularly offer promo codes for discounts. Follow us on Instagram @perfectsell_store for the latest codes and special offers!'
   },
   {
     question: 'How can I contact customer support?',
