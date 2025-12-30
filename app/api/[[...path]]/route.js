@@ -6,6 +6,24 @@ import { v4 as uuidv4 } from 'uuid';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'perfect-sell-jwt-secret';
 
+// Helper function to create a notification
+async function createNotification(db, { userId, title, titleAr, message, messageAr, type }) {
+  const notification = {
+    id: uuidv4(),
+    userId,
+    title,
+    titleAr,
+    message,
+    messageAr,
+    type,
+    read: false,
+    createdAt: new Date().toISOString()
+  };
+  
+  await db.collection('notifications').insertOne(notification);
+  return notification;
+}
+
 // Helper function to verify JWT token
 function verifyToken(request) {
   const authHeader = request.headers.get('authorization');
