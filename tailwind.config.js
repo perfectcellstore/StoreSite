@@ -108,9 +108,6 @@ module.exports = {
                                 '50%': { boxShadow: '0 0 40px rgba(34, 197, 94, 0.8)' },
                         },
                         'float': {
-                backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                },
                                 '0%, 100%': { transform: 'translateY(0px)' },
                                 '50%': { transform: 'translateY(-10px)' },
                         },
@@ -120,7 +117,10 @@ module.exports = {
                         'accordion-up': 'accordion-up 0.2s ease-out',
                         'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
                         'float': 'float 3s ease-in-out infinite',
-                }
+                },
+                backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                },
         }
     },
     plugins: [require("tailwindcss-animate")],
