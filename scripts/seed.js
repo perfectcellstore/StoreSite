@@ -12,20 +12,20 @@ async function seedDatabase() {
   console.log('🌱 Seeding database...');
 
   // Create admin user
-  const adminExists = await db.collection('users').findOne({ email: 'admin@perfectsell.com' });
+  const adminExists = await db.collection('users').findOne({ email: 'perfectcellstore@gmail.com' });
   
   if (!adminExists) {
     const hashedPassword = await bcrypt.hash('admin123456', 10);
     const admin = {
       id: uuidv4(),
-      email: 'admin@perfectsell.com',
+      email: 'perfectcellstore@gmail.com',
       password: hashedPassword,
-      name: 'Admin',
+      name: 'Perfect Cell Admin',
       role: 'admin',
       createdAt: new Date().toISOString()
     };
     await db.collection('users').insertOne(admin);
-    console.log('✅ Admin user created (email: admin@perfectsell.com, password: admin123456)');
+    console.log('✅ Admin user created (email: perfectcellstore@gmail.com, password: admin123456)');
   } else {
     console.log('ℹ️  Admin user already exists');
   }
