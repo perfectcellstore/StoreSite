@@ -91,26 +91,26 @@ export default function HomePage() {
             </p>
 
             {/* Description */}
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto animate-fadeIn">
               {t('heroDescription')}
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4 animate-fadeIn">
               <Link href="/shop">
                 <Button
                   size="lg"
-                  className="bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg px-8 py-6 rounded-lg btn-glow animate-glow-pulse"
+                  className="bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg px-8 py-6 rounded-lg btn-glow animate-glow-pulse transform hover:scale-105 transition-transform"
                 >
                   {t('shopNow')}
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 animate-bounce" />
                 </Button>
               </Link>
               <Link href="/categories">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="text-lg px-8 py-6 rounded-lg border-bio-green-500/50 hover:bg-bio-green-500/10 hover:border-bio-green-500"
+                  className="text-lg px-8 py-6 rounded-lg border-bio-green-500/50 hover:bg-bio-green-500/10 hover:border-bio-green-500 transform hover:scale-105 transition-transform"
                 >
                   {t('exploreCollections')}
                 </Button>
@@ -119,7 +119,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Animated Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
           <div className="w-6 h-10 border-2 border-bio-green-500/50 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-bio-green-500 rounded-full mt-2 animate-pulse"></div>
