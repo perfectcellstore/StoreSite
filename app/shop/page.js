@@ -111,12 +111,12 @@ export default function ShopPage() {
           {/* Sort */}
           <Select value={sort} onValueChange={setSort}>
             <SelectTrigger className="bg-card border-border focus:border-bio-green-500">
-              <SelectValue placeholder={t('sort')} />
+              <SelectValue placeholder={t('sortBy')} />
             </SelectTrigger>
             <SelectContent className="bg-card border-border">
               <SelectItem value="name">{t('name')}</SelectItem>
-              <SelectItem value="price-asc">{t('price')} (Low to High)</SelectItem>
-              <SelectItem value="price-desc">{t('price')} (High to Low)</SelectItem>
+              <SelectItem value="price-asc">{t('price')} ({language === 'ar' ? 'منخفض إلى مرتفع' : 'Low to High'})</SelectItem>
+              <SelectItem value="price-desc">{t('price')} ({language === 'ar' ? 'مرتفع إلى منخفض' : 'High to Low'})</SelectItem>
             </SelectContent>
           </Select>
         </div>
