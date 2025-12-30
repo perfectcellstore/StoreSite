@@ -67,7 +67,8 @@ export function ProductReviews({ productId }) {
         setRating(0);
         setReviewText('');
         setReviewerName('');
-        fetchReviews();
+        // Wait for the fetch to complete before continuing
+        await fetchReviews();
       } else {
         throw new Error('Failed to submit review');
       }
