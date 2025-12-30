@@ -246,7 +246,7 @@ export default function ProductDetailPage() {
                 </div>
               </TabsContent>
               <TabsContent value="reviews" className="pt-4">
-                <ProductReviews productId={product.id} />
+                <ProductReviews productId={product.id} onReviewUpdate={handleReviewUpdate} />
               </TabsContent>
             </Tabs>
           </div>
