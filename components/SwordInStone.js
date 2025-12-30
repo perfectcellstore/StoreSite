@@ -293,12 +293,41 @@ export function SwordInStone({ onClose }) {
           25% { transform: translateY(-10px) rotate(-3deg); }
           75% { transform: translateY(-10px) rotate(3deg); }
         }
+        
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
         }
+        
+        @keyframes flame {
+          0% {
+            transform: translateY(0) scale(1);
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-40px) scale(0.5);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes burst {
+          0% {
+            transform: translateY(0) scale(0);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-30px) scale(1.5);
+            opacity: 0;
+          }
+        }
+        
         .animate-wiggle { animation: wiggle 0.3s ease-in-out 6; }
         .animate-fade-in { animation: fade-in 0.5s ease-out; }
+        .animate-flame { animation: flame 1s ease-out infinite; }
+        .animate-burst { animation: burst 0.8s ease-out forwards; }
       `}</style>
     </>
   );
