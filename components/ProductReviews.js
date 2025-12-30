@@ -70,22 +70,42 @@ export function ProductReviews({ productId, onReviewUpdate }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          rating,
+          rating: Number(rating),
           reviewText,
           reviewerName: reviewerName.trim()
         })
       });
 
       if (response.ok) {
+        const data = await response.json();
+        
+        // Update product data with aggregate values from backend
+        if (data.aggregateData) {
+          setProductData({
+            reviewCount: data.aggregateData.reviewCount,
+            averageRating: data.aggregateData.averageRating
+          });
+        }
+        
         toast({
           title: 'Review Submitted! ⭐',
           description: 'Thank you for your feedback'
         });
+        
         setRating(0);
         setReviewText('');
         setReviewerName('');
-        // Wait for the fetch to complete before continuing
-        await fetchReviews();
+        
+        // Refresh reviews list and product data
+        await Promise.all([
+          fetchReviews(),
+          fetchProductData()
+        ]);
+        
+        // Notify parent component to refresh product data
+        if (onReviewUpdate) {
+          onReviewUpdate();
+        }
       } else {
         throw new Error('Failed to submit review');
       }
