@@ -175,7 +175,7 @@ export default function HomePage() {
             <span className="gradient-text">{t('categories')}</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our curated collections of rare and premium items
+            {t('exploreCuratedCollections')}
           </p>
         </div>
 
