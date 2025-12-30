@@ -26,7 +26,7 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(searchParams.get('category') || 'all');
-  const [sort, setSort] = useState('name');
+  const [sort, setSort] = useState('price-asc');
 
   const categories = [
     { id: 'all', name: 'All Categories', nameAr: 'جميع الفئات' },
