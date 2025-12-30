@@ -210,7 +210,7 @@ export default function HomePage() {
               variant="outline"
               className="border-bio-green-500/50 hover:bg-bio-green-500/10 hover:border-bio-green-500"
             >
-              View All Categories
+              {t('viewAllCategories')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
@@ -222,17 +222,17 @@ export default function HomePage() {
         <Card className="relative overflow-hidden bg-gradient-to-r from-bio-green-500/10 to-bio-green-600/10 border-bio-green-500/20">
           <CardContent className="p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Evolve Your Collection?
+              {t('readyToEvolve')}
             </h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Join thousands of collectors who trust Perfect Sell for authentic, rare, and premium items
+              {t('joinThousands')}
             </p>
             <Link href="/shop">
               <Button
                 size="lg"
                 className="bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg px-8 py-6 rounded-lg btn-glow"
               >
-                Start Shopping
+                {t('startShopping')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
