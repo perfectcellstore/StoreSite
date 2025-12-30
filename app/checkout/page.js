@@ -347,7 +347,7 @@ export default function CheckoutPage() {
                       </div>
                       <div className="flex justify-between text-muted-foreground">
                         <span>Shipping (All Iraq)</span>
-                        <span>{formatPrice(currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD)}</span>
+                        <span>{formatPrice(currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD, true)}</span>
                       </div>
                       {appliedPromo && (
                         <div className="flex justify-between text-bio-green-500">
