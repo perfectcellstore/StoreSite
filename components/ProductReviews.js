@@ -264,7 +264,7 @@ export function ProductReviews({ productId, onReviewUpdate }) {
           visibleReviews.map((review) => (
             <Card 
               key={review.id} 
-              className={`bg-card/50 border-border/40 ${review.hidden ? 'border-yellow-500/50 bg-yellow-500/5' : ''}`}
+              className="bg-card/50 border-border/40"
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
@@ -272,11 +272,6 @@ export function ProductReviews({ productId, onReviewUpdate }) {
                     <div className="flex items-center gap-3 mb-2 flex-wrap">
                       <div className="font-semibold">{review.reviewerName}</div>
                       {renderStars(review.rating)}
-                      {review.hidden && (
-                        <span className="px-2 py-1 text-xs font-semibold text-yellow-700 bg-yellow-100 border border-yellow-300 rounded">
-                          HIDDEN - Only visible to admin
-                        </span>
-                      )}
                     </div>
                     <p className="text-muted-foreground mb-2">{review.reviewText}</p>
                     <div className="text-xs text-muted-foreground">
@@ -291,15 +286,6 @@ export function ProductReviews({ productId, onReviewUpdate }) {
                   {/* Admin Controls */}
                   {user && user.role === 'admin' && (
                     <div className="flex gap-2 ml-4">
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => handleToggleVisibility(review.id, review.hidden)}
-                        className="text-yellow-500 hover:text-yellow-600 hover:bg-yellow-500/10"
-                        title={review.hidden ? 'Show review to customers' : 'Hide review from customers'}
-                      >
-                        {review.hidden ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                      </Button>
                       <Button
                         size="sm"
                         variant="ghost"
