@@ -198,7 +198,7 @@ export function GlobalClickEffects() {
             opacity: 1;
           }
           100% {
-            transform: scale(5);
+            transform: scale(4);
             opacity: 0;
           }
         }
@@ -209,111 +209,90 @@ export function GlobalClickEffects() {
             opacity: 1;
           }
           100% {
-            transform: scale(30);
+            transform: scale(20);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-super-0 {
+        /* Responsive ring animations - scaled for all devices */
+        @keyframes ring-expand-responsive-0 {
           0% {
-            width: 30px;
-            height: 30px;
-            margin: -15px;
+            width: 20px;
+            height: 20px;
+            margin: -10px;
             opacity: 1;
           }
           100% {
-            width: 160px;
-            height: 160px;
-            margin: -80px;
+            width: min(120px, 30vw);
+            height: min(120px, 30vw);
+            margin: min(-60px, -15vw);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-super-1 {
+        @keyframes ring-expand-responsive-1 {
           0% {
-            width: 30px;
-            height: 30px;
-            margin: -15px;
+            width: 20px;
+            height: 20px;
+            margin: -10px;
             opacity: 1;
           }
           100% {
-            width: 200px;
-            height: 200px;
-            margin: -100px;
+            width: min(150px, 40vw);
+            height: min(150px, 40vw);
+            margin: min(-75px, -20vw);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-super-2 {
+        @keyframes ring-expand-responsive-2 {
           0% {
-            width: 30px;
-            height: 30px;
-            margin: -15px;
+            width: 20px;
+            height: 20px;
+            margin: -10px;
             opacity: 1;
           }
           100% {
-            width: 240px;
-            height: 240px;
-            margin: -120px;
+            width: min(180px, 50vw);
+            height: min(180px, 50vw);
+            margin: min(-90px, -25vw);
             opacity: 0;
           }
         }
 
-        @keyframes ring-expand-super-3 {
+        @keyframes ring-expand-responsive-3 {
           0% {
-            width: 30px;
-            height: 30px;
-            margin: -15px;
+            width: 20px;
+            height: 20px;
+            margin: -10px;
             opacity: 1;
           }
           100% {
-            width: 280px;
-            height: 280px;
-            margin: -140px;
+            width: min(210px, 60vw);
+            height: min(210px, 60vw);
+            margin: min(-105px, -30vw);
             opacity: 0;
           }
         }
 
-        @keyframes spark-shoot-super {
+        @keyframes spark-shoot-responsive {
           0% {
             transform: translateY(0) scale(1);
             opacity: 1;
           }
           100% {
-            transform: translateY(-80px) scale(0.3);
+            transform: translateY(min(-60px, -15vw)) scale(0.3);
             opacity: 0;
           }
         }
 
-        @keyframes particle-burst-super {
+        @keyframes particle-burst-responsive {
           0% {
             transform: translateY(0) scale(1);
             opacity: 1;
           }
           100% {
-            transform: translateY(-70px) scale(0);
-            opacity: 0;
-          }
-        }
-
-        @keyframes spiral-spin {
-          0% {
-            transform: scale(0) rotate(0deg);
-            opacity: 0.8;
-          }
-          100% {
-            transform: scale(5) rotate(720deg);
-            opacity: 0;
-          }
-        }
-
-        @keyframes aura-pulse-super {
-          0% {
-            transform: scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(5);
+            transform: translateY(min(-50px, -12vw)) scale(0);
             opacity: 0;
           }
         }
@@ -324,7 +303,7 @@ export function GlobalClickEffects() {
             opacity: 1;
           }
           100% {
-            transform: translateY(-40px) scaleY(2);
+            transform: translateY(min(-30px, -8vw)) scaleY(2);
             opacity: 0;
           }
         }
