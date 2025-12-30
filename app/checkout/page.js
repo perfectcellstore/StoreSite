@@ -246,7 +246,7 @@ export default function CheckoutPage() {
                       </div>
                       
                       <div>
-                        <Label htmlFor="province">Province *</Label>
+                        <Label htmlFor="province">{t('province')} *</Label>
                         <Input
                           id="province"
                           name="province"
