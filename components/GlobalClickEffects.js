@@ -8,16 +8,23 @@ export function GlobalClickEffects() {
 
   useEffect(() => {
     const handleClick = (e) => {
-      // Create spark effect
+      // Get viewport dimensions for responsive scaling
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const isMobile = vw < 768;
+      const isTablet = vw >= 768 && vw < 1024;
+      
+      // Create spark effect with viewport-aware positioning
       const spark = {
         id: Date.now() + Math.random(),
         x: e.clientX,
         y: e.clientY,
+        scale: isMobile ? 0.5 : isTablet ? 0.7 : 1, // Scale based on device
       };
       
       setSparks(prev => [...prev, spark]);
 
-      // 40% chance for lightning flash (even more impressive!)
+      // 40% chance for lightning flash
       if (Math.random() < 0.4) {
         setFlash(true);
         setTimeout(() => setFlash(false), 200);
