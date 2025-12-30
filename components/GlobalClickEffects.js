@@ -168,27 +168,17 @@ export function GlobalClickEffects() {
             />
           ))}
 
-          {/* Rotating Energy Spiral */}
+          {/* Rotating Energy Spiral - Reduced Brightness */}
           <div 
-            className="absolute w-20 h-20 rounded-full"
+            className="absolute w-16 h-16 rounded-full"
             style={{ 
               animation: 'spiral-spin 1s ease-out forwards',
               background: 'conic-gradient(from 0deg, transparent, #22c55e, transparent, #fbbf24, transparent)',
-              opacity: 0.6
+              opacity: 0.3
             }}
           />
 
-          {/* Dragon Ball Energy Aura */}
-          <div 
-            className="absolute w-24 h-24 border-4 border-bio-green-300 rounded-full"
-            style={{ 
-              animation: 'aura-pulse-super 1s ease-out forwards',
-              background: 'radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, rgba(251, 191, 36, 0.2) 50%, transparent 70%)',
-              boxShadow: '0 0 30px 10px rgba(34, 197, 94, 0.4)'
-            }}
-          />
-
-          {/* Electric Sparks */}
+          {/* Electric Sparks - Reduced Brightness */}
           {[...Array(8)].map((_, i) => (
             <div
               key={`electric-${i}`}
