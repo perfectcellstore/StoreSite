@@ -215,10 +215,6 @@ export default function LoginPage() {
                   </form>
                 </TabsContent>
               </Tabs>
-
-              <div className="mt-6 text-center text-sm text-muted-foreground">
-                <p>Test Account: admin@perfectsell.com / admin123456</p>
-              </div>
             </CardContent>
           </Card>
         </div>
