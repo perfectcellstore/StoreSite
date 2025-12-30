@@ -26,7 +26,6 @@ export default function RootLayout({ children }) {
                 <CartProvider>
                   <EffectsProvider>
                     <CustomizationProvider>
-                      <LowPowerModeWrapper />
                       <AnimatedBackground />
                       <GlobalClickEffects />
                       {children}
