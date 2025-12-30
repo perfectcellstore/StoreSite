@@ -673,7 +673,7 @@ export async function POST(request, { params }) {
       
       // Calculate aggregate rating for the product
       const allReviews = await db.collection('reviews')
-        .find({ productId, hidden: false })
+        .find({ productId })
         .toArray();
       
       const totalReviews = allReviews.length;
