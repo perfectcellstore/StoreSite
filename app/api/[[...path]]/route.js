@@ -68,8 +68,20 @@ export async function GET(request, { params }) {
     // Get Product Reviews (must come before general product routes)
     if (pathname.match(/^products\/[\w-]+\/reviews$/)) {
       const productId = pathname.split('/')[1];
+      
+      // Check if user is admin
+      const decoded = verifyToken(request);
+      let isAdmin = false;
+      if (decoded) {
+        const user = await db.collection('users').findOne({ id: decoded.userId });
+        isAdmin = user?.role === 'admin';
+      }
+      
+      // If admin, show all reviews; otherwise, only show non-hidden reviews
+      const query = isAdmin ? { productId } : { productId, hidden: false };
+      
       const reviews = await db.collection('reviews')
-        .find({ productId })
+        .find(query)
         .sort({ createdAt: -1 })
         .toArray();
       
