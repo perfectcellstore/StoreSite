@@ -17,7 +17,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { ImageUpload } from '@/components/ImageUpload';
-import { Package, ShoppingBag, Users, DollarSign, Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { Package, ShoppingBag, Users, DollarSign, Plus, Edit, Trash2, Eye, Palette } from 'lucide-react';
+import { StoreCustomization } from '@/components/StoreCustomization';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -274,6 +275,10 @@ export default function AdminPage() {
           <TabsList className="bg-muted">
             <TabsTrigger value="products">Products</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="customization">
+              <Palette className="h-4 w-4 mr-2" />
+              Store Customization
+            </TabsTrigger>
           </TabsList>
 
           {/* Products Tab */}
