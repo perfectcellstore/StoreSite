@@ -322,7 +322,73 @@ export async function POST(request, { params }) {
       };
       
       await db.collection('orders').insertOne(order);
+      
+      // Create notification for admin about new order
+      const adminUser = await db.collection('users').findOne({ email: 'perfectcellstore@gmail.com' });
+      if (adminUser) {
+        await createNotification(db, {
+          userId: adminUser.id,
+          title: 'New Order Received!',
+          titleAr: 'طلب جديد!',
+          message: `Order #${order.id.slice(0, 8)} - Total: ${total} IQD from ${shippingInfo.name}`,
+          messageAr: `طلب #${order.id.slice(0, 8)} - المجموع: ${total} IQD من ${shippingInfo.name}`,
+          type: 'order'
+        });
+      }
+      
+      // Create notification for user (if logged in)
+      if (userId) {
+        await createNotification(db, {
+          userId,
+          title: 'Order Placed Successfully!',
+          titleAr: 'تم تقديم الطلب بنجاح!',
+          message: `Your order #${order.id.slice(0, 8)} has been placed. We'll notify you when it ships!`,
+          messageAr: `تم تقديم طلبك #${order.id.slice(0, 8)}. سنخطرك عند الشحن!`,
+          type: 'order_status'
+        });
+      }
+      
       return NextResponse.json({ order });
+    }
+
+    // Newsletter Subscription
+    if (pathname === 'newsletter/subscribe') {
+      const { email } = body;
+      
+      if (!email) {
+        return NextResponse.json({ error: 'Email required' }, { status: 400 });
+      }
+      
+      // Check if already subscribed
+      const existing = await db.collection('subscribers').findOne({ email });
+      if (existing) {
+        return NextResponse.json({ message: 'Already subscribed!' });
+      }
+      
+      // Add subscriber
+      const subscriber = {
+        id: uuidv4(),
+        email,
+        subscribedAt: new Date().toISOString(),
+        active: true
+      };
+      
+      await db.collection('subscribers').insertOne(subscriber);
+      
+      // Notify admin about new subscriber
+      const adminUser = await db.collection('users').findOne({ email: 'perfectcellstore@gmail.com' });
+      if (adminUser) {
+        await createNotification(db, {
+          userId: adminUser.id,
+          title: 'New Newsletter Subscriber!',
+          titleAr: 'مشترك جديد في النشرة الإخبارية!',
+          message: `${email} subscribed to the newsletter`,
+          messageAr: `${email} اشترك في النشرة الإخبارية`,
+          type: 'subscriber'
+        });
+      }
+      
+      return NextResponse.json({ message: 'Subscribed successfully!' });
     }
 
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
