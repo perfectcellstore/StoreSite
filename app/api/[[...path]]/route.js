@@ -644,6 +644,34 @@ export async function POST(request, { params }) {
       return NextResponse.json({ success: true, customization: defaultCustomization });
     }
 
+    // Submit Product Review
+    if (pathname.match(/^products\/[\w-]+\/reviews$/)) {
+      const productId = pathname.split('/')[1];
+      const { rating, reviewText, reviewerName } = body;
+      
+      if (!rating || !reviewText || !reviewerName) {
+        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      }
+      
+      if (rating < 1 || rating > 5) {
+        return NextResponse.json({ error: 'Rating must be between 1 and 5' }, { status: 400 });
+      }
+      
+      const review = {
+        id: uuidv4(),
+        productId,
+        rating: parseInt(rating),
+        reviewText: reviewText.trim(),
+        reviewerName: reviewerName.trim(),
+        hidden: false,
+        createdAt: new Date().toISOString()
+      };
+      
+      await db.collection('reviews').insertOne(review);
+      
+      return NextResponse.json({ success: true, review });
+    }
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
