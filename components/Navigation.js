@@ -23,6 +23,7 @@ export function Navigation() {
   const { user, logout } = useAuth();
   const { effectsEnabled, toggleEffects } = useEffects();
   const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const cartCount = getCartCount();
 
   const navLinks = [
