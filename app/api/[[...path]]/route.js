@@ -667,9 +667,38 @@ export async function POST(request, { params }) {
         createdAt: new Date().toISOString()
       };
       
+      // Save the review
       await db.collection('reviews').insertOne(review);
       
-      return NextResponse.json({ success: true, review });
+      // Calculate aggregate rating for the product
+      const allReviews = await db.collection('reviews')
+        .find({ productId, hidden: false })
+        .toArray();
+      
+      const totalReviews = allReviews.length;
+      const averageRating = totalReviews > 0
+        ? allReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        : 0;
+      
+      // Update product with aggregate data
+      await db.collection('products').updateOne(
+        { id: productId },
+        { 
+          $set: { 
+            reviewCount: totalReviews,
+            averageRating: parseFloat(averageRating.toFixed(1))
+          } 
+        }
+      );
+      
+      return NextResponse.json({ 
+        success: true, 
+        review,
+        aggregateData: {
+          reviewCount: totalReviews,
+          averageRating: parseFloat(averageRating.toFixed(1))
+        }
+      });
     }
 
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
