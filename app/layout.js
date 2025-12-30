@@ -4,10 +4,11 @@ import { CurrencyProvider } from "@/lib/contexts/CurrencyContext";
 import { CartProvider } from "@/lib/contexts/CartContext";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import { GlobalClickEffects } from "@/components/GlobalClickEffects";
 
 export const metadata = {
   title: "Perfect Sell - Evolve Your Collection",
-  description: "Discover rare collectibles, historical treasures, and premium gear from across the multiverse",
+  description: "Discover epic collectibles, awesome replicas, and legendary gear that bring your favorite characters to life!",
 };
 
 export default function RootLayout({ children }) {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
           <CurrencyProvider>
             <AuthProvider>
               <CartProvider>
+                <GlobalClickEffects />
                 {children}
                 <Toaster />
               </CartProvider>
