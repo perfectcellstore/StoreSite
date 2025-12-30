@@ -157,13 +157,13 @@ export function GlobalClickEffects() {
           {[...Array(12)].map((_, i) => (
             <div
               key={`particle-${i}`}
-              className="absolute w-2.5 h-2.5 rounded-full"
+              className="absolute w-2 h-2 rounded-full"
               style={{
                 background: ['#22c55e', '#fbbf24', '#86efac', '#fcd34d'][i % 4],
                 transform: `rotate(${i * 30}deg)`,
                 animation: `particle-burst-super 0.9s ease-out forwards`,
                 animationDelay: `${i * 0.025}s`,
-                boxShadow: '0 0 6px 3px rgba(255, 255, 255, 0.5)'
+                boxShadow: '0 0 3px 1px rgba(255, 255, 255, 0.3)'
               }}
             />
           ))}
