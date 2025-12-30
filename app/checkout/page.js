@@ -304,13 +304,13 @@ export default function CheckoutPage() {
                   <div className="border-t border-border pt-4 space-y-3">
                     {/* Promo Code */}
                     <div className="space-y-2">
-                      <Label className="text-sm">Promo Code</Label>
+                      <Label className="text-sm">{t('promoCode')}</Label>
                       {!appliedPromo ? (
                         <div className="flex gap-2">
                           <Input
                             value={promoCode}
                             onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                            placeholder="Enter code"
+                            placeholder={t('enterCode')}
                             className="bg-background border-border focus:border-bio-green-500"
                           />
                           <Button
