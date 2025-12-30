@@ -828,6 +828,7 @@ export async function DELETE(request, { params }) {
 
     // Delete Review (Admin Only)
     if (pathname.match(/^products\/[\w-]+\/reviews\/[\w-]+$/)) {
+      const productId = pathname.split('/')[1];
       const reviewId = pathname.split('/')[3];
       
       const result = await db.collection('reviews').deleteOne({ id: reviewId });
@@ -835,6 +836,26 @@ export async function DELETE(request, { params }) {
       if (result.deletedCount === 0) {
         return NextResponse.json({ error: 'Review not found' }, { status: 404 });
       }
+      
+      // Recalculate aggregate rating
+      const allReviews = await db.collection('reviews')
+        .find({ productId, hidden: false })
+        .toArray();
+      
+      const totalReviews = allReviews.length;
+      const averageRating = totalReviews > 0
+        ? allReviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        : 0;
+      
+      await db.collection('products').updateOne(
+        { id: productId },
+        { 
+          $set: { 
+            reviewCount: totalReviews,
+            averageRating: parseFloat(averageRating.toFixed(1))
+          } 
+        }
+      );
       
       return NextResponse.json({ success: true });
     }
