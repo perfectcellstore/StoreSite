@@ -245,14 +245,15 @@ export default function CheckoutPage() {
                       </div>
                       
                       <div>
-                        <Label htmlFor="country">{t('country')} *</Label>
+                        <Label htmlFor="province">Province *</Label>
                         <Input
-                          id="country"
-                          name="country"
-                          value={formData.country}
+                          id="province"
+                          name="province"
+                          value={formData.province}
                           onChange={handleChange}
                           required
                           className="bg-background border-border focus:border-bio-green-500"
+                          placeholder="e.g., Baghdad, Basra, Erbil"
                         />
                       </div>
                     </div>
@@ -285,7 +286,7 @@ export default function CheckoutPage() {
                   <h2 className="text-2xl font-bold mb-4">{t('orderSummary')}</h2>
                   
                   {/* Items */}
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 max-h-48 overflow-y-auto">
                     {cart.map((item) => {
                       const itemName = language === 'ar' && item.nameAr ? item.nameAr : item.name;
                       return (
@@ -299,17 +300,74 @@ export default function CheckoutPage() {
                     })}
                   </div>
                   
+                  <div className="border-t border-border pt-4 space-y-3">
+                    {/* Promo Code */}
+                    <div className="space-y-2">
+                      <Label className="text-sm">Promo Code</Label>
+                      {!appliedPromo ? (
+                        <div className="flex gap-2">
+                          <Input
+                            value={promoCode}
+                            onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                            placeholder="Enter code"
+                            className="bg-background border-border focus:border-bio-green-500"
+                          />
+                          <Button
+                            onClick={handleApplyPromo}
+                            variant="outline"
+                            className="border-bio-green-500 text-bio-green-500 hover:bg-bio-green-500 hover:text-white"
+                          >
+                            <Tag className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between p-3 bg-bio-green-500/10 border border-bio-green-500 rounded-lg">
+                          <div>
+                            <p className="text-sm font-semibold text-bio-green-500">{appliedPromo.code}</p>
+                            <p className="text-xs text-muted-foreground">{appliedPromo.description}</p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={handleRemovePromo}
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Price Breakdown */}
+                    <div className="space-y-2 pt-2">
+                      <div className="flex justify-between text-muted-foreground">
+                        <span>{t('subtotal')}</span>
+                        <span>{formatPrice(getCartTotal())}</span>
+                      </div>
+                      <div className="flex justify-between text-muted-foreground">
+                        <span>Shipping (All Iraq)</span>
+                        <span>{formatPrice(currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD)}</span>
+                      </div>
+                      {appliedPromo && (
+                        <div className="flex justify-between text-bio-green-500">
+                          <span>Discount ({appliedPromo.description})</span>
+                          <span>-{formatPrice(getCartTotal() * appliedPromo.discount)}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
                   <div className="border-t border-border pt-4">
                     <div className="flex justify-between text-xl font-bold">
                       <span>{t('total')}</span>
-                      <span className="text-bio-green-500">{formatPrice(getCartTotal())}</span>
+                      <span className="text-bio-green-500">{formatPrice(calculateTotal())}</span>
                     </div>
                   </div>
                   
                   <Button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg py-6 btn-glow"
+                    className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg py-6 btn-glow animate-glow-pulse"
                   >
                     {loading ? 'Processing...' : t('placeOrder')}
                   </Button>
