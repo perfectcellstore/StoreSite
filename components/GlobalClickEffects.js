@@ -96,7 +96,7 @@ export function GlobalClickEffects() {
         </div>
       )}
 
-      {/* Spark Effects */}
+      {/* Spark Effects - Responsive */}
       {sparks.map(spark => (
         <div
           key={spark.id}
@@ -104,55 +104,55 @@ export function GlobalClickEffects() {
           style={{
             left: spark.x,
             top: spark.y,
-            transform: 'translate(-50%, -50%)',
+            transform: `translate(-50%, -50%) scale(${spark.scale})`,
           }}
         >
-          {/* Central Flash - Reduced Brightness */}
+          {/* Central Flash - Responsive Size */}
           <div className="absolute">
             <div 
-              className="w-6 h-6 bg-white rounded-full"
+              className="w-4 h-4 sm:w-6 sm:h-6 bg-white rounded-full"
               style={{ 
                 animation: 'super-flash 0.4s ease-out forwards',
-                boxShadow: '0 0 20px 10px rgba(255, 255, 100, 0.5), 0 0 30px 15px rgba(34, 197, 94, 0.4)'
+                boxShadow: '0 0 15px 8px rgba(255, 255, 100, 0.5), 0 0 25px 12px rgba(34, 197, 94, 0.4)'
               }}
             />
           </div>
 
-          {/* Expanding Energy Shockwave - Reduced Brightness */}
+          {/* Expanding Energy Shockwave - Responsive */}
           <div className="absolute">
             <div 
-              className="w-5 h-5 bg-yellow-400 rounded-full blur-sm opacity-60"
+              className="w-3 h-3 sm:w-5 sm:h-5 bg-yellow-400 rounded-full blur-sm opacity-60"
               style={{ animation: 'shockwave-expand 1s ease-out forwards' }}
             />
           </div>
 
-          {/* Multiple Colored Energy Rings */}
+          {/* Multiple Colored Energy Rings - Responsive */}
           {[...Array(4)].map((_, ringIdx) => (
             <div
               key={`ring-${ringIdx}`}
               className="absolute border-2 rounded-full"
               style={{
                 borderColor: ringIdx % 2 === 0 ? '#22c55e' : '#fbbf24',
-                animation: `ring-expand-super-${ringIdx} 1s ease-out forwards`,
+                animation: `ring-expand-responsive-${ringIdx} 1s ease-out forwards`,
                 animationDelay: `${ringIdx * 0.08}s`,
               }}
             />
           ))}
 
-          {/* 16-Point Star Burst (MORE SPARKS!) */}
-          {[...Array(16)].map((_, i) => (
+          {/* 12-Point Star Burst - Reduced for mobile */}
+          {[...Array(12)].map((_, i) => (
             <div
               key={`spark-${i}`}
               className="absolute"
               style={{
-                transform: `rotate(${i * 22.5}deg)`,
+                transform: `rotate(${i * 30}deg)`,
               }}
             >
               <div
-                className={`w-1.5 h-1.5 rounded-full`}
+                className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full"
                 style={{
                   background: i % 2 === 0 ? '#22c55e' : '#fbbf24',
-                  animation: `spark-shoot-super 0.8s ease-out forwards`,
+                  animation: `spark-shoot-responsive 0.8s ease-out forwards`,
                   animationDelay: `${i * 0.02}s`,
                   boxShadow: `0 0 4px 2px ${i % 2 === 0 ? 'rgba(34, 197, 94, 0.4)' : 'rgba(251, 191, 36, 0.4)'}`
                 }}
@@ -160,28 +160,28 @@ export function GlobalClickEffects() {
             </div>
           ))}
 
-          {/* Energy Particles with Color Variety */}
-          {[...Array(12)].map((_, i) => (
+          {/* Energy Particles - Responsive */}
+          {[...Array(8)].map((_, i) => (
             <div
               key={`particle-${i}`}
-              className="absolute w-2 h-2 rounded-full"
+              className="absolute w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full"
               style={{
                 background: ['#22c55e', '#fbbf24', '#86efac', '#fcd34d'][i % 4],
-                transform: `rotate(${i * 30}deg)`,
-                animation: `particle-burst-super 0.9s ease-out forwards`,
+                transform: `rotate(${i * 45}deg)`,
+                animation: `particle-burst-responsive 0.9s ease-out forwards`,
                 animationDelay: `${i * 0.025}s`,
                 boxShadow: '0 0 3px 1px rgba(255, 255, 255, 0.3)'
               }}
             />
           ))}
 
-          {/* Electric Sparks - Reduced Brightness */}
-          {[...Array(8)].map((_, i) => (
+          {/* Electric Sparks - Responsive */}
+          {[...Array(6)].map((_, i) => (
             <div
               key={`electric-${i}`}
-              className="absolute w-0.5 h-4 bg-white opacity-60"
+              className="absolute w-0.5 h-3 sm:h-4 bg-white opacity-60"
               style={{
-                transform: `rotate(${i * 45}deg)`,
+                transform: `rotate(${i * 60}deg)`,
                 animation: `electric-spark 0.5s ease-out forwards`,
                 animationDelay: `${i * 0.03}s`,
                 boxShadow: '0 0 5px 2px rgba(255, 255, 255, 0.4)'
