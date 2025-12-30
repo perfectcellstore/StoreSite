@@ -273,6 +273,61 @@ export async function GET(request, { params }) {
       return NextResponse.json({ customization });
     }
 
+    // Get Store Customization (Public - for frontend)
+    if (pathname === 'customization/public') {
+      let customization = await db.collection('customization').findOne({ storeId: 'default' });
+      
+      // Return default if none exists
+      if (!customization) {
+        customization = {
+          colors: {
+            primary: '#10b981',
+            secondary: '#1f2937',
+            accent: '#3b82f6',
+            background: '#0a0a0a',
+            backgroundSecondary: '#1a1a1a',
+            buttonNormal: '#10b981',
+            buttonHover: '#059669',
+            textHeading: '#ffffff',
+            textBody: '#d1d5db',
+            textLink: '#10b981',
+          },
+          typography: {
+            fontFamily: 'Inter, system-ui, sans-serif',
+            headingSize: '2.5rem',
+            bodySize: '1rem',
+            textAlign: 'center',
+          },
+          content: {
+            heroTitle: 'Perfect Sell',
+            heroSubtitle: 'Evolve Your Collection',
+            heroDescription: 'Discover epic collectibles, awesome replicas, and legendary gear that bring your favorite characters to life!',
+            featureTitle1: 'Authentic Quality',
+            featureDesc1: 'Every item verified for authenticity and premium quality',
+            featureTitle2: 'Fast Delivery',
+            featureDesc2: 'Quick and secure delivery to your location',
+            featureTitle3: 'Rare Finds',
+            featureDesc3: 'Exclusive and limited edition collectibles',
+          },
+          images: {
+            logo: '',
+            heroBanner: '',
+            aboutBanner: '',
+          },
+          layout: {
+            showHeroSection: true,
+            showFeaturesSection: true,
+            showCategoriesSection: true,
+            showAboutSection: true,
+            heroSpacing: 'normal',
+            sectionSpacing: 'normal',
+          },
+        };
+      }
+      
+      return NextResponse.json({ customization });
+    }
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
