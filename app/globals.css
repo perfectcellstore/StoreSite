@@ -401,22 +401,3 @@ button:active::before,
   z-index: 9999;
   animation: lightning-flash 0.1s;
 }
-
-/* Low Power Mode - Disable all animations and transitions */
-.low-power-mode *,
-.low-power-mode *::before,
-.low-power-mode *::after {
-  animation-duration: 0s !important;
-  animation-delay: 0s !important;
-  transition-duration: 0s !important;
-  transition-delay: 0s !important;
-}
-
-.low-power-mode .card-hover:hover {
-  transform: none !important;
-}
-
-.low-power-mode .glow-green,
-.low-power-mode .glow-green-lg {
-  box-shadow: none !important;
-}
