@@ -597,6 +597,167 @@ export function StoreCustomization() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        {/* Animated Background Tab - NEW */}
+        <TabsContent value="animation" className="space-y-6">
+          <Card className="bg-card/50 border-border/40">
+            <CardHeader>
+              <CardTitle>Energy Wave Animation</CardTitle>
+              <CardDescription>
+                Premium animated background inspired by energy waves and flowing aura
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Enable/Disable */}
+              <div className="flex items-center justify-between p-4 border border-border rounded-lg bg-background/50">
+                <div>
+                  <Label className="text-base font-semibold">Enable Animated Background</Label>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Turn on energy wave effects across the site
+                  </p>
+                </div>
+                <Switch
+                  checked={customization.animation.enabled}
+                  onCheckedChange={(checked) => updateAnimation('enabled', checked)}
+                />
+              </div>
+
+              {/* Intensity Control */}
+              <div className="space-y-3">
+                <Label className="text-base">Animation Intensity</Label>
+                <p className="text-sm text-muted-foreground">
+                  Controls the number of energy wave layers
+                </p>
+                <select
+                  value={customization.animation.intensity}
+                  onChange={(e) => updateAnimation('intensity', e.target.value)}
+                  disabled={!customization.animation.enabled}
+                  className="w-full p-3 rounded-lg bg-background border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="low">Low (2 layers - subtle effect)</option>
+                  <option value="medium">Medium (3 layers - balanced)</option>
+                  <option value="high">High (5 layers - powerful)</option>
+                </select>
+              </div>
+
+              {/* Speed Control */}
+              <div className="space-y-3">
+                <Label className="text-base">Animation Speed</Label>
+                <p className="text-sm text-muted-foreground">
+                  How fast the energy waves flow
+                </p>
+                <select
+                  value={customization.animation.speed}
+                  onChange={(e) => updateAnimation('speed', e.target.value)}
+                  disabled={!customization.animation.enabled}
+                  className="w-full p-3 rounded-lg bg-background border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="slow">Slow (30s - calm flow)</option>
+                  <option value="medium">Medium (20s - standard)</option>
+                  <option value="fast">Fast (12s - dynamic)</option>
+                </select>
+              </div>
+
+              {/* Opacity Control */}
+              <div className="space-y-3">
+                <Label className="text-base">Animation Opacity</Label>
+                <p className="text-sm text-muted-foreground">
+                  Controls visibility: {Math.round(customization.animation.opacity * 100)}%
+                </p>
+                <div className="flex items-center gap-4">
+                  <input
+                    type="range"
+                    min="0.1"
+                    max="0.6"
+                    step="0.05"
+                    value={customization.animation.opacity}
+                    onChange={(e) => updateAnimation('opacity', parseFloat(e.target.value))}
+                    disabled={!customization.animation.enabled}
+                    className="flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                  <span className="text-sm font-mono w-12 text-right">
+                    {Math.round(customization.animation.opacity * 100)}%
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs text-muted-foreground px-1">
+                  <span>Subtle (10%)</span>
+                  <span>Balanced (30%)</span>
+                  <span>Bold (60%)</span>
+                </div>
+              </div>
+
+              {/* Placement Control */}
+              <div className="space-y-3">
+                <Label className="text-base">Where to Show</Label>
+                <p className="text-sm text-muted-foreground">
+                  Choose where the animation appears
+                </p>
+                <select
+                  value={customization.animation.placement}
+                  onChange={(e) => updateAnimation('placement', e.target.value)}
+                  disabled={!customization.animation.enabled}
+                  className="w-full p-3 rounded-lg bg-background border border-border disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <option value="global">Global (entire site)</option>
+                  <option value="homepage">Homepage only</option>
+                  <option value="shop">Shop page only</option>
+                  <option value="hero">Hero sections only</option>
+                </select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Performance Info Card */}
+          <Card className="bg-card/50 border-bio-green-500/30">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-bio-green-500">
+                <Zap className="h-5 w-5" />
+                Performance Optimizations
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <p>✅ GPU-accelerated CSS animations (no Canvas)</p>
+              <p>✅ Automatically simplified on mobile devices</p>
+              <p>✅ Respects user's reduced-motion settings</p>
+              <p>✅ Positioned behind all content (z-index: 0)</p>
+              <p>✅ Pointer-events disabled (no interaction blocking)</p>
+              <p>✅ Opacity-controlled for perfect readability</p>
+            </CardContent>
+          </Card>
+
+          {/* Visual Preview */}
+          {customization.animation.enabled && (
+            <Card className="bg-card/50 border-border/40">
+              <CardHeader>
+                <CardTitle>Live Preview</CardTitle>
+                <CardDescription>A miniature preview of the energy wave effect</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="relative h-40 rounded-lg overflow-hidden bg-black border border-border">
+                  {/* Mini animated background */}
+                  <div 
+                    className="absolute inset-0"
+                    style={{
+                      opacity: customization.animation.opacity,
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        background: 'radial-gradient(ellipse at 30% 40%, rgba(16, 185, 129, 0.5) 0%, rgba(59, 130, 246, 0.4) 40%, transparent 70%)',
+                        animation: `energyPulse ${customization.animation.speed === 'fast' ? '6s' : customization.animation.speed === 'medium' ? '10s' : '15s'} ease-in-out infinite`,
+                        filter: 'blur(30px)',
+                      }}
+                    />
+                  </div>
+                  <div className="relative z-10 flex items-center justify-center h-full">
+                    <p className="text-white text-xl font-bold">Content Stays Readable</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </TabsContent>
       </Tabs>
 
       {/* Bottom Save Button */}
