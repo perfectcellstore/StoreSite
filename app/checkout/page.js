@@ -315,6 +315,7 @@ export default function CheckoutPage() {
                             className="bg-background border-border focus:border-bio-green-500"
                           />
                           <Button
+                            type="button"
                             onClick={handleApplyPromo}
                             variant="outline"
                             className="border-bio-green-500 text-bio-green-500 hover:bg-bio-green-500 hover:text-white"
