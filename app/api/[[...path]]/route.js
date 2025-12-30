@@ -406,13 +406,35 @@ export async function PUT(request, { params }) {
   
   try {
     const { db } = await connectToDatabase();
-    const body = await request.json();
     const decoded = verifyToken(request);
     
     if (!decoded) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
+    // Notification Routes (user accessible)
+    if (pathname.startsWith('notifications/') && pathname.endsWith('/read')) {
+      const notificationId = pathname.split('/')[1];
+      
+      await db.collection('notifications').updateOne(
+        { id: notificationId, userId: decoded.userId },
+        { $set: { read: true } }
+      );
+      
+      return NextResponse.json({ success: true });
+    }
+    
+    if (pathname === 'notifications/read-all') {
+      await db.collection('notifications').updateMany(
+        { userId: decoded.userId },
+        { $set: { read: true } }
+      );
+      
+      return NextResponse.json({ success: true });
+    }
+    
+    // Admin-only routes below
+    const body = await request.json();
     const user = await db.collection('users').findOne({ id: decoded.userId });
     if (user?.role !== 'admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
