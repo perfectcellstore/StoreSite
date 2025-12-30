@@ -131,37 +131,37 @@ export default function HomePage() {
       <section className="py-20 container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="bg-card/50 border-border/40 hover:border-bio-green-500/50 transition-all card-hover">
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-full bg-bio-green-500/10 flex items-center justify-center">
+            <CardContent className={`p-6 text-center space-y-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className={`w-16 h-16 ${language === 'ar' ? 'mr-auto' : 'mx-auto'} rounded-full bg-bio-green-500/10 flex items-center justify-center`}>
                 <Shield className="h-8 w-8 text-bio-green-500" />
               </div>
-              <h3 className="text-xl font-bold">Authentic Quality</h3>
+              <h3 className="text-xl font-bold">{t('authenticQuality')}</h3>
               <p className="text-muted-foreground">
-                Every item verified for authenticity and premium quality
+                {t('authenticQualityDesc')}
               </p>
             </CardContent>
           </Card>
 
           <Card className="bg-card/50 border-border/40 hover:border-bio-green-500/50 transition-all card-hover">
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-full bg-bio-green-500/10 flex items-center justify-center">
+            <CardContent className={`p-6 text-center space-y-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className={`w-16 h-16 ${language === 'ar' ? 'mr-auto' : 'mx-auto'} rounded-full bg-bio-green-500/10 flex items-center justify-center`}>
                 <Zap className="h-8 w-8 text-bio-green-500" />
               </div>
-              <h3 className="text-xl font-bold">Fast Delivery</h3>
+              <h3 className="text-xl font-bold">{t('fastDelivery')}</h3>
               <p className="text-muted-foreground">
-                Quick and secure delivery to your location
+                {t('fastDeliveryDesc')}
               </p>
             </CardContent>
           </Card>
 
           <Card className="bg-card/50 border-border/40 hover:border-bio-green-500/50 transition-all card-hover">
-            <CardContent className="p-6 text-center space-y-4">
-              <div className="w-16 h-16 mx-auto rounded-full bg-bio-green-500/10 flex items-center justify-center">
+            <CardContent className={`p-6 text-center space-y-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className={`w-16 h-16 ${language === 'ar' ? 'mr-auto' : 'mx-auto'} rounded-full bg-bio-green-500/10 flex items-center justify-center`}>
                 <TrendingUp className="h-8 w-8 text-bio-green-500" />
               </div>
-              <h3 className="text-xl font-bold">Rare Finds</h3>
+              <h3 className="text-xl font-bold">{t('rareFinds')}</h3>
               <p className="text-muted-foreground">
-                Exclusive and limited edition collectibles
+                {t('rareFindsDesc')}
               </p>
             </CardContent>
           </Card>
