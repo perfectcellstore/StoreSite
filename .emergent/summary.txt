@@ -1,0 +1,217 @@
+<analysis>
+
+<original_problem_statement>
+The user wants to build a premium, full-fledged e-commerce website called “Perfect Sell”.
+
+**Brand &amp; Theme:**
+- The website should have a UNIQUE, HIGH-END, DARK LUXURY × SCI-FI aesthetic.
+- Inspired by Perfect Cell from Dragon Ball, but with original assets.
+- Dark graphite/black base with neon bio-green accents.
+- The brand feel should be: Premium, Rare, Powerful, Evolved.
+
+**Technical Requirements:**
+- Framework: Next.js
+- Backend: Custom e-commerce logic with MongoDB (user rejected Shopify).
+- Architecture: Fast, mobile-first, SEO-ready.
+
+**Core Features:**
+- Full online shop with product, category, cart, and checkout pages.
+- Custom Admin Dashboard for managing products and orders.
+- Payments: Cash on Delivery enabled. The system should be ready for Qi Card integration later.
+- Authentication: Email login and Google login (to be configured by user later).
+
+**Language &amp; Currency:**
+- Bilingual: Arabic and English with full RTL support and a language switcher.
+- Dual Currency: USD and IQD with a currency switcher and a fixed conversion rate (1 USD = 1400 IQD).
+
+**User Experience &amp; Animations:**
+- Cinematic hero section, smooth animations, hover effects, and optional UI sounds.
+- Social integration: Instagram and a floating WhatsApp button.
+- Buy via WhatsApp option on product pages.
+- Add a fun, interactive, pixelated Perfect Cell logo.
+- Add a promo code field in the checkout.
+</original_problem_statement>
+
+**User's preferred language**: English
+
+**what currently exists?**
+A full-stack Next.js e-commerce application with a MongoDB backend. The site has a dark sci-fi theme and is bilingual (English/Arabic).
+
+Key features implemented include:
+- **UI & Interactivity:** Refined global click effects with a user-controlled toggle. An interactive  with mobile-friendly jump animations. A complex, multi-stage Sword in the Stone easter egg, accessible from the menu, which reveals a promo code.
+- **Admin Functionality:** A basic admin dashboard at  with a functional, chunked file upload system for product images (). An  was created. The login page has been cleaned up to hide test credentials.
+- **Notifications (In-Progress):** A notification system has been started. It includes a , a  component added to the main navigation, and backend API stubs for creating and fetching notifications.
+- **Translations:** Extensive translations have been added for the homepage feature cards, shop page sort options, checkout page labels (Province, Promo Code), and the easter egg modal.
+- **Bug Fixes:** Numerous UI/UX bugs have been resolved, including centering the homepage scroll indicator, fixing layout shifts caused by animations, correcting a broken shop page sort dropdown, and fixing a major currency conversion bug with IQD shipping costs.
+
+**Last working item**:
+    - Last item agent was working: The agent was fixing three distinct issues on the checkout page:
+        1. Translating the Province form label into Arabic.
+        2. Translating the Promo Code label and button into Arabic.
+        3. Correcting a critical bug where the shipping cost in IQD was incorrectly calculated as 7,000,000 IQD instead of 5,000 IQD. The fix involved refactoring the  function in  to prevent double conversion.
+    - Status: IN PROGRESS
+    - Agent Testing Done: N
+    - Which testing method agent to use? screenshot tool
+    - User Testing Done: N
+
+**All Pending/In progress Issue list**:
+  - Issue 1: Verify fixes on the Checkout page (P0)
+  - Issue 2: The 2026 promo code backend logic is not implemented (P2)
+
+  Issues Detail:
+  - **Issue 1**: Verify fixes on the Checkout page
+     - **Attempted fixes**: The agent edited  to fix the price calculation bug and  to use the fix. It also added translation keys to  and updated  to use them. However, no verification was performed.
+     - **Next debug checklist**:
+        1. Navigate to the  page.
+        2. Switch the currency to IQD and verify the shipping cost displays as 5,000 IQD.
+        3. Switch the language to Arabic and verify the Province and Promo Code labels are correctly translated.
+        4. Use the  tool to capture the results for the user.
+     - **Why fix this issue and what will be achieved with the fix?** This resolves a critical currency display bug and completes a user-requested translation task, making the checkout process functional and user-friendly in both languages.
+     - **Status**: TESTING PENDING
+     - **Is recurring issue?** N
+     - **Should Test frontend/backend/both after fix?** Frontend
+     - **Blocked on other issue**: None
+
+  - **Issue 2**: The 2026 promo code backend logic is not implemented
+     - **Attempted fixes**: An input field exists on the checkout page, and the easter egg reveals the code 2026. However, no backend logic has been created to validate this code or apply a discount. This was a pending item from the previous fork.
+     - **Next debug checklist**:
+        1. In , create a new route handler for .
+        2. The handler should accept a  in the body. If the code is 2026, it should return .
+        3. In , modify the Apply button's  handler to call this new API endpoint.
+        4. If the code is valid, update the UI to show the discount and recalculate the final total.
+        5. Ensure the final discounted price is what gets sent to the  endpoint when placing the order.
+     - **Why fix this issue and what will be achieved with the fix?** This will complete a core e-commerce feature requested by the user, making the promo code system functional.
+     - **Status**: NOT STARTED
+     - **Is recurring issue?** Y
+     - **Should Test frontend/backend/both after fix?** Both
+     - **Blocked on other issue**: None
+
+**In progress Task List**:
+  - **Task 1**: Complete the Notification and Order Management System (P1)
+     - **Where to resume**: The backend needs significant work.
+        1. **Newsletter:** The newsletter subscription form on the homepage needs to be connected to a new API endpoint (e.g., ) which then calls the  function to alert the admin.
+        2. **Order Status:** A new page (e.g., ) must be created for users to view their order history and status. This will require a new API endpoint like  to fetch orders for the logged-in user.
+        3. **Order Management:** The user requested the ability for users to edit/cancel orders. This requires new backend endpoints (e.g., , ) and corresponding UI on the new order history page.
+        4. **Notifications UI:** The  component needs to be made functional. It should fetch notifications from  and display them in a dropdown. It should also have functionality to mark notifications as read ().
+     - **What will be achieved with this?** A fully functional system for user-admin communication and post-purchase user experience, as requested by the user.
+     - **Status**: IN PROGRESS
+     - **Should Test frontend/backend/both after fix?** Both
+     - **Blocked on something**: None
+
+**Upcoming and Future Tasks**
+- **Upcoming Tasks**:
+    - **P1**: **Admin Dashboard CRUD**: The admin dashboard () is still a placeholder. It needs full CRUD functionality for managing products (edit, delete) and viewing/managing orders (updating status like 'Shipped', 'Delivered').
+- **Future Tasks**:
+    - **P2**: **Buy via WhatsApp Button**: Implement a button on product pages that opens WhatsApp with a pre-filled message.
+    - **P2**: **Qi Card Payment Integration**: Structure the backend to allow for Qi Card integration.
+    - **P2**: **UI Sound Toggle**: A toggle for visual effects was added, but the original request for a UI *sound* toggle remains unimplemented.
+
+**Completed work in this session**
+- **Click Effects:** Iteratively refined the global click effect's visuals (brightness, size) and made it responsive.
+- **Click Effects Toggle:** Implemented a toggle in the menu to enable/disable the global click effects, using React Context.
+- **Perfect Cell Logo Animation:** Fixed the interactive logo animation to be fully visible on mobile by adjusting navigation padding.
+- **Sword in the Stone Easter Egg:** Created a multi-stage, fully translated, interactive modal with animations, sound effects, and a promo code reveal. Went through many user-driven revisions to perfect its position, appearance, and mobile-friendliness.
+- **Admin Image Upload:** Added a functional product image upload feature to the admin page with a new API route () and component.
+- **Extensive Translations:** Added Arabic translations for homepage feature cards, shop sort options, checkout labels, the navigation menu, and the entire easter egg sequence.
+- **Bug Fixes:**
+    - Centered the homepage scroll indicator on all devices.
+    - Fixed a layout shift in the navigation bar caused by the logo animation.
+    - Fixed the shop page's sort dropdown, which was appearing blank.
+- **Documentation:** Created .
+- **In-Progress:** Started the notification system (UI bell, context, backend stubs) and fixed a critical shipping cost calculation bug.
+
+**Earlier issues found/mentioned but not fixed**
+- The core pending issues from the previous fork, namely the **promo code backend logic** and the **full admin dashboard CRUD**, were not addressed in this session.
+
+**Known issue recurrence from previous fork**
+- **Incomplete Arabic Translations**: This is a recurring theme. While specific instances were fixed when reported, a full site audit has not been performed, and it's likely more untranslated text exists.
+- **Promo Code Logic**: This was pending from the start of the session and remains pending.
+
+**Code Architecture**
+
+
+**Key Technical Concepts**
+- **Frontend**: Next.js 13+ (App Router), React, Tailwind CSS
+- **Backend**: Node.js within Next.js API Routes
+- **Database**: MongoDB with Mongoose
+- **State Management**: React Context (, , , )
+- **Key Patterns**: React Portals (for the  modal), chunked file uploads.
+
+**key DB schema**
+  - **users**: 
+  - **products**: 
+  - **orders**: 
+  - **notifications** (New, Implied): 
+
+**changes in tech stack**
+- No changes to the core tech stack.
+
+**All files of reference**
+- : Has pending fixes for shipping cost and translations that need verification.
+- : Contains the critical fix for the shipping cost calculation.
+- : The main API file, where the notification system and promo code logic needs to be built out.
+- : The Pricing sort dropdown was fixed here.
+- : The complex easter egg component.
+- : The central file for all site translations.
+
+**Areas that need refactoring**:
+- The monolithic API file  is now extremely large and complex. It urgently needs to be broken down into separate, feature-specific route files (e.g., , ).
+
+**key api endpoints**
+- **Existing:** , , , , etc.
+- **New (this session):**
+    - : Handles image uploads.
+- **New (stubs added):**
+    - : To fetch all notifications (for admin).
+    - : To fetch notifications for the logged-in user.
+    - : For the bell icon badge.
+    - : To clear notifications.
+    - : To mark a single notification as read.
+
+**Critical Info for New Agent**
+- **Verify Last Fix:** Your first action should be to test the checkout page to confirm the shipping cost and translation fixes are working. The previous agent did not verify this.
+- **User Feedback Style:** The user is highly visual and provides feedback with screenshots and precise, iterative requests. Be prepared to make multiple small adjustments to get features (especially UI/UX) right.
+- **Misunderstanding Alert:** The previous agent misunderstood a user request about fixing an animation (robot logo effects) and started building an AI chatbot. Read user requests carefully and ask for clarification if the request seems to diverge from existing functionality.
+- **Incomplete Features:** The notification system is a major piece of work that was started but is not functional. The user's request for an order history page was part of this and has not been started at all. This should be the next major focus after verifying the checkout fix.
+
+**documents created in this job**
+- 
+
+**Last 10 User Messages and any pending HUMAN messages** 
+- **10 (latest):** Reported 3 issues: 'Province' & 'Promo Code' on checkout not translating to Arabic, and IQD shipping cost showing 7,000,000 instead of 5,000. (Fixes are IN PROGRESS)
+- **9:** Reported the Pricing sort option on the shop page is blank in both languages. (RESOLVED)
+- **8:** Reported 2 issues with screenshots: clicking robot logo compresses site title text; shop sort dropdown says Name instead of Pricing. (RESOLVED)
+- **7:** Elaborated on notification/order system: newsletter subs should notify admin; admin gets order notifications; users need an order history page with status and edit/cancel options. (IN PROGRESS)
+- **6:** Requested a notification system for admins (newsletter subs, new orders) and users (new items, discounts), with a bell icon in the nav. (IN PROGRESS)
+- **5:** Requested Arabic translations for the menu (Effects Toggle, Secret) and the entire Sword in the Stone easter egg popup. (RESOLVED)
+- **4:** Corrected the agent's misunderstanding: the task was NOT to add an AI chatbot, but to fix the *existing* jump/heart animation of the robot logo so the effects are fully visible on mobile. (RESOLVED)
+- **3:** Requested to add a full AI chatbot that opens when clicking the robot logo. (REJECTED by user in next message).
+- **2:** Reported the robot logo's interactive effects are partially cut off on mobile. (RESOLVED)
+- **1 (oldest):** Reported the scroll-down indicator on the homepage is misaligned on mobile. (RESOLVED)
+
+**Project Health Check:**
+- **Broken**:
+    - The checkout page had a critical currency calculation bug. A fix has been implemented but awaits testing.
+- **Mocked**:
+    - None.
+
+**3rd Party Integrations**
+- None. The project is self-contained.
+
+**Testing status**
+  - Testing agent used after significant changes: NO
+  - Troubleshoot agent used after agent stuck in loop: NO
+  - Test files created: []
+  - Known regressions: None.
+
+**Credentials to test flow:**
+- **Admin Email**: 
+- **Admin Password**: 
+
+**What agent forgot to execute**
+- The agent did not verify its final set of fixes on the checkout page.
+- The agent did not implement the backend logic for the 2026 promo code, a task carried over from the previous session.
+- The agent did not create the user-facing order history page, which was explicitly requested alongside the notification system.
+- The agent did not complete the full Admin Dashboard CRUD functionality (product/order management) as planned in the initial summary.
+
+</analysis>

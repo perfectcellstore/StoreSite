@@ -7,7 +7,7 @@
 **Perfect Sell** is a premium, full-featured e-commerce platform specializing in collectibles, historical items, cosplay gear, weapon replicas, figures, masks, and rare items. Built with a unique **Dark Luxury × Sci-Fi** aesthetic inspired by evolution and power.
 
 ### Live Preview
-🔗 **URL**: https://luxscifi.preview.emergentagent.com
+🔗 **URL**: https://perfectsell-ecom.preview.emergentagent.com
 
 ---
 
@@ -362,7 +362,7 @@ MONGO_URL=mongodb://localhost:27017
 DB_NAME=perfect_sell
 
 # Application
-NEXT_PUBLIC_BASE_URL=https://luxscifi.preview.emergentagent.com
+NEXT_PUBLIC_BASE_URL=https://perfectsell-ecom.preview.emergentagent.com
 
 # Authentication
 JWT_SECRET=perfect-sell-jwt-secret-key-2025
@@ -437,7 +437,7 @@ location.reload()
 
 - **WhatsApp**: +964 773 379 7713
 - **Instagram**: @perfectsell_store
-- **Website**: https://luxscifi.preview.emergentagent.com
+- **Website**: https://perfectsell-ecom.preview.emergentagent.com
 
 ---
 
