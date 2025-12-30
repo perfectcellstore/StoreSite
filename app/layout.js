@@ -3,6 +3,7 @@ import { LanguageProvider } from "@/lib/contexts/LanguageContext";
 import { CurrencyProvider } from "@/lib/contexts/CurrencyContext";
 import { CartProvider } from "@/lib/contexts/CartContext";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
+import { EffectsProvider } from "@/lib/contexts/EffectsContext";
 import { Toaster } from "@/components/ui/toaster";
 import { GlobalClickEffects } from "@/components/GlobalClickEffects";
 
