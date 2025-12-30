@@ -538,9 +538,12 @@ export async function POST(request, { params }) {
         return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
       }
       
+      // Remove _id and storeId from body to prevent MongoDB errors
+      const { _id, storeId, ...customizationFields } = body;
+      
       const customizationData = {
         storeId: 'default',
-        ...body,
+        ...customizationFields,
         updatedAt: new Date().toISOString(),
         updatedBy: decoded.userId
       };
