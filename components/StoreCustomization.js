@@ -260,6 +260,10 @@ export function StoreCustomization() {
             <Layout className="h-4 w-4 mr-2" />
             Layout & Design
           </TabsTrigger>
+          <TabsTrigger value="animation">
+            <Zap className="h-4 w-4 mr-2" />
+            Animated Background
+          </TabsTrigger>
         </TabsList>
 
         {/* Colors & Theme Tab */}
