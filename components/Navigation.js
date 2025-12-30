@@ -38,11 +38,13 @@ export function Navigation() {
       {/* Extra padding at top for mobile to show full jump animation */}
       <div className="h-8 md:h-4"></div>
       <div className="container flex h-16 items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-3">
-          <PerfectCellLogo />
-          <div className="relative">
-            <div className="text-2xl font-bold gradient-text">Perfect Sell</div>
+        {/* Logo - Fixed size container to prevent layout shift */}
+        <Link href="/" className="flex items-center space-x-3 flex-shrink-0">
+          <div className="w-10 h-10 flex-shrink-0">
+            <PerfectCellLogo />
+          </div>
+          <div className="relative flex-shrink-0">
+            <div className="text-2xl font-bold gradient-text whitespace-nowrap">Perfect Sell</div>
             <div className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-bio-green-500 to-transparent animate-pulse"></div>
           </div>
         </Link>
