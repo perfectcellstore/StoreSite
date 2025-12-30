@@ -209,3 +209,10 @@ html {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Pixel Art */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
