@@ -185,7 +185,10 @@ export function Navigation() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setShowEasterEgg(true)}
+                    onClick={() => {
+                      setSheetOpen(false);
+                      setTimeout(() => setShowEasterEgg(true), 300);
+                    }}
                     className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
                   >
                     <Sword className="mr-2 h-4 w-4" />
