@@ -797,6 +797,24 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: true });
     }
 
+    // Toggle Review Visibility (Admin Only)
+    if (pathname.match(/^products\/[\w-]+\/reviews\/[\w-]+\/toggle$/)) {
+      const user = await db.collection('users').findOne({ id: decoded.userId });
+      if (user?.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      
+      const reviewId = pathname.split('/')[3];
+      const body = await request.json();
+      
+      await db.collection('reviews').updateOne(
+        { id: reviewId },
+        { $set: { hidden: body.hidden } }
+      );
+      
+      return NextResponse.json({ success: true });
+    }
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
     
   } catch (error) {
