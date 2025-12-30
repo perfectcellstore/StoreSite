@@ -177,7 +177,7 @@ export function Navigation() {
                     className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
                   >
                     <DollarSign className="mr-2 h-4 w-4" />
-                    {currency === 'USD' ? 'IQD' : 'USD'}
+                    {currency}
                   </Button>
                   <Button
                     variant="ghost"
