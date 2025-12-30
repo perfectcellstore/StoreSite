@@ -46,6 +46,11 @@ export default function ProductDetailPage() {
     }
   };
 
+  const handleReviewUpdate = () => {
+    // Refresh product data when reviews are updated
+    fetchProduct();
+  };
+
   const handleAddToCart = () => {
     if (product) {
       addToCart(product, quantity);
