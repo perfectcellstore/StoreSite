@@ -15,9 +15,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Check, Tag } from 'lucide-react';
 
-const SHIPPING_COST_IQD = 5000;
-const SHIPPING_COST_USD = SHIPPING_COST_IQD / 1400;
-
 // Promo codes
 const PROMO_CODES = {
   'PERFECT10': { discount: 0.10, description: '10% off' },
@@ -80,10 +77,9 @@ export default function CheckoutPage() {
   };
 
   const calculateTotal = () => {
-    const subtotal = getCartTotal();
-    const shipping = currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD;
-    const discount = appliedPromo ? subtotal * appliedPromo.discount : 0;
-    return subtotal + shipping - discount;
+    const subtotalUSD = getCartTotal(); // Always in USD
+    const discount = appliedPromo ? subtotalUSD * appliedPromo.discount : 0;
+    return subtotalUSD - discount; // Pure USD calculation, no shipping
   };
 
   const handleSubmit = async (e) => {
@@ -101,10 +97,9 @@ export default function CheckoutPage() {
     setLoading(true);
 
     try {
-      const subtotal = getCartTotal();
-      const shipping = currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD;
+      const subtotal = getCartTotal(); // Always in USD
       const discount = appliedPromo ? subtotal * appliedPromo.discount : 0;
-      const total = subtotal + shipping - discount;
+      const total = subtotal - discount; // Pure math: items - discount only
 
       const orderData = {
         items: cart.map(item => ({
@@ -116,7 +111,7 @@ export default function CheckoutPage() {
         })),
         shippingInfo: formData,
         subtotal,
-        shipping,
+        shipping: 0, // NO SHIPPING
         discount,
         promoCode: appliedPromo?.code || null,
         total,
@@ -344,10 +339,6 @@ export default function CheckoutPage() {
                       <div className="flex justify-between text-muted-foreground">
                         <span>{t('subtotal')}</span>
                         <span>{formatPrice(getCartTotal())}</span>
-                      </div>
-                      <div className="flex justify-between text-muted-foreground">
-                        <span>Shipping (All Iraq)</span>
-                        <span>{formatPrice(currency === 'IQD' ? SHIPPING_COST_IQD : SHIPPING_COST_USD, true)}</span>
                       </div>
                       {appliedPromo && (
                         <div className="flex justify-between text-bio-green-500">
