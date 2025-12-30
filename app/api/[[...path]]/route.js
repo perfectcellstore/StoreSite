@@ -785,7 +785,7 @@ export async function DELETE(request, { params }) {
     }
 
     // Delete Product
-    if (pathname.startsWith('products/')) {
+    if (pathname.startsWith('products/') && !pathname.includes('/reviews/')) {
       const productId = pathname.split('/')[1];
       
       const result = await db.collection('products').deleteOne({ id: productId });
@@ -797,7 +797,20 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: true });
     }
 
-    // Toggle Review Visibility (Admin Only)
+    // Delete Review (Admin Only)
+    if (pathname.match(/^products\/[\w-]+\/reviews\/[\w-]+$/)) {
+      const reviewId = pathname.split('/')[3];
+      
+      const result = await db.collection('reviews').deleteOne({ id: reviewId });
+      
+      if (result.deletedCount === 0) {
+        return NextResponse.json({ error: 'Review not found' }, { status: 404 });
+      }
+      
+      return NextResponse.json({ success: true });
+    }
+
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
     if (pathname.match(/^products\/[\w-]+\/reviews\/[\w-]+\/toggle$/)) {
       const user = await db.collection('users').findOne({ id: decoded.userId });
       if (user?.role !== 'admin') {
