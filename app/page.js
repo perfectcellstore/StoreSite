@@ -59,7 +59,7 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.pexels.com/photos/8108531/pexels-photo-8108531.jpeg"
+            src="https://images.unsplash.com/photo-1636136368699-cc412bb977d5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDN8MHwxfHNlYXJjaHwzfHxtaWxpdGFyeSUyMHdlYXBvbnN8ZW58MHx8fGJsYWNrfDE3NjcxMjg0MDh8MA&ixlib=rb-4.1.0&q=85"
             alt="Hero Background"
             fill
             className="object-cover opacity-40"
