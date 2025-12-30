@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChatbotModal } from './ChatbotModal';
 
 export function PerfectCellLogo() {
   const [isJumping, setIsJumping] = useState(false);
   const [hearts, setHearts] = useState([]);
   const [isSmiling, setIsSmiling] = useState(false);
-  const [showChatbot, setShowChatbot] = useState(false);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -60,22 +58,82 @@ export function PerfectCellLogo() {
     } catch (e) {
       console.log('Audio not supported');
     }
-
-    // Open chatbot after animation
-    setTimeout(() => {
-      setShowChatbot(true);
-    }, 600);
   };
 
   return (
-    <div 
-      className={`relative w-10 h-10 pixel-art cursor-pointer ${isJumping ? '' : 'animate-float'}`}
-      onClick={handleClick}
-      style={{
-        animation: isJumping ? 'cell-super-jump 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : undefined,
-        transition: 'transform 0.3s ease'
-      }}
-    >
+    <>
+      {/* Fixed container for hearts - prevents clipping on mobile */}
+      {hearts.length > 0 && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: 9999,
+            overflow: 'visible'
+          }}
+        >
+          {hearts.map((heart) => (
+            <div
+              key={heart.id}
+              className="absolute text-3xl"
+              style={{
+                left: `calc(${typeof window !== 'undefined' ? document.querySelector('.perfect-cell-logo')?.getBoundingClientRect().left + 20 : 0}px + ${heart.offset}px)`,
+                top: `${typeof window !== 'undefined' ? document.querySelector('.perfect-cell-logo')?.getBoundingClientRect().top : 0}px`,
+                animation: `heart-float-super 1.8s ease-out forwards`,
+                animationDelay: `${heart.delay}s`,
+                textShadow: '0 0 10px rgba(34, 197, 94, 0.8)'
+              }}
+            >
+              💚
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Fixed container for sparkles - prevents clipping */}
+      {isJumping && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            zIndex: 9998,
+            overflow: 'visible'
+          }}
+        >
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`sparkle-${i}`}
+              className="absolute text-yellow-400 text-xl"
+              style={{
+                left: `${typeof window !== 'undefined' ? document.querySelector('.perfect-cell-logo')?.getBoundingClientRect().left + 20 : 0}px`,
+                top: `${typeof window !== 'undefined' ? document.querySelector('.perfect-cell-logo')?.getBoundingClientRect().top + 20 : 0}px`,
+                transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-30px)`,
+                animation: 'sparkle-pop 0.6s ease-out forwards',
+                animationDelay: `${i * 0.05}s`
+              }}
+            >
+              ✨
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div 
+        className={`perfect-cell-logo relative w-10 h-10 pixel-art cursor-pointer ${isJumping ? '' : 'animate-float'}`}
+        onClick={handleClick}
+        style={{
+          animation: isJumping ? 'cell-super-jump 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)' : undefined,
+          transition: 'transform 0.3s ease'
+        }}
+      >
       {/* Flying Hearts - MORE and BIGGER! */}
       {hearts.map((heart) => (
         <div
