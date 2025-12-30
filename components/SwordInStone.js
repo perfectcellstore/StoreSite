@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Copy } from 'lucide-react';
 
 export function SwordInStone({ onClose }) {
   const [isPulling, setIsPulling] = useState(false);
   const [isPulled, setIsPulled] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [copiedPromo, setCopiedPromo] = useState(false);
 
   const handlePull = () => {
     if (isPulled) return;
@@ -45,15 +46,22 @@ export function SwordInStone({ onClose }) {
     }, 2000);
   };
 
+  const handleCopyPromo = () => {
+    navigator.clipboard.writeText('2026');
+    setCopiedPromo(true);
+    setTimeout(() => setCopiedPromo(false), 2000);
+  };
+
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative max-w-2xl w-full mx-4">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm overflow-hidden">
+      <div className="relative max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute -top-12 right-0 text-white hover:text-bio-green-500 transition-colors"
+          className="absolute -top-2 -right-2 z-[10001] bg-bio-green-500 hover:bg-bio-green-600 text-white rounded-full p-2 shadow-lg transition-all hover:scale-110"
+          aria-label="Close"
         >
-          <X className="h-8 w-8" />
+          <X className="h-6 w-6" />
         </button>
 
         {/* Main Container */}
@@ -208,9 +216,39 @@ export function SwordInStone({ onClose }) {
               <p className="text-lg text-gray-300">
                 The legendary blade recognizes your spirit!
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-gray-400 mb-4">
                 You have discovered the secret of Perfect Sell
               </p>
+              
+              {/* Promo Code Reveal */}
+              <div className="bg-gray-800/50 border-2 border-bio-green-500 rounded-lg p-6 mt-6">
+                <p className="text-sm text-gray-400 mb-2">Your Reward:</p>
+                <p className="text-3xl font-bold text-bio-green-500 mb-2">20% OFF</p>
+                <p className="text-sm text-gray-400 mb-4">Use this exclusive promo code:</p>
+                
+                <div className="flex items-center justify-center gap-2">
+                  <div className="bg-gray-900 border border-bio-green-500/50 rounded px-6 py-3">
+                    <span className="text-2xl font-mono font-bold text-white tracking-wider">2026</span>
+                  </div>
+                  <button
+                    onClick={handleCopyPromo}
+                    className="bg-bio-green-500 hover:bg-bio-green-600 text-white p-3 rounded transition-all hover:scale-105"
+                    title="Copy to clipboard"
+                  >
+                    <Copy className="h-5 w-5" />
+                  </button>
+                </div>
+                
+                {copiedPromo && (
+                  <p className="text-sm text-bio-green-500 mt-2 animate-fade-in">
+                    ✓ Copied to clipboard!
+                  </p>
+                )}
+                
+                <p className="text-xs text-gray-500 mt-4">
+                  Use this code at checkout to get your discount
+                </p>
+              </div>
             </div>
           ) : (
             <div className="text-center">
