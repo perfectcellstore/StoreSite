@@ -68,6 +68,15 @@ export function StoreCustomization() {
       heroSpacing: 'normal',
       sectionSpacing: 'normal',
     },
+    
+    // Animated Background Controls
+    animation: {
+      enabled: true,
+      intensity: 'medium',
+      speed: 'medium',
+      opacity: 0.3,
+      placement: 'global',
+    },
   });
 
   useEffect(() => {
