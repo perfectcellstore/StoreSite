@@ -129,15 +129,15 @@ export function GlobalClickEffects() {
       const x = e.clientX;
       const y = e.clientY;
 
-      // Visual burst only (sound handled by GlobalClickSound for lowest latency)
+      // Create visual burst at click location (sound handled separately by GlobalClickSound)
       createEnergyBurst(x, y);
     };
 
-    // Add global pointer listener (visuals only)
+    // Add global pointer listener for visual effects only
     document.addEventListener('pointerdown', handlePointer, { passive: true });
     return () => document.removeEventListener('pointerdown', handlePointer);
   }, [effectsEnabled, createEnergyBurst]);
 
-  // No render output - visual effects created via DOM manipulation
+  // No render output - visual effects are created via direct DOM manipulation for performance
   return null;
 }
