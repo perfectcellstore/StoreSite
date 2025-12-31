@@ -174,6 +174,7 @@ metadata:
   run_ui: false
 
 test_plan:
+    - "Order success victory screen (random quotes EN/AR + fire/ki/aura FX)"
     - "Auth hardening: validation + unique email + rate limiting"
   current_focus:
     - "Review submission functionality"
