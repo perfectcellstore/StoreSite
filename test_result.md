@@ -231,6 +231,15 @@ agent_communication:
          - Created .env file with MONGO_URL, JWT_SECRET, DB_NAME
          - Seeded database with 6 sample products
          - Created admin user (perfectcellstore@gmail.com / admin123456)
+
+  - agent: "main"
+    message: |
+      ADMIN LOGIN BUG INVESTIGATION (Dec 31, 2025)
+      - User reported admin login failing (perfectcellstore@gmail.com / admin123456)
+      - Verified DB: users collection had only 1 user and admin record was missing
+      - Ran seed script to recreate admin user + sample products
+      - Updated auth register/login to normalize email (trim+lowercase) and support legacy email lookups
+      - Marked for backend retesting
       
       TESTING COMPLETED:
       - Verified review submission with multiple ratings (5, 3, 4, 1)
