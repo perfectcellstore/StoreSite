@@ -24,15 +24,14 @@ export function AnimatedBackground() {
     setPrefersReducedMotion(mediaQuery.matches);
     setIsMobile(window.innerWidth < 768);
 
-    // Very lightweight heuristic: treat very small screens or low core count as low-power.
-    // This helps prevent jank/freezing on some mobile devices.
+    // Perf tier integration: treat low tier as low-power for effects.
     try {
       const cores = navigator?.hardwareConcurrency || 4;
       const mem = navigator?.deviceMemory || 4;
-      const low = (window.innerWidth < 420) || cores <= 4 || mem <= 4;
-      setIsLowPowerMobile(low);
+      const low = perf?.tier === 'low' || (window.innerWidth < 420 && (cores <= 4 || mem <= 4));
+      setIsLowPowerMobile(!!low);
     } catch {
-      setIsLowPowerMobile(false);
+      setIsLowPowerMobile(perf?.tier === 'low');
     }
 
     const handleResize = () => {
@@ -40,8 +39,8 @@ export function AnimatedBackground() {
       try {
         const cores = navigator?.hardwareConcurrency || 4;
         const mem = navigator?.deviceMemory || 4;
-        const low = (window.innerWidth < 420) || cores <= 4 || mem <= 4;
-        setIsLowPowerMobile(low);
+        const low = perf?.tier === 'low' || (window.innerWidth < 420 && (cores <= 4 || mem <= 4));
+        setIsLowPowerMobile(!!low);
       } catch {
         // ignore
       }
@@ -49,7 +48,7 @@ export function AnimatedBackground() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [perf?.tier]);
 
   const isHomepage = pathname === '/';
 
