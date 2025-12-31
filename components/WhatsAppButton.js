@@ -5,7 +5,6 @@
 import React, { useState } from 'react';
 import { MessageCircle, Heart, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { playClick } from '@/lib/audioManager';
 
 export function WhatsAppButton() {
   const [isAnimating, setIsAnimating] = useState(false);
@@ -43,13 +42,8 @@ export function WhatsAppButton() {
     
     setClickEffect([...clickEffect, newSpark]);
 
-    // Play sound effect (shared low-latency WebAudio)
-    // NOTE: GlobalClickSound already handles most taps, but keep this for reliability.
-    try {
-      playClick();
-    } catch (e) {
-      // ignore
-    }
+    // NOTE: Sound is handled by GlobalClickEffects (single unified handler)
+    // No need for duplicate playClick() call here
 
     // Reset after animation
     setTimeout(() => {
