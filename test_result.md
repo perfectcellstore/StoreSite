@@ -268,6 +268,15 @@ test_plan:
 
 agent_communication:
   - agent: "testing"
+
+  - agent: "main"
+    message: |
+      MOBILE FREEZE + SFX + ADMIN ORDER SEARCH (Dec 31, 2025)
+      - Added shared WebAudio module: lib/audioSfx.js
+      - GlobalClickEffects now unlocks/resumes audio on first touch/pointerdown and plays click whoosh reliably on mobile
+      - PerfectCellLogo now uses shared audio helper and spawns fewer hearts/sparkles for better performance
+      - AnimatedBackground now detects low-power mobile and reduces particle load (fewer stars, disables ribbons + shooting stars)
+      - Added admin order search by order id: backend supports GET /api/orders?search=... (admin-only), Admin UI has debounced search input
     message: |
       PASSWORD POLICY UPGRADE BACKEND TESTING COMPLETED (Dec 31, 2025)
       
