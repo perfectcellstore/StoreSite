@@ -5,6 +5,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useCustomization } from '@/lib/contexts/CustomizationContext';
+import { usePerf } from '@/lib/contexts/PerfContext';
 
 export function AnimatedBackground() {
   const pathname = usePathname();
