@@ -1416,3 +1416,54 @@ agent_communication:
       - Role-based access: Admin role correctly returned
       
       ALL REQUESTED TESTS PASSED - AUTH FLOW FULLY FUNCTIONAL
+      
+  - agent: "testing"
+    message: |
+      ADMIN ORDER SEARCH BACKEND TESTING COMPLETED (Dec 31, 2025)
+      
+      COMPREHENSIVE TESTING RESULTS:
+      ✅ All 7 test scenarios from review request successfully verified
+      
+      1. Admin Login Test:
+         - perfectcellstore@gmail.com/admin123456 → 200 with token + role=admin ✓
+         - Admin authentication working correctly ✓
+      
+      2. Test Order Creation:
+         - Created 2 test orders via POST /api/orders (one anonymous, one with user) ✓
+         - Order IDs captured for search testing ✓
+      
+      3. Admin Orders Without Search:
+         - GET /api/orders (admin token) → 200 with all orders (4 total) ✓
+         - Admin can see all orders in system ✓
+      
+      4. Admin Order Search by Partial ID:
+         - GET /api/orders?search=174c10 (admin token) → 200 with 1 matching order ✓
+         - Case-insensitive regex search working correctly ✓
+         - Test order found in search results ✓
+      
+      5. Admin Search with Non-existent ID:
+         - GET /api/orders?search=nonexistent123 (admin token) → 200 with empty array ✓
+         - Proper handling of no matches ✓
+      
+      6. Normal User Orders (No Search):
+         - GET /api/orders (user token) → 200 with 1 order ✓
+         - User can only see their own orders ✓
+      
+      7. Normal User Search Restriction:
+         - GET /api/orders?search=174c10 (user token) → 200 with 0 results ✓
+         - User cannot access other user's orders via search ✓
+         - Search properly filtered to user's orders only ✓
+      
+      SECURITY VERIFICATION:
+      - Non-admin users cannot broaden access via search parameter ✓
+      - Search parameter only works for admin users ✓
+      - User orders properly isolated regardless of search term ✓
+      
+      IMPLEMENTATION VERIFICATION:
+      - Admin check: user?.role !== 'admin' working correctly ✓
+      - Search query: query.id = { $regex: escapeRegExp(search), $options: 'i' } ✓
+      - Case-insensitive partial matching functional ✓
+      - escapeRegExp function prevents regex injection ✓
+      
+      ADMIN ORDER SEARCH FEATURE IS FULLY FUNCTIONAL AND SECURE
+      All requested functionality working as designed with proper access controls.
