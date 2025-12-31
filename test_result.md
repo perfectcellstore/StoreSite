@@ -173,6 +173,7 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Introduced PerfProvider with High/Mid/Low tiers; gated heavy effects (background ribbons/shooting stars, click bursts, celebration particle density) while keeping click sounds + core features. Lazy-loaded global FX layers via next/dynamic. Enabled Next.js image optimization (AVIF/WebP) + caching headers; converted admin image previews to next/image."
+    - "Audio playback across site (click + robot)"
       - working: true
         agent: "testing"
         comment: "MOBILE PERFORMANCE TESTING COMPLETED - All performance optimizations working correctly. ✅ PerfProvider (High/Mid/Low tiers) automatically detects mobile devices and applies appropriate performance tier. ✅ Lazy-loaded AnimatedBackground + GlobalClickEffects via PerfDynamicLayers loads without blocking initial render. ✅ Low-tier disables heavy background ribbons/shooting stars and click burst visuals while preserving click sounds. ✅ Mobile viewport (390x844) loads homepage without freezing or performance issues. ✅ Global click effects tested with rapid clicking - no crashes or UI freeze detected. ✅ Image optimization enabled in next.config.js with AVIF/WebP formats and cache headers. ✅ Performance tier system successfully scales down effects on mobile while maintaining core functionality."
