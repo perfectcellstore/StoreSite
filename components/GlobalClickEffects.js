@@ -53,6 +53,9 @@ export function GlobalClickEffects() {
   const createEnergyBurst = useCallback((x, y) => {
     // Skip if reduced motion is preferred
     if (prefersReducedMotion.current) return;
+
+    // Perf tier: on low-end devices, keep click sound but skip heavy click bursts
+    if (perf?.fx?.allowClickBurst === false) return;
     
     // Throttle to prevent stacking
     const now = Date.now();
