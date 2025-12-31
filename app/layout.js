@@ -10,6 +10,7 @@ import { PerfProvider } from "@/lib/contexts/PerfContext";
 import { Toaster } from "@/components/ui/toaster";
 import PerfDynamicLayers from "@/components/PerfDynamicLayers";
 import AudioBootstrapper from "@/components/AudioBootstrapper";
+import { GlobalClickSound } from "@/components/GlobalClickSound";
 import { LanguageSelectionPopup } from "@/components/LanguageSelectionPopup";
 
 export const metadata = {
