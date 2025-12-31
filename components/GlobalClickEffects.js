@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 import { usePerf } from '@/lib/contexts/PerfContext';
-import { playClickWhoosh, ensureAudioRunning } from '@/lib/audioSfx';
+import { playClick } from '@/lib/audioManager';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
