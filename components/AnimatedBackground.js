@@ -237,8 +237,8 @@ export function AnimatedBackground() {
         style={{
           top: '30%',
           left: '25%',
-          width: isMobile ? '300px' : '500px',
-          height: isMobile ? '300px' : '500px',
+          width: isMobile ? '250px' : '400px',
+          height: isMobile ? '250px' : '400px',
           background: `
             radial-gradient(circle at center,
               rgba(16, 185, 129, 0.25) 0%,
@@ -247,7 +247,7 @@ export function AnimatedBackground() {
               transparent 70%)
           `,
           animation: `coreGlow ${baseDuration * 0.8}s ease-in-out infinite`,
-          filter: isMobile ? 'blur(30px)' : 'blur(50px)',
+          filter: isMobile ? 'blur(25px)' : 'blur(40px)',
           willChange: 'transform, opacity',
         }}
       />
