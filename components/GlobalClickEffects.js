@@ -18,19 +18,6 @@ export function GlobalClickEffects() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Mobile browsers require AudioContext to be resumed from a user gesture.
-      // We attach a one-time listener to resume audio on the first interaction.
-      const unlock = () => {
-        ensureAudioRunning();
-      };
-      window.addEventListener('pointerdown', unlock, { once: true, passive: true });
-      window.addEventListener('touchstart', unlock, { once: true, passive: true });
-
-      return () => {
-        window.removeEventListener('pointerdown', unlock);
-        window.removeEventListener('touchstart', unlock);
-      };
     }
   }, []);
 
