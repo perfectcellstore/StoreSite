@@ -28,8 +28,7 @@ export default function RootLayout({ children }) {
                   <EffectsProvider>
                     <PerfProvider>
                       <CustomizationProvider>
-                        <AnimatedBackground />
-                        <GlobalClickEffects />
+                        <PerfDynamicLayers />
                         <LanguageSelectionPopup />
                         {children}
                         <Toaster />
