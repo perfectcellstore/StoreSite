@@ -53,6 +53,13 @@
 ##     - "Task name 2"
 ##   stuck_tasks:
 ##     - "Task name with persistent issues"
+  current_focus:
+    - "Performance tier system (High/Mid/Low) + lazy-loaded FX + image optimization"
+    - "Mobile performance + sound effects restoration"
+    - "Notification/checkout icon badge cropping"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "sequential"
 ##   test_all: false
 ##   test_priority: "high_first"  # or "sequential" or "stuck_first"
 ##
