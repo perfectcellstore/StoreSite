@@ -141,21 +141,21 @@ export function GlobalClickEffects() {
   }, [perf?.fx?.allowClickBurst]);
 
   useEffect(() => {
-    const handleClick = (e) => {
-      // Don't create effects if disabled
+    const handlePointer = (e) => {
       if (!effectsEnabled) return;
-      
-      // Play sound
-      playSound();
-      
-      // Create energy burst at click position
-      createEnergyBurst(e.clientX, e.clientY);
+
+      // Get click position
+      const x = e.clientX;
+      const y = e.clientY;
+
+      // Visual burst only (sound handled by GlobalClickSound for lowest latency)
+      createEnergyBurst(x, y);
     };
 
-    // Use pointerdown so the sound triggers immediately (no 300ms delay on mobile).
-    document.addEventListener('pointerdown', handleClick, { passive: true });
-    return () => document.removeEventListener('pointerdown', handleClick);
-  }, [effectsEnabled, playSound, createEnergyBurst]);
+    // Add global pointer listener (visuals only)
+    document.addEventListener('pointerdown', handlePointer, { passive: true });
+    return () => document.removeEventListener('pointerdown', handlePointer);
+  }, [effectsEnabled, createEnergyBurst]);
 
   // No render output - visual effects created via DOM manipulation
   return null;
