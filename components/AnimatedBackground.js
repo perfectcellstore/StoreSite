@@ -488,10 +488,10 @@ export function AnimatedBackground() {
           }
         }
 
-        /* Mobile optimizations */
+        /* Mobile optimizations - Reduce blur for better performance */
         @media (max-width: 768px) {
           [style*="blur"] {
-            filter: blur(30px) !important;
+            filter: blur(20px) !important;
           }
         }
       `}</style>
