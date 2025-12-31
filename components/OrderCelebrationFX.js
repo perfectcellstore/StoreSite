@@ -130,8 +130,8 @@ export default function OrderCelebrationFX({ seed = 'victory', className = '', p
       const p = particlesRef.current;
 
       // occasionally spawn extra bursts
-      if (rng() > 0.94) {
-        const burst = window.innerWidth < 768 ? 6 : 10;
+      if (rng() > (particleLevel === 'low' ? 0.985 : particleLevel === 'mid' ? 0.965 : 0.94)) {
+        const burst = window.innerWidth < 768 ? (particleLevel === 'low' ? 2 : particleLevel === 'mid' ? 4 : 6) : (particleLevel === 'low' ? 3 : particleLevel === 'mid' ? 6 : 10);
         for (let i = 0; i < burst; i += 1) {
           p.push(spawn('ki'));
         }
