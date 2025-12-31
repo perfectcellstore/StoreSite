@@ -41,6 +41,8 @@ const categories = [
 
 export default function HomePage() {
   const { t, language } = useLanguage();
+  const perf = usePerf();
+  const isLow = perf?.tier === 'low';
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
