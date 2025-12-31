@@ -6,7 +6,6 @@ import { playClickWhoosh, ensureAudioRunning } from '@/lib/audioSfx';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
-  const audioContextRef = useRef(null);
   const lastSoundTime = useRef(0);
   const lastBurstTime = useRef(0);
   const soundCooldown = 100; // Only play sound every 100ms max
