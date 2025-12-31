@@ -15,6 +15,7 @@ export function AnimatedBackground() {
   // 0 at top of homepage, approaches 1 as you scroll past the hero.
   // Used to fade the green aurora smoothly into the global galaxy background.
   const [scrollFade, setScrollFade] = useState(1);
+  const [isLowPowerMobile, setIsLowPowerMobile] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
