@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react/no-unknown-property */
+
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // Lightweight canvas FX: fire embers + green ki sparks + aura shimmer.
