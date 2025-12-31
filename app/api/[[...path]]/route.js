@@ -245,16 +245,21 @@ export async function GET(request, { params }) {
       if (!decoded) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
       }
-      
+
       const user = await db.collection('users').findOne({ id: decoded.userId });
-      
-      let orders;
-      if (user?.role === 'admin') {
-        orders = await db.collection('orders').find({}).sort({ createdAt: -1 }).toArray();
-      } else {
-        orders = await db.collection('orders').find({ userId: decoded.userId }).sort({ createdAt: -1 }).toArray();
+
+      const url = new URL(request.url);
+      const search = (url.searchParams.get('search') || '').trim();
+
+      let query = {};
+      if (user?.role !== 'admin') {
+        query.userId = decoded.userId;
+      } else if (search) {
+        // Admin: allow partial search by order id (contains)
+        query.id = { $regex: escapeRegExp(search), $options: 'i' };
       }
-      
+
+      const orders = await db.collection('orders').find(query).sort({ createdAt: -1 }).toArray();
       return NextResponse.json({ orders });
     }
 
