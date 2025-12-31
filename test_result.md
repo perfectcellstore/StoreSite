@@ -234,6 +234,15 @@ agent_communication:
          - Enhanced handleSubmitReview() to update productData from backend response
          - Added Promise.all to fetch both reviews and product data after submission
          - Modified display to use productData.averageRating and productData.reviewCount
+
+  - agent: "main"
+    message: |
+      AUTH SYSTEM UPGRADE (Dec 31, 2025)
+      - Implemented persistent registration/login in Next.js API route: POST /api/auth/register and POST /api/auth/login
+      - Added: email format validation, trimming + lowercasing normalization, unique emailLower index to prevent duplicates
+      - Added: brute-force protection (5 failed attempts / 15 min per IP+email) with 429 + Retry-After
+      - Added: legacy compatibility lookup (case-insensitive email) + best-effort backfill of emailLower on successful login
+      - Marked for backend retesting
          - Added onReviewUpdate callback prop to notify parent component
       
       3. Product Detail Page (product/[id]/page.js):
