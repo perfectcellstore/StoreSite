@@ -3,14 +3,11 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 import { usePerf } from '@/lib/contexts/PerfContext';
-import { playClick } from '@/lib/audioManager';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
   const perf = usePerf();
-  const lastSoundTime = useRef(0);
   const lastBurstTime = useRef(0);
-  const soundCooldown = 100; // Only play sound every 100ms max
   const burstCooldown = 150; // Throttle visual effect to prevent stacking
   const prefersReducedMotion = useRef(false);
 
@@ -18,22 +15,6 @@ export function GlobalClickEffects() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    }
-  }, []);
-
-  const playSound = useCallback(() => {
-    try {
-      const now = Date.now();
-
-      // Throttle sound to prevent audio stacking
-      if (now - lastSoundTime.current < soundCooldown) return;
-      lastSoundTime.current = now;
-
-      // Shared SFX (unlocked on first user gesture by AudioBootstrapper)
-      // Important: do NOT tie this to perf tiers; click sounds must stay enabled.
-      playClick();
-    } catch {
-      // ignore
     }
   }, []);
 
