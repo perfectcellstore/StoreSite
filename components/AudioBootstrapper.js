@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { bootstrapAudio } from '@/lib/audioSfx';
+import { unlockAudio } from '@/lib/audioManager';
 
 // Ensures audio is unlocked as early as possible on mobile.
 // This component attaches ONE global listener and initializes the shared AudioContext
