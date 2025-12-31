@@ -63,7 +63,7 @@ export default function AdminPage() {
       const [statsRes, productsRes, ordersRes] = await Promise.all([
         fetch('/api/admin/stats', { headers }),
         fetch('/api/products'),
-        fetch('/api/orders', { headers })
+        fetch(`/api/orders?search=${encodeURIComponent(orderSearch)}`, { headers })
       ]);
 
       const statsData = await statsRes.json();
