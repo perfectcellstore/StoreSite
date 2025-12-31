@@ -3,12 +3,25 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 import { usePerf } from '@/lib/contexts/PerfContext';
+import { playClick } from '@/lib/audioManager';
 
+/**
+ * UNIFIED GLOBAL CLICK HANDLER
+ * 
+ * This is the SINGLE component that handles ALL click interactions:
+ * - Visual effects (energy bursts)
+ * - Audio feedback (click sounds)
+ * 
+ * Works on ALL performance tiers (High/Mid/Low).
+ * Audio ALWAYS plays (tier gates only affect visuals).
+ */
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
   const perf = usePerf();
   const lastBurstTime = useRef(0);
-  const burstCooldown = 150; // Throttle visual effect to prevent stacking
+  const lastSoundTime = useRef(0);
+  const burstCooldown = 150; // Throttle visual effect
+  const soundCooldown = 80; // Throttle sound (very fast for responsiveness)
   const prefersReducedMotion = useRef(false);
 
   // Check for reduced motion preference once on mount
