@@ -56,12 +56,11 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Soft fade at the bottom so the hero energy transitions seamlessly into the global galaxy background */}
-        <div className="pointer-events-none absolute inset-0 z-[1] mask-fade-bottom" />
         {/* Kamehameha Energy Blast Background - CONCENTRATED BEAM */}
-        <div className="absolute inset-0 z-0">
-          {/* Base Dark Background */}
-          <div className="absolute inset-0 bg-black"></div>
+        {/* This layer is masked to fade out at the bottom, revealing the continuous global galaxy background (no seam). */}
+        <div className="absolute inset-0 z-0 pointer-events-none mask-fade-bottom">
+          {/* Base Dark Overlay (transparent enough to keep stars/galaxy visible) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/35 to-transparent"></div>
           
           {/* Main Kamehameha Beam - Horizontal Concentrated Blast */}
           <div 
