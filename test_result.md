@@ -140,6 +140,18 @@ backend:
     status_history:
       - working: true
 
+  - task: "Mobile performance + sound effects restoration"
+    implemented: true
+    working: "NA"
+    file: "components/GlobalClickEffects.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Restored SFX by introducing shared WebAudio helper (lib/audioSfx.js) and using it in GlobalClickEffects + PerfectCellLogo. Reduced PerfectCellLogo hearts/sparkles count for mobile. Added low-power mobile guards in AnimatedBackground (reduced stars, disabled ribbons/shooting stars) to reduce freezing/jank."
+
   - task: "Admin order search by order number (partial match)"
     implemented: true
     working: "NA"
