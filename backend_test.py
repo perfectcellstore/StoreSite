@@ -1,496 +1,366 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for Auth Hardening Features
-Tests the upgraded auth system with validation, unique email, rate limiting, and password policy
+Backend Testing Script for Perfect Sell E-Commerce Platform
+Testing Admin Order Search Functionality
 """
 
 import requests
 import json
 import time
-import random
-import string
-from datetime import datetime
+import uuid
+from typing import Dict, Any, Optional
 
-# Test configuration
-BASE_URL = "http://localhost:3000/api"
-HEADERS = {"Content-Type": "application/json"}
+# Configuration
+BASE_URL = "https://galaxy-blend.preview.emergentagent.com"
+API_BASE = f"{BASE_URL}/api"
 
-def log_test(test_name, status, details=""):
-    """Log test results with timestamp"""
-    timestamp = datetime.now().strftime("%H:%M:%S")
-    status_symbol = "✅" if status == "PASS" else "❌" if status == "FAIL" else "⚠️"
-    print(f"[{timestamp}] {status_symbol} {test_name}")
-    if details:
-        print(f"    {details}")
+# Test credentials
+ADMIN_EMAIL = "perfectcellstore@gmail.com"
+ADMIN_PASSWORD = "admin123456"
 
-def generate_random_email():
-    """Generate a random email for testing"""
-    random_str = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-    return f"test_{random_str}@example.com"
-
-def test_auth_register_validation():
-    """Test POST /api/auth/register validation"""
-    print("\n=== TESTING AUTH REGISTER VALIDATION ===")
-    
-    # Test 1: Missing fields
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={}, headers=HEADERS, timeout=10)
-        if response.status_code == 400:
-            log_test("Register - Missing fields", "PASS", "Returns 400 for missing fields")
-        else:
-            log_test("Register - Missing fields", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Missing fields", "FAIL", f"Request failed: {e}")
-    
-    # Test 2: Invalid email format
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": "invalid-email", "password": "password123", "name": "Test User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 400:
-            log_test("Register - Invalid email", "PASS", "Returns 400 for invalid email")
-        else:
-            log_test("Register - Invalid email", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Invalid email", "FAIL", f"Request failed: {e}")
-    
-    # Test 3: Short password (<8 chars)
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": "test@example.com", "password": "short", "name": "Test User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 400:
-            log_test("Register - Short password", "PASS", "Returns 400 for password < 8 chars")
-        else:
-            log_test("Register - Short password", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Short password", "FAIL", f"Request failed: {e}")
-    
-    # Test 4: Valid registration
-    test_email = generate_random_email()
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": test_email, "password": "validpass123", "name": "Test User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            if "token" in data and "user" in data and "password" not in data["user"]:
-                log_test("Register - Valid registration", "PASS", "Returns 200 with token and user (no password)")
-                return test_email, data["token"]
-            else:
-                log_test("Register - Valid registration", "FAIL", "Missing token/user or password exposed")
-        else:
-            log_test("Register - Valid registration", "FAIL", f"Expected 200, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Valid registration", "FAIL", f"Request failed: {e}")
-    
-    return None, None
-
-def test_auth_register_duplicate(test_email):
-    """Test duplicate email registration with different cases"""
-    print("\n=== TESTING DUPLICATE EMAIL REGISTRATION ===")
-    
-    if not test_email:
-        log_test("Register - Duplicate test", "SKIP", "No valid email from previous test")
-        return
-    
-    # Test duplicate with same case
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": test_email, "password": "anotherpass123", "name": "Another User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 400:
-            log_test("Register - Duplicate same case", "PASS", "Returns 400 for duplicate email")
-        else:
-            log_test("Register - Duplicate same case", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Duplicate same case", "FAIL", f"Request failed: {e}")
-    
-    # Test duplicate with different case
-    try:
-        upper_email = test_email.upper()
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": upper_email, "password": "anotherpass123", "name": "Another User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 400:
-            log_test("Register - Duplicate different case", "PASS", "Returns 400 for case-variant duplicate")
-        else:
-            log_test("Register - Duplicate different case", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Register - Duplicate different case", "FAIL", f"Request failed: {e}")
-
-def test_auth_login_validation():
-    """Test POST /api/auth/login validation and rate limiting"""
-    print("\n=== TESTING AUTH LOGIN VALIDATION ===")
-    
-    # Create a test user first
-    test_email = generate_random_email()
-    test_password = "testpass123"
-    
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": test_email, "password": test_password, "name": "Login Test User"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code != 200:
-            log_test("Login - Setup user", "FAIL", f"Failed to create test user: {response.status_code}")
-            return
-        log_test("Login - Setup user", "PASS", "Test user created successfully")
-    except Exception as e:
-        log_test("Login - Setup user", "FAIL", f"Failed to create test user: {e}")
-        return
-    
-    # Test 1: Wrong password (should work initially)
-    try:
-        response = requests.post(f"{BASE_URL}/auth/login", 
-                               json={"email": test_email, "password": "wrongpassword"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 401:
-            log_test("Login - Wrong password", "PASS", "Returns 401 for wrong password")
-        else:
-            log_test("Login - Wrong password", "FAIL", f"Expected 401, got {response.status_code}")
-    except Exception as e:
-        log_test("Login - Wrong password", "FAIL", f"Request failed: {e}")
-    
-    # Test 2: Correct password (should work before lockout)
-    try:
-        response = requests.post(f"{BASE_URL}/auth/login", 
-                               json={"email": test_email, "password": test_password}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            if "token" in data and "user" in data:
-                log_test("Login - Correct password", "PASS", "Returns 200 with token and user")
-            else:
-                log_test("Login - Correct password", "FAIL", "Missing token or user in response")
-        else:
-            log_test("Login - Correct password", "FAIL", f"Expected 200, got {response.status_code}")
-    except Exception as e:
-        log_test("Login - Correct password", "FAIL", f"Request failed: {e}")
-    
-    return test_email, test_password
-
-def test_auth_rate_limiting(test_email, test_password):
-    """Test brute force rate limiting (5 fails / 15 min)"""
-    print("\n=== TESTING BRUTE FORCE RATE LIMITING ===")
-    
-    if not test_email:
-        log_test("Rate limiting test", "SKIP", "No test email available")
-        return
-    
-    # Make 5 failed login attempts
-    print("Making 5 failed login attempts...")
-    for i in range(5):
+class BackendTester:
+    def __init__(self):
+        self.admin_token = None
+        self.user_token = None
+        self.test_orders = []
+        self.test_user_id = None
+        
+    def log(self, message: str, level: str = "INFO"):
+        """Log test messages with timestamp"""
+        timestamp = time.strftime("%H:%M:%S")
+        print(f"[{timestamp}] {level}: {message}")
+        
+    def make_request(self, method: str, endpoint: str, data: Optional[Dict] = None, 
+                    headers: Optional[Dict] = None, expected_status: int = 200) -> Dict[str, Any]:
+        """Make HTTP request with error handling"""
+        url = f"{API_BASE}/{endpoint.lstrip('/')}"
+        
         try:
-            response = requests.post(f"{BASE_URL}/auth/login", 
-                                   json={"email": test_email, "password": "wrongpassword"}, 
-                                   headers=HEADERS, timeout=10)
-            print(f"  Attempt {i+1}: {response.status_code}")
-            time.sleep(0.5)  # Small delay between attempts
-        except Exception as e:
-            log_test(f"Rate limiting - Attempt {i+1}", "FAIL", f"Request failed: {e}")
-    
-    # 6th attempt should be rate limited
-    try:
-        response = requests.post(f"{BASE_URL}/auth/login", 
-                               json={"email": test_email, "password": "wrongpassword"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 429:
-            retry_after = response.headers.get('Retry-After')
-            if retry_after:
-                log_test("Rate limiting - 429 response", "PASS", f"Returns 429 with Retry-After: {retry_after}")
+            if method.upper() == "GET":
+                response = requests.get(url, headers=headers, timeout=30)
+            elif method.upper() == "POST":
+                response = requests.post(url, json=data, headers=headers, timeout=30)
+            elif method.upper() == "PUT":
+                response = requests.put(url, json=data, headers=headers, timeout=30)
+            elif method.upper() == "DELETE":
+                response = requests.delete(url, headers=headers, timeout=30)
             else:
-                log_test("Rate limiting - 429 response", "FAIL", "Returns 429 but missing Retry-After header")
-        else:
-            log_test("Rate limiting - 429 response", "FAIL", f"Expected 429, got {response.status_code}")
-    except Exception as e:
-        log_test("Rate limiting - 429 response", "FAIL", f"Request failed: {e}")
-    
-    # Test that correct password still works during lockout (should also be blocked)
-    try:
-        response = requests.post(f"{BASE_URL}/auth/login", 
-                               json={"email": test_email, "password": test_password}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 429:
-            log_test("Rate limiting - Correct password blocked", "PASS", "Correct password also blocked during lockout")
-        else:
-            log_test("Rate limiting - Correct password blocked", "FAIL", f"Expected 429, got {response.status_code}")
-    except Exception as e:
-        log_test("Rate limiting - Correct password blocked", "FAIL", f"Request failed: {e}")
-
-def test_data_persistence():
-    """Test that user data is properly stored in MongoDB"""
-    print("\n=== TESTING DATA PERSISTENCE ===")
-    
-    # Create a user and verify the data structure
-    test_email = generate_random_email()
-    test_password = "persisttest123"
-    
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={"email": test_email, "password": test_password, "name": "Persistence Test"}, 
-                               headers=HEADERS, timeout=10)
-        if response.status_code == 200:
-            data = response.json()
-            user = data.get("user", {})
-            
-            # Check that user has required fields
-            required_fields = ["id", "email", "name", "role", "createdAt"]
-            missing_fields = [field for field in required_fields if field not in user]
-            
-            if not missing_fields:
-                log_test("Data persistence - User fields", "PASS", "User has all required fields")
-            else:
-                log_test("Data persistence - User fields", "FAIL", f"Missing fields: {missing_fields}")
-            
-            # Check that password is not exposed
-            if "password" not in user:
-                log_test("Data persistence - Password security", "PASS", "Password not exposed in response")
-            else:
-                log_test("Data persistence - Password security", "FAIL", "Password exposed in response")
-            
-            # Check that emailLower field exists (should be in DB but not returned)
-            if "emailLower" not in user:
-                log_test("Data persistence - EmailLower hidden", "PASS", "emailLower field not exposed")
-            else:
-                log_test("Data persistence - EmailLower hidden", "INFO", "emailLower field present in response")
-            
-            return data["token"]
-        else:
-            log_test("Data persistence - User creation", "FAIL", f"Failed to create user: {response.status_code}")
-    except Exception as e:
-        log_test("Data persistence - User creation", "FAIL", f"Request failed: {e}")
-    
-    return None
-
-def test_regression_auth_me(token):
-    """Test GET /api/auth/me endpoint"""
-    print("\n=== TESTING REGRESSION: AUTH ME ===")
-    
-    if not token:
-        log_test("Auth me test", "SKIP", "No token available")
-        return
-    
-    try:
-        headers = {**HEADERS, "Authorization": f"Bearer {token}"}
-        response = requests.get(f"{BASE_URL}/auth/me", headers=headers, timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if "user" in data and "password" not in data["user"]:
-                log_test("Auth me - Valid token", "PASS", "Returns user data without password")
-            else:
-                log_test("Auth me - Valid token", "FAIL", "Invalid response structure")
-        else:
-            log_test("Auth me - Valid token", "FAIL", f"Expected 200, got {response.status_code}")
-    except Exception as e:
-        log_test("Auth me - Valid token", "FAIL", f"Request failed: {e}")
-    
-    # Test with invalid token
-    try:
-        headers = {**HEADERS, "Authorization": "Bearer invalid_token"}
-        response = requests.get(f"{BASE_URL}/auth/me", headers=headers, timeout=10)
-        
-        if response.status_code == 401:
-            log_test("Auth me - Invalid token", "PASS", "Returns 401 for invalid token")
-        else:
-            log_test("Auth me - Invalid token", "FAIL", f"Expected 401, got {response.status_code}")
-    except Exception as e:
-        log_test("Auth me - Invalid token", "FAIL", f"Request failed: {e}")
-
-def test_regression_customization_public():
-    """Test GET /api/customization/public endpoint"""
-    print("\n=== TESTING REGRESSION: CUSTOMIZATION PUBLIC ===")
-    
-    try:
-        response = requests.get(f"{BASE_URL}/customization/public", headers=HEADERS, timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if "customization" in data:
-                customization = data["customization"]
-                required_sections = ["colors", "typography", "content", "images", "layout", "animation"]
-                missing_sections = [section for section in required_sections if section not in customization]
+                raise ValueError(f"Unsupported HTTP method: {method}")
                 
-                if not missing_sections:
-                    log_test("Customization public", "PASS", "Returns 200 with valid structure")
-                else:
-                    log_test("Customization public", "FAIL", f"Missing sections: {missing_sections}")
-            else:
-                log_test("Customization public", "FAIL", "Missing customization in response")
-        else:
-            log_test("Customization public", "FAIL", f"Expected 200, got {response.status_code}")
-    except Exception as e:
-        log_test("Customization public", "FAIL", f"Request failed: {e}")
-
-def test_password_policy_upgrade():
-    """Test password policy upgrade: reject whitespace-only + require letter+number"""
-    print("\n=== TESTING PASSWORD POLICY UPGRADE ===")
-    
-    # Test 1: Password with only whitespace (8 spaces) should be rejected
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={
-                                   "email": "test_whitespace@example.com",
-                                   "password": "        ",  # 8 spaces
-                                   "name": "Test User"
-                               }, 
-                               headers=HEADERS, timeout=10)
-        
-        if response.status_code == 400:
-            error_msg = response.json().get("error", "")
-            if "letter" in error_msg.lower() and "number" in error_msg.lower():
-                log_test("Password Policy - Whitespace Only (8 spaces)", "PASS", f"Correctly rejected: {error_msg}")
-            else:
-                log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Wrong error message: {error_msg}")
-        else:
-            log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Request failed: {e}")
-    
-    # Test 2: Password with letters only should be rejected
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={
-                                   "email": "test_letters@example.com",
-                                   "password": "abcdefgh",  # letters only
-                                   "name": "Test User"
-                               }, 
-                               headers=HEADERS, timeout=10)
-        
-        if response.status_code == 400:
-            error_msg = response.json().get("error", "")
-            if "letter" in error_msg.lower() and "number" in error_msg.lower():
-                log_test("Password Policy - Letters Only", "PASS", f"Correctly rejected: {error_msg}")
-            else:
-                log_test("Password Policy - Letters Only", "FAIL", f"Wrong error message: {error_msg}")
-        else:
-            log_test("Password Policy - Letters Only", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Password Policy - Letters Only", "FAIL", f"Request failed: {e}")
-    
-    # Test 3: Password with numbers only should be rejected
-    try:
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={
-                                   "email": "test_numbers@example.com",
-                                   "password": "12345678",  # numbers only
-                                   "name": "Test User"
-                               }, 
-                               headers=HEADERS, timeout=10)
-        
-        if response.status_code == 400:
-            error_msg = response.json().get("error", "")
-            if "letter" in error_msg.lower() and "number" in error_msg.lower():
-                log_test("Password Policy - Numbers Only", "PASS", f"Correctly rejected: {error_msg}")
-            else:
-                log_test("Password Policy - Numbers Only", "FAIL", f"Wrong error message: {error_msg}")
-        else:
-            log_test("Password Policy - Numbers Only", "FAIL", f"Expected 400, got {response.status_code}")
-    except Exception as e:
-        log_test("Password Policy - Numbers Only", "FAIL", f"Request failed: {e}")
-    
-    # Test 4: Valid password with letters and numbers should be accepted
-    test_email = None
-    try:
-        timestamp = str(int(time.time()))
-        test_email = f"test_valid_{timestamp}@example.com"
-        response = requests.post(f"{BASE_URL}/auth/register", 
-                               json={
-                                   "email": test_email,
-                                   "password": "abcd1234",  # letters + numbers
-                                   "name": "Test User"
-                               }, 
-                               headers=HEADERS, timeout=10)
-        
-        if response.status_code == 200:
-            data = response.json()
-            if "token" in data and "user" in data:
-                log_test("Password Policy - Valid Password (letters + numbers)", "PASS", f"Successfully registered: {data['user']['email']}")
-            else:
-                log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Missing token or user in response")
-        else:
-            log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Expected 200, got {response.status_code}: {response.text}")
-    except Exception as e:
-        log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Request failed: {e}")
-    
-    # Test 5: Login should work for user created with valid password
-    if test_email:
-        try:
-            response = requests.post(f"{BASE_URL}/auth/login", 
-                                   json={
-                                       "email": test_email,
-                                       "password": "abcd1234"
-                                   }, 
-                                   headers=HEADERS, timeout=10)
+            self.log(f"{method} {endpoint} -> {response.status_code}")
             
-            if response.status_code == 200:
-                data = response.json()
-                if "token" in data and "user" in data:
-                    log_test("Login - Valid User Authentication", "PASS", f"Successfully logged in: {data['user']['email']}")
-                else:
-                    log_test("Login - Valid User Authentication", "FAIL", f"Missing token or user in response")
+            if response.status_code != expected_status:
+                self.log(f"Expected {expected_status}, got {response.status_code}", "WARNING")
+                self.log(f"Response: {response.text}", "WARNING")
+                
+            return {
+                "status_code": response.status_code,
+                "data": response.json() if response.content else {},
+                "success": response.status_code == expected_status
+            }
+            
+        except requests.exceptions.RequestException as e:
+            self.log(f"Request failed: {str(e)}", "ERROR")
+            return {"status_code": 0, "data": {}, "success": False, "error": str(e)}
+        except json.JSONDecodeError as e:
+            self.log(f"JSON decode error: {str(e)}", "ERROR")
+            return {"status_code": response.status_code, "data": {}, "success": False, "error": "Invalid JSON"}
+            
+    def test_admin_login(self) -> bool:
+        """Test admin login and get token"""
+        self.log("Testing admin login...")
+        
+        response = self.make_request("POST", "/auth/login", {
+            "email": ADMIN_EMAIL,
+            "password": ADMIN_PASSWORD
+        })
+        
+        if response["success"] and "token" in response["data"]:
+            self.admin_token = response["data"]["token"]
+            user_data = response["data"].get("user", {})
+            if user_data.get("role") == "admin":
+                self.log("✅ Admin login successful")
+                return True
             else:
-                log_test("Login - Valid User Authentication", "FAIL", f"Expected 200, got {response.status_code}: {response.text}")
-        except Exception as e:
-            log_test("Login - Valid User Authentication", "FAIL", f"Request failed: {e}")
-    
-    # Test 6: Rate limiting sanity check (1-2 wrong logins should return 401)
-    try:
-        # Use a non-existent email to avoid affecting real users
-        payload = {
-            "email": "nonexistent@example.com",
-            "password": "wrongpassword"
-        }
-        
-        # First wrong login
-        response1 = requests.post(f"{BASE_URL}/auth/login", 
-                                json=payload, headers=HEADERS, timeout=10)
-        
-        # Second wrong login
-        response2 = requests.post(f"{BASE_URL}/auth/login", 
-                                json=payload, headers=HEADERS, timeout=10)
-        
-        if response1.status_code == 401 and response2.status_code == 401:
-            log_test("Rate Limiting - Sanity Check (Wrong Logins)", "PASS", "Both wrong logins correctly returned 401")
+                self.log(f"❌ User role is {user_data.get('role')}, expected 'admin'", "ERROR")
+                return False
         else:
-            log_test("Rate Limiting - Sanity Check (Wrong Logins)", "FAIL", 
-                    f"Expected 401 for both, got {response1.status_code} and {response2.status_code}")
-    except Exception as e:
-        log_test("Rate Limiting - Sanity Check (Wrong Logins)", "FAIL", f"Request failed: {e}")
-
-def main():
-    """Run all auth hardening tests"""
-    print("🔐 AUTH HARDENING BACKEND TESTING")
-    print("=" * 50)
-    print(f"Testing against: {BASE_URL}")
-    print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    
-    # Test password policy upgrade first
-    test_password_policy_upgrade()
-    
-    # Test registration validation
-    test_email, token = test_auth_register_validation()
-    
-    # Test duplicate registration
-    test_auth_register_duplicate(test_email)
-    
-    # Test login validation and get credentials for rate limiting test
-    login_email, login_password = test_auth_login_validation()
-    
-    # Test rate limiting
-    test_auth_rate_limiting(login_email, login_password)
-    
-    # Test data persistence
-    persist_token = test_data_persistence()
-    
-    # Test regression endpoints
-    test_regression_auth_me(persist_token or token)
-    test_regression_customization_public()
-    
-    print("\n" + "=" * 50)
-    print("🏁 AUTH HARDENING TESTING COMPLETED")
-    print(f"Finished at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            self.log("❌ Admin login failed", "ERROR")
+            return False
+            
+    def create_test_user(self) -> bool:
+        """Create a test user for non-admin testing"""
+        self.log("Creating test user...")
+        
+        test_email = f"testuser_{uuid.uuid4().hex[:8]}@example.com"
+        test_password = "testpass123"
+        
+        response = self.make_request("POST", "/auth/register", {
+            "email": test_email,
+            "password": test_password,
+            "name": "Test User"
+        })
+        
+        if response["success"] and "token" in response["data"]:
+            self.user_token = response["data"]["token"]
+            self.test_user_id = response["data"]["user"]["id"]
+            self.log(f"✅ Test user created: {test_email}")
+            return True
+        else:
+            self.log("❌ Test user creation failed", "ERROR")
+            return False
+            
+    def create_test_orders(self) -> bool:
+        """Create test orders for search testing"""
+        self.log("Creating test orders...")
+        
+        # Create orders without authentication (as per review request)
+        orders_data = [
+            {
+                "items": [{"id": "test-item-1", "name": "Test Item 1", "price": 100, "quantity": 1}],
+                "shippingInfo": {
+                    "name": "Test Customer 1",
+                    "phone": "1234567890",
+                    "address": "Test Address 1",
+                    "city": "Baghdad",
+                    "governorate": "Baghdad"
+                },
+                "total": 100,
+                "userId": None
+            },
+            {
+                "items": [{"id": "test-item-2", "name": "Test Item 2", "price": 200, "quantity": 1}],
+                "shippingInfo": {
+                    "name": "Test Customer 2", 
+                    "phone": "0987654321",
+                    "address": "Test Address 2",
+                    "city": "Basra",
+                    "governorate": "Basra"
+                },
+                "total": 200,
+                "userId": self.test_user_id  # Associate with test user
+            }
+        ]
+        
+        for i, order_data in enumerate(orders_data):
+            response = self.make_request("POST", "/orders", order_data, expected_status=200)
+            
+            if response["success"] and "order" in response["data"]:
+                order = response["data"]["order"]
+                self.test_orders.append(order)
+                self.log(f"✅ Test order {i+1} created: {order['id'][:8]}...")
+            else:
+                self.log(f"❌ Failed to create test order {i+1}", "ERROR")
+                return False
+                
+        return len(self.test_orders) == 2
+        
+    def test_admin_orders_no_search(self) -> bool:
+        """Test admin can see all orders without search"""
+        self.log("Testing admin orders endpoint without search...")
+        
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        response = self.make_request("GET", "/orders", headers=headers)
+        
+        if response["success"] and "orders" in response["data"]:
+            orders = response["data"]["orders"]
+            self.log(f"✅ Admin can see {len(orders)} orders without search")
+            
+            # Verify our test orders are included
+            test_order_ids = [order["id"] for order in self.test_orders]
+            found_orders = [order for order in orders if order["id"] in test_order_ids]
+            
+            if len(found_orders) >= 2:
+                self.log("✅ Test orders found in admin orders list")
+                return True
+            else:
+                self.log(f"❌ Only found {len(found_orders)} test orders out of 2", "ERROR")
+                return False
+        else:
+            self.log("❌ Failed to get admin orders", "ERROR")
+            return False
+            
+    def test_admin_order_search(self) -> bool:
+        """Test admin order search by partial order ID"""
+        self.log("Testing admin order search functionality...")
+        
+        if not self.test_orders:
+            self.log("❌ No test orders available for search testing", "ERROR")
+            return False
+            
+        headers = {"Authorization": f"Bearer {self.admin_token}"}
+        test_order = self.test_orders[0]
+        search_term = test_order["id"][:6]  # First 6 characters
+        
+        # Test 1: Search with partial order ID
+        self.log(f"Searching for orders with term: {search_term}")
+        response = self.make_request("GET", f"/orders?search={search_term}", headers=headers)
+        
+        if response["success"] and "orders" in response["data"]:
+            orders = response["data"]["orders"]
+            matching_orders = [order for order in orders if search_term.lower() in order["id"].lower()]
+            
+            if len(matching_orders) > 0:
+                self.log(f"✅ Found {len(matching_orders)} orders matching search term")
+                
+                # Verify our test order is in results
+                if any(order["id"] == test_order["id"] for order in matching_orders):
+                    self.log("✅ Test order found in search results")
+                else:
+                    self.log("❌ Test order not found in search results", "ERROR")
+                    return False
+            else:
+                self.log("❌ No orders found matching search term", "ERROR")
+                return False
+        else:
+            self.log("❌ Failed to search orders", "ERROR")
+            return False
+            
+        # Test 2: Search with non-existent order ID
+        self.log("Testing search with non-existent order ID...")
+        response = self.make_request("GET", "/orders?search=nonexistent123", headers=headers)
+        
+        if response["success"] and "orders" in response["data"]:
+            orders = response["data"]["orders"]
+            if len(orders) == 0:
+                self.log("✅ Empty results for non-existent search term")
+            else:
+                self.log(f"❌ Expected empty results, got {len(orders)} orders", "ERROR")
+                return False
+        else:
+            self.log("❌ Failed to search with non-existent term", "ERROR")
+            return False
+            
+        return True
+        
+    def test_user_orders_no_search(self) -> bool:
+        """Test normal user can only see their own orders"""
+        self.log("Testing normal user orders endpoint without search...")
+        
+        headers = {"Authorization": f"Bearer {self.user_token}"}
+        response = self.make_request("GET", "/orders", headers=headers)
+        
+        if response["success"] and "orders" in response["data"]:
+            orders = response["data"]["orders"]
+            self.log(f"✅ User can see {len(orders)} orders")
+            
+            # Verify all orders belong to the user
+            user_orders = [order for order in orders if order.get("userId") == self.test_user_id]
+            
+            if len(user_orders) == len(orders):
+                self.log("✅ All returned orders belong to the user")
+                return True
+            else:
+                self.log(f"❌ Found {len(orders) - len(user_orders)} orders not belonging to user", "ERROR")
+                return False
+        else:
+            self.log("❌ Failed to get user orders", "ERROR")
+            return False
+            
+    def test_user_order_search_restriction(self) -> bool:
+        """Test normal user cannot search for other users' orders"""
+        self.log("Testing normal user order search restrictions...")
+        
+        if not self.test_orders:
+            self.log("❌ No test orders available for search testing", "ERROR")
+            return False
+            
+        headers = {"Authorization": f"Bearer {self.user_token}"}
+        
+        # Find an order that doesn't belong to the test user
+        other_user_order = None
+        for order in self.test_orders:
+            if order.get("userId") != self.test_user_id:
+                other_user_order = order
+                break
+                
+        if not other_user_order:
+            self.log("❌ No other user's order found for testing", "ERROR")
+            return False
+            
+        # Try to search for another user's order
+        search_term = other_user_order["id"][:6]
+        self.log(f"User searching for other user's order: {search_term}")
+        
+        response = self.make_request("GET", f"/orders?search={search_term}", headers=headers)
+        
+        if response["success"] and "orders" in response["data"]:
+            orders = response["data"]["orders"]
+            
+            # Check if the other user's order is returned
+            found_other_order = any(order["id"] == other_user_order["id"] for order in orders)
+            
+            if not found_other_order:
+                self.log("✅ User cannot see other user's order via search")
+                
+                # Verify all returned orders belong to the user
+                user_orders = [order for order in orders if order.get("userId") == self.test_user_id]
+                if len(user_orders) == len(orders):
+                    self.log("✅ Search results properly filtered to user's orders only")
+                    return True
+                else:
+                    self.log("❌ Search returned orders not belonging to user", "ERROR")
+                    return False
+            else:
+                self.log("❌ User can see other user's order via search - SECURITY ISSUE", "ERROR")
+                return False
+        else:
+            self.log("❌ Failed to test user search restrictions", "ERROR")
+            return False
+            
+    def cleanup_test_data(self):
+        """Clean up test data (orders cannot be deleted via API, so just log)"""
+        self.log("Test cleanup - orders will remain in database for admin review")
+        for order in self.test_orders:
+            self.log(f"Test order created: {order['id']}")
+            
+    def run_all_tests(self) -> bool:
+        """Run all admin order search tests"""
+        self.log("=" * 60)
+        self.log("STARTING ADMIN ORDER SEARCH BACKEND TESTS")
+        self.log("=" * 60)
+        
+        try:
+            # Step 1: Admin login
+            if not self.test_admin_login():
+                return False
+                
+            # Step 2: Create test user
+            if not self.create_test_user():
+                return False
+                
+            # Step 3: Create test orders
+            if not self.create_test_orders():
+                return False
+                
+            # Step 4: Test admin orders without search
+            if not self.test_admin_orders_no_search():
+                return False
+                
+            # Step 5: Test admin order search
+            if not self.test_admin_order_search():
+                return False
+                
+            # Step 6: Test user orders without search
+            if not self.test_user_orders_no_search():
+                return False
+                
+            # Step 7: Test user search restrictions
+            if not self.test_user_order_search_restriction():
+                return False
+                
+            self.log("=" * 60)
+            self.log("✅ ALL ADMIN ORDER SEARCH TESTS PASSED")
+            self.log("=" * 60)
+            return True
+            
+        except Exception as e:
+            self.log(f"❌ Test suite failed with exception: {str(e)}", "ERROR")
+            return False
+        finally:
+            self.cleanup_test_data()
 
 if __name__ == "__main__":
-    main()
+    tester = BackendTester()
+    success = tester.run_all_tests()
+    exit(0 if success else 1)
