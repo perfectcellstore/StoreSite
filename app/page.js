@@ -85,7 +85,7 @@ export default function HomePage() {
               boxShadow: isLow ? '0 0 28px 14px rgba(59, 130, 246, 0.55)' : '0 0 60px 30px rgba(59, 130, 246, 0.8)',
               animation: 'beamPulse 2s ease-in-out infinite',
               animationDelay: '0.5s',
-              filter: isLow ? 'blur(7px)' : 'blur(10px)',
+              filter: isLow ? 'blur(6px)' : 'blur(10px)',
               willChange: 'transform, opacity',
             }}
           />
