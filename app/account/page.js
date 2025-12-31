@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ClientOnlyDate } from '@/components/ClientOnlyDate';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useCurrency } from '@/lib/contexts/CurrencyContext';
@@ -109,11 +108,7 @@ export default function AccountPage() {
                           <div>
                             <p className="text-sm text-muted-foreground">Order #{order.id.slice(0, 8)}</p>
                             <p className="text-sm text-muted-foreground">
-                              <ClientOnlyDate
-                                date={order.createdAt}
-                                locale={language === 'ar' ? 'ar' : 'en-US'}
-                                options={{ year: 'numeric', month: 'short', day: '2-digit' }}
-                              />
+                              {new Date(order.createdAt).toLocaleDateString()}
                             </p>
                           </div>
                           <div className="text-right">
@@ -170,13 +165,7 @@ export default function AccountPage() {
 
                   <div>
                     <p className="text-sm text-muted-foreground">Member Since</p>
-                    <p className="font-semibold">
-                      <ClientOnlyDate
-                        date={user?.createdAt}
-                        locale={language === 'ar' ? 'ar' : 'en-US'}
-                        options={{ year: 'numeric', month: 'short', day: '2-digit' }}
-                      />
-                    </p>
+                    <p className="font-semibold">{new Date(user?.createdAt).toLocaleDateString()}</p>
                   </div>
 
                   <div className="pt-6">

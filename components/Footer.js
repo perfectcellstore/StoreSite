@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Instagram, MessageCircle } from 'lucide-react';
 
-import { ClientOnlyYear } from '@/components/ClientOnlyYear';
-
 export function Footer() {
   const { t } = useLanguage();
 
@@ -106,7 +104,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © <ClientOnlyYear /> Perfect Sell. All rights reserved.
+            © {new Date().getFullYear()} Perfect Sell. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm">
             <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
