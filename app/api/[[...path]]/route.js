@@ -465,6 +465,8 @@ export async function POST(request, { params }) {
 
     // Auth Routes
     if (pathname === 'auth/register') {
+      await ensureAuthIndexes(db);
+
       const { email, password, name } = body;
 
       const normalizedEmail = (email || '').trim();
@@ -475,14 +477,12 @@ export async function POST(request, { params }) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
       }
 
-      const existingUser = await db.collection('users').findOne({
-        $or: [
-          { email: normalizedEmail },
-          { emailLower },
-        ],
-      });
-      if (existingUser) {
-        return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+      if (!isValidEmail(emailLower)) {
+        return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+      }
+
+      if (String(password).length < 8) {
+        return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -498,7 +498,15 @@ export async function POST(request, { params }) {
         createdAt: new Date().toISOString(),
       };
 
-      await db.collection('users').insertOne(user);
+      try {
+        await db.collection('users').insertOne(user);
+      } catch (e) {
+        // Duplicate key error for unique index
+        if (e?.code === 11000) {
+          return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+        }
+        throw e;
+      }
 
       const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
 
@@ -507,6 +515,8 @@ export async function POST(request, { params }) {
     }
 
     if (pathname === 'auth/login') {
+      await ensureAuthIndexes(db);
+
       const { email, password } = body;
 
       const normalizedEmail = (email || '').trim();
@@ -516,19 +526,62 @@ export async function POST(request, { params }) {
         return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
       }
 
+      if (!isValidEmail(emailLower)) {
+        // Do not leak whether email exists
+        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      }
+
+      const ip = getClientIp(request);
+      const rateKey = `login:${ip}:${emailLower}`;
+
+      const limiter = await getAuthRateLimit(db, rateKey);
+      if (limiter?.lockedUntil && Date.now() < limiter.lockedUntil) {
+        const retryAfterSeconds = Math.max(1, Math.ceil((limiter.lockedUntil - Date.now()) / 1000));
+        return NextResponse.json(
+          {
+            error: 'Too many login attempts. Please try again later.',
+            retryAfterSeconds,
+          },
+          {
+            status: 429,
+            headers: {
+              'Retry-After': String(retryAfterSeconds),
+            },
+          }
+        );
+      }
+
+      // Backward compatibility: some older users may not have emailLower
       const user = await db.collection('users').findOne({
         $or: [
-          { email: normalizedEmail },
           { emailLower },
+          { email: { $regex: `^${escapeRegExp(emailLower)}$`, $options: 'i' } },
         ],
       });
+
       if (!user) {
+        await recordAuthFailure(db, rateKey);
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
 
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
+        await recordAuthFailure(db, rateKey);
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+      }
+
+      await clearAuthFailures(db, rateKey);
+
+      // If user is legacy (missing emailLower), backfill it (best-effort)
+      if (!user.emailLower) {
+        try {
+          await db.collection('users').updateOne(
+            { id: user.id },
+            { $set: { emailLower } }
+          );
+        } catch (e) {
+          // ignore backfill errors to avoid breaking login
+        }
       }
 
       const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
