@@ -31,7 +31,7 @@ const nextConfig = {
     return [
       // Cache static assets aggressively (images, fonts, etc.)
       {
-        source: "/:path*.(ico|png|jpg|jpeg|webp|avif|gif|svg)",
+        source: "/:path*.(ico|png|jpg|jpeg|webp|avif|gif|svg|wav|mp3|ogg)",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
