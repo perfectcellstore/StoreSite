@@ -174,6 +174,7 @@ frontend:
     stuck_count: 0
     priority: "high"
     needs_retesting: false
+    - "Mobile freezing + missing sound effects"
     status_history:
       - working: "NA"
         agent: "main"
