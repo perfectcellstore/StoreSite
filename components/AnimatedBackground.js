@@ -355,49 +355,49 @@ export function AnimatedBackground() {
         @keyframes nebulaDrift1 {
           0%, 100% { 
             transform: translate(0%, 0%) scale(1);
-            opacity: ${effectiveOpacity};
+            opacity: ${auroraOpacity};
           }
           25% { 
             transform: translate(5%, 3%) scale(1.05);
-            opacity: ${effectiveOpacity * 1.2};
+            opacity: ${Math.min(1, auroraOpacity * 1.15)};
           }
           50% { 
             transform: translate(3%, -2%) scale(1.1);
-            opacity: ${effectiveOpacity * 0.9};
+            opacity: ${auroraOpacity * 0.92};
           }
           75% { 
             transform: translate(-3%, 2%) scale(1.02);
-            opacity: ${effectiveOpacity * 1.1};
+            opacity: ${Math.min(1, auroraOpacity * 1.08)};
           }
         }
 
         @keyframes nebulaDrift2 {
           0%, 100% { 
             transform: translate(0%, 0%) scale(1);
-            opacity: ${effectiveOpacity * 0.8};
+            opacity: ${Math.max(0.08, auroraOpacity * 0.55)};
           }
           33% { 
             transform: translate(-4%, 4%) scale(1.08);
-            opacity: ${effectiveOpacity};
+            opacity: ${Math.max(0.08, auroraOpacity * 0.62)};
           }
           66% { 
             transform: translate(4%, -3%) scale(0.95);
-            opacity: ${effectiveOpacity * 0.7};
+            opacity: ${Math.max(0.06, auroraOpacity * 0.5)};
           }
         }
 
         @keyframes nebulaDrift3 {
           0%, 100% { 
             transform: translate(0%, 0%) scale(1);
-            opacity: ${effectiveOpacity * 0.7};
+            opacity: ${Math.max(0.06, auroraOpacity * 0.45)};
           }
           40% { 
             transform: translate(3%, -4%) scale(1.06);
-            opacity: ${effectiveOpacity * 0.9};
+            opacity: ${Math.max(0.06, auroraOpacity * 0.52)};
           }
           70% { 
             transform: translate(-2%, 3%) scale(0.98);
-            opacity: ${effectiveOpacity * 0.6};
+            opacity: ${Math.max(0.05, auroraOpacity * 0.4)};
           }
         }
 
