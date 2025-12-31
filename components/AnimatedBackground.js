@@ -10,6 +10,10 @@ export function AnimatedBackground() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // 0 at top of homepage, approaches 1 as you scroll past the hero.
+  // Used to fade the green aurora smoothly into the global galaxy background.
+  const [scrollFade, setScrollFade] = useState(1);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
@@ -19,6 +23,40 @@ export function AnimatedBackground() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const isHomepage = pathname === '/';
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    // On non-home pages, keep only the subtle residual aurora tint.
+    if (!isHomepage) {
+      setScrollFade(1);
+      return;
+    }
+
+    let raf = null;
+
+    const clamp01 = (v) => Math.min(1, Math.max(0, v));
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = null;
+        const heroHeight = window.innerHeight || 1;
+        const y = window.scrollY || 0;
+        // Fade mostly through the first ~1.2 screens for a seam-free transition.
+        const t = clamp01(y / (heroHeight * 1.2));
+        setScrollFade(t);
+      });
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [isHomepage, prefersReducedMotion]);
 
   // Generate stable star positions (memoized to prevent re-renders)
   const stars = useMemo(() => {
@@ -54,14 +92,20 @@ export function AnimatedBackground() {
     placement: 'global',
   };
 
-  const isHomepage = pathname === '/';
-
-  if (!animationSettings.enabled || prefersReducedMotion || !isHomepage) {
+  if (!animationSettings.enabled || prefersReducedMotion) {
     return null;
   }
 
   const effectiveIntensity = isMobile ? 'low' : animationSettings.intensity;
-  const effectiveOpacity = isMobile ? 0.35 : 0.5;
+
+  // Homepage: stronger aurora at the top, smoothly fading as you scroll.
+  // Site-wide: keep a subtle residual green tint.
+  const auroraStart = isMobile ? 0.5 : 0.75;
+  const auroraResidual = isMobile ? 0.14 : 0.18;
+  const smoothstep = (t) => t * t * (3 - 2 * t);
+  const fadeT = smoothstep(isHomepage ? scrollFade : 1);
+  const auroraOpacity = auroraStart * (1 - fadeT) + auroraResidual * fadeT;
+
   const baseDuration = isMobile ? 35 : 25;
 
   return (
