@@ -487,7 +487,7 @@ export function StoreCustomization() {
                 />
                 {customization.images.logo && (
                   <div className="mt-2 p-4 border border-border rounded-lg">
-                    <Image
+                    <OptimizedImage
                       src={customization.images.logo}
                       alt="Logo Preview"
                       width={240}
@@ -510,7 +510,7 @@ export function StoreCustomization() {
                 />
                 {customization.images.heroBanner && (
                   <div className="mt-2 p-4 border border-border rounded-lg">
-                    <Image
+                    <OptimizedImage
                       src={customization.images.heroBanner}
                       alt="Hero Banner Preview"
                       width={1200}
@@ -533,7 +533,7 @@ export function StoreCustomization() {
                 />
                 {customization.images.aboutBanner && (
                   <div className="mt-2 p-4 border border-border rounded-lg">
-                    <Image
+                    <OptimizedImage
                       src={customization.images.aboutBanner}
                       alt="About Banner Preview"
                       width={1200}
