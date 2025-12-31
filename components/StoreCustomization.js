@@ -272,7 +272,7 @@ export function StoreCustomization() {
           <Card className="bg-card/50 border-border/40">
             <CardHeader>
               <CardTitle>Color Scheme</CardTitle>
-              <CardDescription>Customize your store's color palette</CardDescription>
+              <CardDescription>Customize your store&apos;s color palette</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.entries(customization.colors).map(([key, value]) => (
