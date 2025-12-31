@@ -9,6 +9,11 @@ import { Instagram, MessageCircle } from 'lucide-react';
 
 export function Footer() {
   const { t } = useLanguage();
+  const [year, setYear] = useState(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   return (
     <footer className="w-full border-t border-border/40 bg-card/50 mt-20">
