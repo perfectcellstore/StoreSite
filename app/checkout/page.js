@@ -56,12 +56,23 @@ export default function CheckoutPage() {
   };
 
   const handleApplyPromo = () => {
-    const code = promoCode.toUpperCase();
-    if (PROMO_CODES[code]) {
-      setAppliedPromo({ code, ...PROMO_CODES[code] });
+    // Check for exact match first (case-sensitive for special codes like Nona1603)
+    if (PROMO_CODES[promoCode]) {
+      setAppliedPromo({ code: promoCode, ...PROMO_CODES[promoCode] });
       toast({
         title: 'Promo Code Applied! 🎉',
-        description: `You got ${PROMO_CODES[code].description}!`
+        description: `You got ${PROMO_CODES[promoCode].description}!`
+      });
+      return;
+    }
+    
+    // Fall back to case-insensitive check for other codes
+    const codeUpper = promoCode.toUpperCase();
+    if (PROMO_CODES[codeUpper]) {
+      setAppliedPromo({ code: codeUpper, ...PROMO_CODES[codeUpper] });
+      toast({
+        title: 'Promo Code Applied! 🎉',
+        description: `You got ${PROMO_CODES[codeUpper].description}!`
       });
     } else {
       toast({
