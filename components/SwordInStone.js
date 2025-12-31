@@ -28,24 +28,8 @@ export function SwordInStone({ onClose }) {
     
     setIsPulling(true);
     
-    // Play sword pull sound
-    try {
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + 1.5);
-      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
-      oscillator.type = 'sawtooth';
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 1.5);
-    } catch (e) {
-      console.log('Audio not supported');
-    }
+    // NOTE: Sound effect removed - inline AudioContext creation is bad practice
+    // Global click effects handle all audio consistently
 
     setTimeout(() => {
       setIsPulling(false);
