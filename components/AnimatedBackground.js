@@ -273,7 +273,7 @@ export function AnimatedBackground() {
       )}
 
       {/* Flowing Aurora Ribbon 2 */}
-      {effectiveIntensity !== 'low' && (
+      {effectiveIntensity !== 'low' && !isLowPowerMobile && (
         <div
           className="absolute inset-0"
           style={{
