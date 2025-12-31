@@ -71,7 +71,7 @@ export default function HomePage() {
                 ? '0 0 40px 18px rgba(16, 185, 129, 0.45), 0 0 70px 28px rgba(16, 185, 129, 0.25)'
                 : '0 0 80px 40px rgba(16, 185, 129, 0.6), 0 0 120px 60px rgba(16, 185, 129, 0.4)',
               animation: 'beamPulse 3s ease-in-out infinite',
-              filter: isLow ? 'blur(12px)' : 'blur(20px)',
+              filter: isLow ? 'blur(10px)' : 'blur(20px)',
               willChange: 'transform, opacity',
             }}
           />
