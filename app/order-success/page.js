@@ -54,7 +54,7 @@ export default function OrderSuccessPage() {
       <div className="container mx-auto px-4 py-16 md:py-20">
         <div className="relative max-w-3xl mx-auto">
           {/* Fire + Ki + Aura FX */}
-          <OrderCelebrationFX seed={orderId || 'victory'} className="rounded-2xl" />
+          <OrderCelebrationFX seed={orderId || 'victory'} className="rounded-2xl" particleLevel={perf?.fx?.celebrationParticles || 'high'} />
 
           <Card className="relative overflow-hidden max-w-3xl mx-auto bg-card/55 border-border/40 backdrop-blur">
             {/* Decorative header strip */}
