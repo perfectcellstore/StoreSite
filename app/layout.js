@@ -9,8 +9,6 @@ import { CustomizationProvider } from "@/lib/contexts/CustomizationContext";
 import { PerfProvider } from "@/lib/contexts/PerfContext";
 import { Toaster } from "@/components/ui/toaster";
 import PerfDynamicLayers from "@/components/PerfDynamicLayers";
-import AudioBootstrapper from "@/components/AudioBootstrapper";
-import { GlobalClickSound } from "@/components/GlobalClickSound";
 import { LanguageSelectionPopup } from "@/components/LanguageSelectionPopup";
 
 export const metadata = {
@@ -30,8 +28,6 @@ export default function RootLayout({ children }) {
                   <EffectsProvider>
                     <PerfProvider>
                       <CustomizationProvider>
-                        <AudioBootstrapper />
-                        <GlobalClickSound />
                         <PerfDynamicLayers />
                         <LanguageSelectionPopup />
                         {children}
