@@ -179,6 +179,18 @@ frontend:
     needs_retesting: false
     status_history:
       - working: "NA"
+
+  - task: "Notification/checkout icon badge cropping"
+    implemented: true
+    working: "NA"
+    file: "components/Navigation.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed badge cropping by ensuring icon buttons allow overflow (overflow-visible) and adding ring/background separation on badges for cart + notifications."
         agent: "main"
         comment: "Upgraded /order-success into a victory-style thank-you screen with seeded random quote selection (orderId), bilingual EN/AR copy, and new animated fire embers + green ki particles + aura shimmer via canvas. Quotes live in lib/orderSuccessQuotes.js (user-provided lines)."
   - task: "ProductReviews Component State Management"
