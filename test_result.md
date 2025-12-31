@@ -182,6 +182,18 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
+
+  - task: "Auth hardening: email validation + unique index + brute-force rate limiting"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added email format validation, enforced unique emailLower index (MongoDB), added brute-force protection (5 fails / 15 min per IP+email) using auth_rate_limits collection with TTL cleanup. Also added safe legacy lookup and best-effort backfill of emailLower."
   # Added by main agent (Dec 31, 2025)
   - task: "Admin login (auth) restores admin user + normalizes email"
     implemented: true
