@@ -8,14 +8,26 @@ import { playClick } from '@/lib/audioManager';
 // (even if visual effects are lazy-loaded for performance).
 export function GlobalClickSound() {
   useEffect(() => {
-    const onPointerDown = () => {
+    let last = 0;
+
+    const onTap = () => {
+      // Prevent double-fire on browsers that emit both touchstart + pointerdown.
+      const now = Date.now();
+      if (now - last < 40) return;
+      last = now;
+
       // Synchronous playback (WebAudio buffer source). No async work here.
       playClick();
     };
 
-    // Capture so it runs before navigation handlers.
-    document.addEventListener('pointerdown', onPointerDown, { passive: true, capture: true });
-    return () => document.removeEventListener('pointerdown', onPointerDown, { capture: true });
+    // Earliest possible events on mobile.
+    document.addEventListener('touchstart', onTap, { passive: true, capture: true });
+    document.addEventListener('pointerdown', onTap, { passive: true, capture: true });
+
+    return () => {
+      document.removeEventListener('touchstart', onTap, { capture: true });
+      document.removeEventListener('pointerdown', onTap, { capture: true });
+    };
   }, []);
 
   return null;
