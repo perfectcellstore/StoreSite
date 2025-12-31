@@ -55,6 +55,17 @@ export default function AdminPage() {
     }
   }, [user, authLoading]);
 
+  // Debounced order search to avoid spamming API
+  useEffect(() => {
+    if (!user || user.role !== 'admin') return;
+
+    const t = setTimeout(() => {
+      fetchData({ searchOverride: orderSearch });
+    }, 300);
+
+    return () => clearTimeout(t);
+  }, [orderSearch]);
+
   const fetchData = async (opts = {}) => {
     const { searchOverride } = opts;
 
