@@ -40,11 +40,10 @@ export function WhatsAppButton() {
     
     setClickEffect([...clickEffect, newSpark]);
 
-    // Play sound effect (if audio is enabled)
+    // Play sound effect (shared low-latency WebAudio)
+    // NOTE: GlobalClickSound already handles most taps, but keep this for reliability.
     try {
-      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZRQ0PVKzn77BdGAg+ltryxnMnBSl+zPDajzsIGGS57OihUBALTaLj8bllHAU2jdXzzn4tBSt7yfDekjwJFmS67OmiUBALTKPj8LllHAU2jdXzzn4tBSt7yfDekjwJFmS67OmiUBALTKPj8LllHAU2jdXzzn4tBSt7yfDekjwJFmS67OmiUBALTKPj8LllHAU2jdXzzn4tBQ==');
-      audio.volume = 0.3;
-      audio.play().catch(() => {});
+      playClick();
     } catch (e) {}
 
     // Reset after animation
