@@ -11,6 +11,11 @@ export function Footer() {
   const { t } = useLanguage();
   const [year, setYear] = useState(null);
 
+  // Set year only on client side to avoid hydration mismatch
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="w-full border-t border-border/40 bg-card/50 mt-20">
       <div className="container py-12">
