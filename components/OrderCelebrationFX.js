@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 // Lightweight canvas FX: fire embers + green ki sparks + aura shimmer.
 // Designed to be performance-safe (caps particles, uses RAF, respects reduced motion).
-export default function OrderCelebrationFX({ seed = 'victory', className = '' }) {
+export default function OrderCelebrationFX({ seed = 'victory', className = '', particleLevel = 'high' }) {
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const particlesRef = useRef([]);
