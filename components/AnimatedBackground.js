@@ -297,7 +297,7 @@ export function AnimatedBackground() {
       )}
 
       {/* Shooting Stars */}
-      {shootingStars.map((star) => (
+      {!isLowPowerMobile && shootingStars.map((star) => (
         <div
           key={`shooting-${star.id}`}
           className="absolute"
