@@ -487,10 +487,13 @@ export function StoreCustomization() {
                 />
                 {customization.images.logo && (
                   <div className="mt-2 p-4 border border-border rounded-lg">
-                    <img 
-                      src={customization.images.logo} 
-                      alt="Logo Preview" 
-                      className="max-h-20 object-contain"
+                    <Image
+                      src={customization.images.logo}
+                      alt="Logo Preview"
+                      width={240}
+                      height={80}
+                      className="max-h-20 w-auto object-contain"
+                      sizes="(max-width: 768px) 160px, 240px"
                     />
                   </div>
                 )}
