@@ -182,6 +182,19 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
+  # Added by main agent (Dec 31, 2025)
+  - task: "Admin login (auth) restores admin user + normalizes email"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "User reported admin login failing with 'Invalid credentials'. DB check found admin user missing. Re-seeded admin user and updated auth register/login to trim+lowercase email and support lookup by emailLower. Needs backend retest."
+
 agent_communication:
   - agent: "main"
     message: |
