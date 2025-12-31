@@ -199,6 +199,18 @@ test_plan:
         agent: "testing"
         comment: "COMPREHENSIVE AUTH HARDENING TESTING COMPLETED - All critical features working correctly. ✅ POST /api/auth/register: validates missing fields (400), invalid email format (400), short passwords <8 chars (400), returns 200 with token+user for valid registration, prevents duplicate emails regardless of case (400 'User already exists'). ✅ POST /api/auth/login: returns 401 for wrong password, 200 with token+user for correct credentials, implements brute-force protection (5 fails triggers 429 with Retry-After: 900 seconds), blocks both wrong AND correct passwords during lockout. ✅ Data persistence: users stored with hashed passwords, emailLower field present, all required fields (id, email, name, role, createdAt). ✅ Regression tests: GET /api/auth/me works with valid token (200) and rejects invalid tokens (401), GET /api/customization/public returns 200 with complete structure. ✅ Edge cases: unique index prevents case variants ('UniqueTest@Example.com' vs 'uniquetest@example.com'), email validation rejects malformed emails, password validation enforces 8-char minimum. Minor: emailLower field returned in response (not security issue), spaces-only passwords accepted (minor validation gap). All core auth hardening requirements fully functional."
   # Added by main agent (Dec 31, 2025)
+
+  - task: "Password policy upgrade: reject whitespace-only + require letter+number"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented isStrongPassword(): rejects whitespace-only passwords and enforces >=1 letter and >=1 number (min length 8 still enforced). Applied to /api/auth/register. Added matching client-side validation and clearer toast message in /app/app/login/page.js."
   - task: "Admin login (auth) restores admin user + normalizes email"
     implemented: true
     working: true
