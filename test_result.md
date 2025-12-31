@@ -162,6 +162,21 @@ backend:
         agent: "testing"
         comment: "MOBILE PERFORMANCE + SOUND EFFECTS TESTING COMPLETED - All optimizations working correctly. ✅ Mobile viewport (390x844) tested - homepage loads without freezing or jank. ✅ Mobile menu (Sheet) opens smoothly without UI freeze or hard errors. ✅ Global click effects tested with rapid clicking - no crashes detected, performance tier system prevents overload. ✅ Robot icon (PerfectCellLogo) clicked successfully - fewer hearts/stars appear as optimized for mobile performance. ✅ Sound effects restoration verified - click sounds work properly via shared WebAudio helper (lib/audioSfx.js). ✅ Low-power mobile guards working - AnimatedBackground reduces particle load on mobile devices. ✅ No performance spikes or freezing detected during extensive mobile testing."
 
+  - task: "Performance tier system (High/Mid/Low) + lazy-loaded FX + image optimization"
+    implemented: true
+    working: true
+    file: "lib/contexts/PerfContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Introduced PerfProvider with High/Mid/Low tiers; gated heavy effects (background ribbons/shooting stars, click bursts, celebration particle density) while keeping click sounds + core features. Lazy-loaded global FX layers via next/dynamic. Enabled Next.js image optimization (AVIF/WebP) + caching headers; converted admin image previews to next/image."
+      - working: true
+        agent: "testing"
+        comment: "MOBILE PERFORMANCE TESTING COMPLETED - All performance optimizations working correctly. ✅ PerfProvider (High/Mid/Low tiers) automatically detects mobile devices and applies appropriate performance tier. ✅ Lazy-loaded AnimatedBackground + GlobalClickEffects via PerfDynamicLayers loads without blocking initial render. ✅ Low-tier disables heavy background ribbons/shooting stars and click burst visuals while preserving click sounds. ✅ Mobile viewport (390x844) loads homepage without freezing or performance issues. ✅ Global click effects tested with rapid clicking - no crashes or UI freeze detected. ✅ Image optimization enabled in next.config.js with AVIF/WebP formats and cache headers. ✅ Performance tier system successfully scales down effects on mobile while maintaining core functionality."
+
   - task: "Admin order search by order number (partial match)"
     implemented: true
     working: true
