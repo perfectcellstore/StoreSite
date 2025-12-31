@@ -51,6 +51,19 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function isStrongPassword(password) {
+  const p = String(password || '');
+  // Reject passwords that are only whitespace
+  if (!p.trim()) return false;
+  // Min length is enforced separately, but keep it safe here too
+  if (p.length < 8) return false;
+  // Must contain at least 1 letter and 1 number
+  const hasLetter = /[A-Za-z]/.test(p);
+  const hasNumber = /\d/.test(p);
+  return hasLetter && hasNumber;
+}
+
+
 function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
