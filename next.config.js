@@ -29,6 +29,19 @@ const nextConfig = {
   },
   async headers() {
     return [
+      // Cache static assets aggressively (images, fonts, etc.)
+      {
+        source: "/:path*.(ico|png|jpg|jpeg|webp|avif|gif|svg)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/:path*.(woff|woff2|ttf|otf)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
       {
         source: "/(.*)",
         headers: [
