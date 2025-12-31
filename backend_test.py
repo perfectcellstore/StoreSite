@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Backend API Testing for Auth Hardening Features
-Tests the upgraded auth system with validation, unique email, and rate limiting
+Tests the upgraded auth system with validation, unique email, rate limiting, and password policy
 """
 
 import requests
