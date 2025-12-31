@@ -44,9 +44,8 @@ export function PerfectCellLogo() {
       setHearts([]);
     }, 2000);
 
-    // Play happy sound (shared WebAudio helper)
-    ensureAudioRunning();
-    playHappyChirp();
+    // Play robot sound (shared audio manager)
+    playRobot();
   };
 
   return (
