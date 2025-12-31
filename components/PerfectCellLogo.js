@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react/no-unknown-property */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { playHappyChirp, ensureAudioRunning } from '@/lib/audioSfx';
 
