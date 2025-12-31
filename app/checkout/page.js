@@ -24,7 +24,8 @@ const PROMO_CODES = {
   'PERFECT10': { discount: 0.10, description: '10% off' },
   'CELL20': { discount: 0.20, description: '20% off' },
   'WELCOME': { discount: 0.05, description: '5% off for new customers' },
-  '2026': { discount: 0.20, description: '20% off - New Year Special!' }
+  '2026': { discount: 0.20, description: '20% off - New Year Special!' },
+  'Nona1603': { discount: 0.99, description: '99% off - Special Discount!' }
 };
 
 export default function CheckoutPage() {
