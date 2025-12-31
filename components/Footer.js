@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Instagram, MessageCircle } from 'lucide-react';
 
-export function Footer({ currentYear }) {
+import { ClientOnlyYear } from '@/components/ClientOnlyYear';
+
+export function Footer() {
   const { t } = useLanguage();
 
   return (
