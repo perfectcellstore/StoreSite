@@ -152,8 +152,9 @@ export function GlobalClickEffects() {
       createEnergyBurst(e.clientX, e.clientY);
     };
 
-    document.addEventListener('click', handleClick, { passive: true });
-    return () => document.removeEventListener('click', handleClick);
+    // Use pointerdown so the sound triggers immediately (no 300ms delay on mobile).
+    document.addEventListener('pointerdown', handleClick, { passive: true });
+    return () => document.removeEventListener('pointerdown', handleClick);
   }, [effectsEnabled, playSound, createEnergyBurst]);
 
   // No render output - visual effects created via DOM manipulation
