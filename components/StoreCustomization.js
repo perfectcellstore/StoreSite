@@ -216,7 +216,7 @@ export function StoreCustomization() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold gradient-text">Store Customization</h2>
-          <p className="text-muted-foreground">Customize your store's appearance and content</p>
+          <p className="text-muted-foreground">Customize your store&apos;s appearance and content</p>
         </div>
         <div className="flex gap-2">
           <Button
