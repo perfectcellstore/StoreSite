@@ -323,12 +323,151 @@ def test_regression_customization_public():
     except Exception as e:
         log_test("Customization public", "FAIL", f"Request failed: {e}")
 
+def test_password_policy_upgrade():
+    """Test password policy upgrade: reject whitespace-only + require letter+number"""
+    print("\n=== TESTING PASSWORD POLICY UPGRADE ===")
+    
+    # Test 1: Password with only whitespace (8 spaces) should be rejected
+    try:
+        response = requests.post(f"{BASE_URL}/auth/register", 
+                               json={
+                                   "email": "test_whitespace@example.com",
+                                   "password": "        ",  # 8 spaces
+                                   "name": "Test User"
+                               }, 
+                               headers=HEADERS, timeout=10)
+        
+        if response.status_code == 400:
+            error_msg = response.json().get("error", "")
+            if "letter" in error_msg.lower() and "number" in error_msg.lower():
+                log_test("Password Policy - Whitespace Only (8 spaces)", "PASS", f"Correctly rejected: {error_msg}")
+            else:
+                log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Wrong error message: {error_msg}")
+        else:
+            log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Expected 400, got {response.status_code}")
+    except Exception as e:
+        log_test("Password Policy - Whitespace Only (8 spaces)", "FAIL", f"Request failed: {e}")
+    
+    # Test 2: Password with letters only should be rejected
+    try:
+        response = requests.post(f"{BASE_URL}/auth/register", 
+                               json={
+                                   "email": "test_letters@example.com",
+                                   "password": "abcdefgh",  # letters only
+                                   "name": "Test User"
+                               }, 
+                               headers=HEADERS, timeout=10)
+        
+        if response.status_code == 400:
+            error_msg = response.json().get("error", "")
+            if "letter" in error_msg.lower() and "number" in error_msg.lower():
+                log_test("Password Policy - Letters Only", "PASS", f"Correctly rejected: {error_msg}")
+            else:
+                log_test("Password Policy - Letters Only", "FAIL", f"Wrong error message: {error_msg}")
+        else:
+            log_test("Password Policy - Letters Only", "FAIL", f"Expected 400, got {response.status_code}")
+    except Exception as e:
+        log_test("Password Policy - Letters Only", "FAIL", f"Request failed: {e}")
+    
+    # Test 3: Password with numbers only should be rejected
+    try:
+        response = requests.post(f"{BASE_URL}/auth/register", 
+                               json={
+                                   "email": "test_numbers@example.com",
+                                   "password": "12345678",  # numbers only
+                                   "name": "Test User"
+                               }, 
+                               headers=HEADERS, timeout=10)
+        
+        if response.status_code == 400:
+            error_msg = response.json().get("error", "")
+            if "letter" in error_msg.lower() and "number" in error_msg.lower():
+                log_test("Password Policy - Numbers Only", "PASS", f"Correctly rejected: {error_msg}")
+            else:
+                log_test("Password Policy - Numbers Only", "FAIL", f"Wrong error message: {error_msg}")
+        else:
+            log_test("Password Policy - Numbers Only", "FAIL", f"Expected 400, got {response.status_code}")
+    except Exception as e:
+        log_test("Password Policy - Numbers Only", "FAIL", f"Request failed: {e}")
+    
+    # Test 4: Valid password with letters and numbers should be accepted
+    test_email = None
+    try:
+        timestamp = str(int(time.time()))
+        test_email = f"test_valid_{timestamp}@example.com"
+        response = requests.post(f"{BASE_URL}/auth/register", 
+                               json={
+                                   "email": test_email,
+                                   "password": "abcd1234",  # letters + numbers
+                                   "name": "Test User"
+                               }, 
+                               headers=HEADERS, timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if "token" in data and "user" in data:
+                log_test("Password Policy - Valid Password (letters + numbers)", "PASS", f"Successfully registered: {data['user']['email']}")
+            else:
+                log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Missing token or user in response")
+        else:
+            log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Expected 200, got {response.status_code}: {response.text}")
+    except Exception as e:
+        log_test("Password Policy - Valid Password (letters + numbers)", "FAIL", f"Request failed: {e}")
+    
+    # Test 5: Login should work for user created with valid password
+    if test_email:
+        try:
+            response = requests.post(f"{BASE_URL}/auth/login", 
+                                   json={
+                                       "email": test_email,
+                                       "password": "abcd1234"
+                                   }, 
+                                   headers=HEADERS, timeout=10)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "token" in data and "user" in data:
+                    log_test("Login - Valid User Authentication", "PASS", f"Successfully logged in: {data['user']['email']}")
+                else:
+                    log_test("Login - Valid User Authentication", "FAIL", f"Missing token or user in response")
+            else:
+                log_test("Login - Valid User Authentication", "FAIL", f"Expected 200, got {response.status_code}: {response.text}")
+        except Exception as e:
+            log_test("Login - Valid User Authentication", "FAIL", f"Request failed: {e}")
+    
+    # Test 6: Rate limiting sanity check (1-2 wrong logins should return 401)
+    try:
+        # Use a non-existent email to avoid affecting real users
+        payload = {
+            "email": "nonexistent@example.com",
+            "password": "wrongpassword"
+        }
+        
+        # First wrong login
+        response1 = requests.post(f"{BASE_URL}/auth/login", 
+                                json=payload, headers=HEADERS, timeout=10)
+        
+        # Second wrong login
+        response2 = requests.post(f"{BASE_URL}/auth/login", 
+                                json=payload, headers=HEADERS, timeout=10)
+        
+        if response1.status_code == 401 and response2.status_code == 401:
+            log_test("Rate Limiting - Sanity Check (Wrong Logins)", "PASS", "Both wrong logins correctly returned 401")
+        else:
+            log_test("Rate Limiting - Sanity Check (Wrong Logins)", "FAIL", 
+                    f"Expected 401 for both, got {response1.status_code} and {response2.status_code}")
+    except Exception as e:
+        log_test("Rate Limiting - Sanity Check (Wrong Logins)", "FAIL", f"Request failed: {e}")
+
 def main():
     """Run all auth hardening tests"""
     print("🔐 AUTH HARDENING BACKEND TESTING")
     print("=" * 50)
     print(f"Testing against: {BASE_URL}")
     print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Test password policy upgrade first
+    test_password_policy_upgrade()
     
     # Test registration validation
     test_email, token = test_auth_register_validation()
