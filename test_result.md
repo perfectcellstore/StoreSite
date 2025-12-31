@@ -139,6 +139,18 @@ backend:
     needs_retesting: false
     status_history:
       - working: true
+
+  - task: "Admin order search by order number (partial match)"
+    implemented: true
+    working: "NA"
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added support for /api/orders?search=... (admin-only) to filter by order.id partial match. Added search input in /app/app/admin/page.js with debounce."
         agent: "main"
         comment: "Fixed route matching by moving the more specific /products/{id}/reviews route BEFORE the general /products/{id} route. Reviews endpoint now returns correct data."
 
