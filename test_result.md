@@ -931,3 +931,101 @@ agent_communication:
       ✅ All pages loading fast
       
       The site is now extremely fast and responsive with zero lag or visual issues.
+      
+  - agent: "main"
+    message: |
+      NAVIGATION CLICK EFFECT REFINED - SCOPED AND POLISHED
+      
+      ISSUE REPORTED:
+      - Green click/flash effect was affecting entire navigation/header
+      - Effect was too aggressive (spreading beyond button boundaries)
+      - Not scoped to individual buttons
+      - Could cause visual instability in header
+      
+      PREVIOUS IMPLEMENTATION PROBLEMS:
+      - button:active::before with inset: -10px (extended 10px beyond button)
+      - Opacity too high (0.4 = 40%)
+      - Animation too slow (0.3s)
+      - Scale from 0 to 2 (too dramatic)
+      - z-index: 10 (could overlap other elements)
+      - No overflow containment on buttons
+      
+      REFINEMENTS APPLIED:
+      1. Scoped to Button Boundaries:
+         - Changed from ::before to ::after (better layering)
+         - Changed inset: -10px to inset: 0 (stays within button)
+         - Added border-radius: inherit (matches button shape)
+         - Added overflow: hidden to buttons (contains effect)
+      
+      2. Reduced Intensity:
+         - Opacity: 0.4 → 0.15 (62.5% reduction)
+         - Gradient: circle → circle at center (better centering)
+         - Gradient spread: 70% → 60% (tighter)
+         - z-index: 10 → 1 (proper layering)
+      
+      3. Faster Duration:
+         - Animation time: 0.3s → 0.15s (50% faster)
+         - Scale range: 0→2 → 0.8→1 (subtle pulse)
+         - Ease-out timing preserved (smooth)
+      
+      4. Ripple Effect Also Refined:
+         - Opacity: 0.6 → 0.3 (50% reduction)
+         - Duration: 0.6s → 0.4s (33% faster)
+         - Max size: 100px → 80px (more contained)
+         - Added z-index: 1 (proper stacking)
+      
+      CSS CHANGES:
+      ```css
+      /* BEFORE */
+      button:active::before {
+        inset: -10px;  /* Extends beyond button */
+        background: radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, transparent 70%);
+        animation: spark-burst 0.3s ease-out;
+        z-index: 10;
+      }
+      
+      /* AFTER */
+      button:active::after {
+        inset: 0;  /* Contained within button */
+        background: radial-gradient(circle at center, rgba(34, 197, 94, 0.15) 0%, transparent 60%);
+        animation: button-feedback 0.15s ease-out;
+        border-radius: inherit;  /* Matches button shape */
+        z-index: 1;
+      }
+      ```
+      
+      BUTTON POSITIONING:
+      ```css
+      button, .btn-glow {
+        position: relative;  /* Contains pseudo-element */
+        overflow: hidden;     /* Clips any overflow */
+      }
+      ```
+      
+      EFFECT CHARACTERISTICS:
+      - Duration: 150ms (fast, responsive)
+      - Opacity: 15% (subtle, not jarring)
+      - Scope: Button boundaries only (no header flash)
+      - Scale: 0.8 to 1.0 (gentle pulse)
+      - Stacking: No overlap with rapid clicks
+      - Performance: No forced reflows
+      
+      TESTING:
+      ✅ Effect stays within button boundaries
+      ✅ No header background flash
+      ✅ Smooth 150ms transition
+      ✅ Low opacity (subtle, not distracting)
+      ✅ Rapid clicks don't stack visibly
+      ✅ Header remains stable
+      ✅ All buttons work correctly
+      ✅ Icons and text unaffected
+      
+      PRESERVED:
+      ✅ Green color (bio-green-500)
+      ✅ Radial gradient style
+      ✅ Click feedback behavior
+      ✅ All button functionality
+      ✅ Navigation layout
+      ✅ Hover states
+      
+      The click effect is now polished, scoped, and performant without affecting header stability.
