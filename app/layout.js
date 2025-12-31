@@ -9,6 +9,7 @@ import { CustomizationProvider } from "@/lib/contexts/CustomizationContext";
 import { Toaster } from "@/components/ui/toaster";
 import { GlobalClickEffects } from "@/components/GlobalClickEffects";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { LanguageSelectionPopup } from "@/components/LanguageSelectionPopup";
 
 export const metadata = {
   title: "Perfect Sell - Evolve Your Collection",
