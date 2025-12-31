@@ -22,7 +22,29 @@ export function AnimatedBackground() {
     setPrefersReducedMotion(mediaQuery.matches);
     setIsMobile(window.innerWidth < 768);
 
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    // Very lightweight heuristic: treat very small screens or low core count as low-power.
+    // This helps prevent jank/freezing on some mobile devices.
+    try {
+      const cores = navigator?.hardwareConcurrency || 4;
+      const mem = navigator?.deviceMemory || 4;
+      const low = (window.innerWidth < 420) || cores <= 4 || mem <= 4;
+      setIsLowPowerMobile(low);
+    } catch {
+      setIsLowPowerMobile(false);
+    }
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      try {
+        const cores = navigator?.hardwareConcurrency || 4;
+        const mem = navigator?.deviceMemory || 4;
+        const low = (window.innerWidth < 420) || cores <= 4 || mem <= 4;
+        setIsLowPowerMobile(low);
+      } catch {
+        // ignore
+      }
+    };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
