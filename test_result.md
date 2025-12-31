@@ -109,6 +109,14 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
+  
+  CONTINUATION REQUEST (Jan 2026):
+  - Sounds in the site are not working - fix it
+  - Remove all duplicate code
+  - Make it less expensive on GPU/CPU on mobile (no lag or freeze)
+  - Identify the most expensive operations and optimize them
+
+
 user_problem_statement: |
   Fix the product reviews feature that currently appears to work but is not functionally connected.
   
