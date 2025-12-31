@@ -250,7 +250,7 @@ export function AnimatedBackground() {
       />
 
       {/* Flowing Aurora Ribbon 1 */}
-      {effectiveIntensity !== 'low' && !isLowPowerMobile && (
+      {effectiveIntensity !== 'low' && !isLowPowerMobile && perf?.fx?.allowBackgroundRibbons && (
         <div
           className="absolute inset-0"
           style={{
