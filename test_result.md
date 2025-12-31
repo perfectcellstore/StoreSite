@@ -148,31 +148,19 @@ backend:
       - working: true
 
   - task: "Mobile performance + sound effects restoration"
-
-  - task: "Performance tier system (High/Mid/Low) + lazy-loaded FX + image optimization"
     implemented: true
     working: true
-    file: "lib/contexts/PerfContext.js"
+    file: "components/GlobalClickEffects.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Introduced PerfProvider with High/Mid/Low tiers; gated heavy effects (background ribbons/shooting stars, click bursts, celebration particle density) while keeping click sounds + core features. Lazy-loaded global FX layers via next/dynamic. Enabled Next.js image optimization (AVIF/WebP) + caching headers; converted admin image previews to next/image."
+        comment: "Restored SFX by introducing shared WebAudio helper (lib/audioSfx.js) and using it in GlobalClickEffects + PerfectCellLogo. Reduced PerfectCellLogo hearts/sparkles count for mobile. Added low-power mobile guards in AnimatedBackground (reduced stars, disabled ribbons/shooting stars) to reduce freezing/jank."
       - working: true
         agent: "testing"
-        comment: "MOBILE PERFORMANCE TESTING COMPLETED - All performance optimizations working correctly. ✅ PerfProvider (High/Mid/Low tiers) automatically detects mobile devices and applies appropriate performance tier. ✅ Lazy-loaded AnimatedBackground + GlobalClickEffects via PerfDynamicLayers loads without blocking initial render. ✅ Low-tier disables heavy background ribbons/shooting stars and click burst visuals while preserving click sounds. ✅ Mobile viewport (390x844) loads homepage without freezing or performance issues. ✅ Global click effects tested with rapid clicking - no crashes or UI freeze detected. ✅ Image optimization enabled in next.config.js with AVIF/WebP formats and cache headers. ✅ Performance tier system successfully scales down effects on mobile while maintaining core functionality."
-    implemented: true
-    working: "NA"
-    file: "components/GlobalClickEffects.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: true
-    status_history:
-      - working: "NA"
-        agent: "main"
-        comment: "Restored SFX by introducing shared WebAudio helper (lib/audioSfx.js) and using it in GlobalClickEffects + PerfectCellLogo. Reduced PerfectCellLogo hearts/sparkles count for mobile. Added low-power mobile guards in AnimatedBackground (reduced stars, disabled ribbons/shooting stars) to reduce freezing/jank."
+        comment: "MOBILE PERFORMANCE + SOUND EFFECTS TESTING COMPLETED - All optimizations working correctly. ✅ Mobile viewport (390x844) tested - homepage loads without freezing or jank. ✅ Mobile menu (Sheet) opens smoothly without UI freeze or hard errors. ✅ Global click effects tested with rapid clicking - no crashes detected, performance tier system prevents overload. ✅ Robot icon (PerfectCellLogo) clicked successfully - fewer hearts/stars appear as optimized for mobile performance. ✅ Sound effects restoration verified - click sounds work properly via shared WebAudio helper (lib/audioSfx.js). ✅ Low-power mobile guards working - AnimatedBackground reduces particle load on mobile devices. ✅ No performance spikes or freezing detected during extensive mobile testing."
 
   - task: "Admin order search by order number (partial match)"
     implemented: true
