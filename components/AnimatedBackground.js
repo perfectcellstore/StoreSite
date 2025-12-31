@@ -95,7 +95,7 @@ export function AnimatedBackground() {
       duration: 2 + Math.random() * 3,
       brightness: Math.random() > 0.8 ? 1 : 0.6,
     }));
-  }, [isMobile]);
+  }, [isMobile, isLowPowerMobile]);
 
   // Shooting stars (fewer, more impactful)
   const shootingStars = useMemo(() => {
