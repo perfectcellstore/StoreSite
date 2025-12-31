@@ -86,7 +86,8 @@ export function AnimatedBackground() {
 
   // Generate stable star positions (memoized to prevent re-renders)
   const stars = useMemo(() => {
-    const starCount = isMobile ? (isLowPowerMobile ? 20 : 40) : 80;
+    // Significantly reduced star count for better mobile performance
+    const starCount = isMobile ? (isLowPowerMobile ? 10 : 15) : 60;
     return Array.from({ length: starCount }, (_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
