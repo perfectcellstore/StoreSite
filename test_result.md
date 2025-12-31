@@ -258,6 +258,15 @@ agent_communication:
          - Correctly rejects letters-only passwords ✓
       
       3. POST /api/auth/register with password "12345678" (numbers only):
+
+  - agent: "main"
+    message: |
+      ORDER SUCCESS VICTORY SCREEN (Dec 31, 2025)
+      - Enhanced /order-success page with a unique “Victory / Thank you” experience
+      - Added fire embers + green ki particles + aura shimmer animation (canvas + CSS), performance-capped and reduced-motion aware
+      - Added seeded random quote selection (stable per orderId) from lib/orderSuccessQuotes.js
+      - Added bilingual EN/AR copy across the entire screen (MSA Arabic)
+      - Mobile tested (Arabic works via language popup); desktop screenshot verified
          - Result: 400 with "Password must contain at least 1 letter and 1 number" ✓
          - Correctly rejects numbers-only passwords ✓
       
