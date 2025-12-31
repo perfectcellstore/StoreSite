@@ -269,6 +269,17 @@ test_plan:
   # Added by main agent (Dec 31, 2025)
 
   - task: "Password policy upgrade: reject whitespace-only + require letter+number"
+
+agent_communication:
+  - agent: "main"
+    message: |
+      PERFORMANCE OPTIMIZATION STRATEGY IMPLEMENTED (Jan 2026)
+      - Added PerfProvider (High/Mid/Low tiers) to automatically scale down heavy FX on low-end mobile
+      - Lazy-loaded global FX layers (AnimatedBackground + GlobalClickEffects) with next/dynamic for faster initial render
+      - Gated heavy background extras (ribbons/shooting stars) + disabled click burst visuals on low tier (sound remains ON)
+      - Order-success canvas particle density now scales by tier (low/mid/high)
+      - Enabled next/image optimization (AVIF/WebP) + static asset cache headers
+      - Added OptimizedImage wrapper to safely handle arbitrary admin-provided image URLs (next/image for allowed hosts, <img lazy> fallback for others)
     implemented: true
     working: true
     file: "app/api/[[...path]]/route.js"
