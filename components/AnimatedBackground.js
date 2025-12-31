@@ -1,6 +1,6 @@
 'use client';
 
-/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/no-unknown-property, react-hooks/purity */
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
