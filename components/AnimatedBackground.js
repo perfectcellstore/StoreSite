@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useCustomization } from '@/lib/contexts/CustomizationContext';
 
@@ -11,234 +11,402 @@ export function AnimatedBackground() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check for reduced motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setPrefersReducedMotion(mediaQuery.matches);
-
-    // Check if mobile
     setIsMobile(window.innerWidth < 768);
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Get animation settings from customization (with defaults)
+  // Generate stable star positions (memoized to prevent re-renders)
+  const stars = useMemo(() => {
+    const starCount = isMobile ? 40 : 80;
+    return Array.from({ length: starCount }, (_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: Math.random() * 2 + 1,
+      delay: Math.random() * 4,
+      duration: 2 + Math.random() * 3,
+      brightness: Math.random() > 0.8 ? 1 : 0.6,
+    }));
+  }, [isMobile]);
+
+  // Shooting stars (fewer, more impactful)
+  const shootingStars = useMemo(() => {
+    if (isMobile) return [];
+    return Array.from({ length: 3 }, (_, i) => ({
+      id: i,
+      delay: i * 8 + Math.random() * 4,
+      duration: 1.5 + Math.random(),
+      startX: 10 + Math.random() * 30,
+      startY: Math.random() * 40,
+    }));
+  }, [isMobile]);
+
   const animationSettings = customization?.animation || {
     enabled: true,
     intensity: 'medium',
     speed: 'medium',
-    opacity: 0.3,
+    opacity: 0.4,
     placement: 'global',
   };
 
-  // Only show on homepage
   const isHomepage = pathname === '/';
 
-  // Don't render if disabled, reduced motion preferred, or not homepage
   if (!animationSettings.enabled || prefersReducedMotion || !isHomepage) {
     return null;
   }
 
-  // Adjust settings for mobile
   const effectiveIntensity = isMobile ? 'low' : animationSettings.intensity;
-  const effectiveSpeed = isMobile ? 'slow' : animationSettings.speed;
-  const effectiveOpacity = isMobile ? Math.min(animationSettings.opacity, 0.2) : animationSettings.opacity;
-
-  // Map intensity to number of waves
-  const waveCount = {
-    low: 2,
-    medium: 3,
-    high: 5,
-  }[effectiveIntensity];
-
-  // Map speed to animation duration
-  const animationDuration = {
-    slow: '30s',
-    medium: '20s',
-    fast: '12s',
-  }[effectiveSpeed];
+  const effectiveOpacity = isMobile ? 0.35 : 0.5;
+  const baseDuration = isMobile ? 35 : 25;
 
   return (
     <div 
       className="fixed inset-0 pointer-events-none overflow-hidden"
-      style={{ 
-        zIndex: 0,
-        opacity: effectiveOpacity,
-      }}
+      style={{ zIndex: 0 }}
       aria-hidden="true"
     >
-      {/* Energy Wave Layers */}
-      {Array.from({ length: waveCount }).map((_, index) => (
+      {/* Deep Space Base Layer */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 20% 20%, rgba(88, 28, 135, 0.15) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(15, 23, 42, 0.3) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 50%, rgba(30, 41, 59, 0.2) 0%, transparent 70%)
+          `,
+        }}
+      />
+
+      {/* Twinkling Stars Layer */}
+      <div className="absolute inset-0" style={{ opacity: 0.9 }}>
+        {stars.map((star) => (
+          <div
+            key={star.id}
+            className="absolute rounded-full"
+            style={{
+              left: star.left,
+              top: star.top,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              backgroundColor: star.brightness > 0.8 ? '#fff' : 'rgba(255,255,255,0.7)',
+              boxShadow: star.brightness > 0.8 
+                ? '0 0 6px 2px rgba(255,255,255,0.4), 0 0 12px 4px rgba(147,197,253,0.2)' 
+                : '0 0 3px 1px rgba(255,255,255,0.3)',
+              animation: `twinkle ${star.duration}s ease-in-out ${star.delay}s infinite`,
+              willChange: 'opacity',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Aurora/Nebula Layer 1 - Green Energy */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: effectiveOpacity,
+          background: `
+            radial-gradient(ellipse 80% 50% at 20% 40%, 
+              rgba(16, 185, 129, 0.4) 0%, 
+              rgba(5, 150, 105, 0.2) 30%,
+              transparent 70%)
+          `,
+          animation: `nebulaDrift1 ${baseDuration}s ease-in-out infinite`,
+          filter: isMobile ? 'blur(40px)' : 'blur(60px)',
+          willChange: 'transform, opacity',
+        }}
+      />
+
+      {/* Aurora/Nebula Layer 2 - Purple/Pink */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: effectiveOpacity * 0.8,
+          background: `
+            radial-gradient(ellipse 70% 60% at 75% 30%, 
+              rgba(139, 92, 246, 0.35) 0%, 
+              rgba(168, 85, 247, 0.2) 30%,
+              transparent 65%)
+          `,
+          animation: `nebulaDrift2 ${baseDuration * 1.2}s ease-in-out infinite`,
+          animationDelay: '-5s',
+          filter: isMobile ? 'blur(50px)' : 'blur(70px)',
+          willChange: 'transform, opacity',
+        }}
+      />
+
+      {/* Aurora/Nebula Layer 3 - Cyan/Blue */}
+      <div
+        className="absolute inset-0"
+        style={{
+          opacity: effectiveOpacity * 0.7,
+          background: `
+            radial-gradient(ellipse 60% 70% at 60% 70%, 
+              rgba(34, 211, 238, 0.3) 0%, 
+              rgba(59, 130, 246, 0.2) 35%,
+              transparent 60%)
+          `,
+          animation: `nebulaDrift3 ${baseDuration * 0.9}s ease-in-out infinite`,
+          animationDelay: '-10s',
+          filter: isMobile ? 'blur(45px)' : 'blur(65px)',
+          willChange: 'transform, opacity',
+        }}
+      />
+
+      {/* Galaxy Core Glow */}
+      <div
+        className="absolute"
+        style={{
+          top: '30%',
+          left: '25%',
+          width: isMobile ? '300px' : '500px',
+          height: isMobile ? '300px' : '500px',
+          background: `
+            radial-gradient(circle at center,
+              rgba(16, 185, 129, 0.25) 0%,
+              rgba(52, 211, 153, 0.15) 20%,
+              rgba(34, 197, 94, 0.08) 40%,
+              transparent 70%)
+          `,
+          animation: `coreGlow ${baseDuration * 0.8}s ease-in-out infinite`,
+          filter: isMobile ? 'blur(30px)' : 'blur(50px)',
+          willChange: 'transform, opacity',
+        }}
+      />
+
+      {/* Flowing Aurora Ribbon 1 */}
+      {effectiveIntensity !== 'low' && (
         <div
-          key={index}
           className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse at ${20 + index * 20}% ${30 + index * 15}%, 
-              rgba(16, 185, 129, 0.4) 0%, 
-              rgba(59, 130, 246, 0.3) 30%, 
-              transparent 70%)`,
-            animation: `energyWave${index} ${animationDuration} ease-in-out infinite`,
-            animationDelay: `${index * 2}s`,
-            filter: 'blur(40px)',
-            transform: `scale(${1.2 + index * 0.3})`,
+            opacity: 0.4,
+            background: `
+              linear-gradient(135deg, 
+                transparent 0%, 
+                transparent 35%,
+                rgba(16, 185, 129, 0.3) 45%,
+                rgba(52, 211, 153, 0.2) 50%,
+                rgba(34, 211, 238, 0.15) 55%,
+                transparent 65%,
+                transparent 100%)
+            `,
+            backgroundSize: '200% 200%',
+            animation: `auroraFlow ${baseDuration * 1.5}s ease-in-out infinite`,
+            filter: 'blur(20px)',
+            willChange: 'background-position',
+          }}
+        />
+      )}
+
+      {/* Flowing Aurora Ribbon 2 */}
+      {effectiveIntensity !== 'low' && (
+        <div
+          className="absolute inset-0"
+          style={{
+            opacity: 0.35,
+            background: `
+              linear-gradient(-135deg, 
+                transparent 0%, 
+                transparent 40%,
+                rgba(139, 92, 246, 0.25) 48%,
+                rgba(168, 85, 247, 0.15) 52%,
+                transparent 60%,
+                transparent 100%)
+            `,
+            backgroundSize: '200% 200%',
+            animation: `auroraFlow2 ${baseDuration * 1.3}s ease-in-out infinite`,
+            animationDelay: '-8s',
+            filter: 'blur(25px)',
+            willChange: 'background-position',
+          }}
+        />
+      )}
+
+      {/* Shooting Stars */}
+      {shootingStars.map((star) => (
+        <div
+          key={`shooting-${star.id}`}
+          className="absolute"
+          style={{
+            left: `${star.startX}%`,
+            top: `${star.startY}%`,
+            width: '2px',
+            height: '2px',
+            backgroundColor: '#fff',
+            borderRadius: '50%',
+            boxShadow: `
+              0 0 6px 2px rgba(255,255,255,0.8),
+              0 0 12px 4px rgba(147,197,253,0.4),
+              -20px 0 15px 2px rgba(255,255,255,0.3),
+              -40px 0 25px 1px rgba(147,197,253,0.2)
+            `,
+            animation: `shootingStar ${star.duration}s ease-out ${star.delay}s infinite`,
+            willChange: 'transform, opacity',
           }}
         />
       ))}
 
-      {/* Pulsing Energy Core */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{
-          width: isMobile ? '200px' : '400px',
-          height: isMobile ? '200px' : '400px',
-          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.5) 0%, transparent 70%)',
-          animation: `energyPulse ${animationDuration} ease-in-out infinite`,
-          filter: 'blur(60px)',
-        }}
-      />
-
-      {/* Flowing Aura Streaks */}
-      {effectiveIntensity !== 'low' && (
-        <>
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.3) 50%, transparent 100%)',
-              animation: `auraFlow1 ${animationDuration} linear infinite`,
-              filter: 'blur(30px)',
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(-45deg, transparent 0%, rgba(59, 130, 246, 0.25) 50%, transparent 100%)',
-              animation: `auraFlow2 ${animationDuration} linear infinite`,
-              animationDelay: '5s',
-              filter: 'blur(30px)',
-            }}
-          />
-        </>
-      )}
-
-      {/* Light Beam Effect (High Intensity Only) */}
+      {/* Cosmic Dust Particles (Desktop only) */}
       {effectiveIntensity === 'high' && !isMobile && (
         <div
           className="absolute inset-0"
           style={{
-            background: `conic-gradient(from 0deg at 50% 50%, 
-              transparent 0deg, 
-              rgba(16, 185, 129, 0.2) 60deg, 
-              transparent 120deg, 
-              rgba(59, 130, 246, 0.15) 180deg, 
-              transparent 240deg, 
-              rgba(16, 185, 129, 0.2) 300deg, 
-              transparent 360deg)`,
-            animation: `lightBeam ${animationDuration} linear infinite`,
-            filter: 'blur(50px)',
+            opacity: 0.3,
+            background: `
+              radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+              radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.6) 0%, transparent 100%),
+              radial-gradient(1px 1px at 50% 30%, rgba(255,255,255,0.7) 0%, transparent 100%),
+              radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.5) 0%, transparent 100%),
+              radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.6) 0%, transparent 100%),
+              radial-gradient(2px 2px at 25% 75%, rgba(147,197,253,0.4) 0%, transparent 100%),
+              radial-gradient(2px 2px at 75% 25%, rgba(167,139,250,0.4) 0%, transparent 100%)
+            `,
+            animation: `dustDrift ${baseDuration * 2}s linear infinite`,
+            willChange: 'transform',
           }}
         />
       )}
 
-      {/* CSS Animations - Injected into page */}
+      {/* Galactic Spiral Hint (High intensity only) */}
+      {effectiveIntensity === 'high' && !isMobile && (
+        <div
+          className="absolute"
+          style={{
+            top: '20%',
+            right: '10%',
+            width: '400px',
+            height: '400px',
+            background: `
+              conic-gradient(from 0deg at 50% 50%,
+                transparent 0deg,
+                rgba(16, 185, 129, 0.08) 30deg,
+                transparent 60deg,
+                rgba(139, 92, 246, 0.06) 120deg,
+                transparent 150deg,
+                rgba(34, 211, 238, 0.05) 210deg,
+                transparent 240deg,
+                rgba(16, 185, 129, 0.07) 300deg,
+                transparent 330deg,
+                transparent 360deg)
+            `,
+            animation: `spiralRotate ${baseDuration * 3}s linear infinite`,
+            filter: 'blur(30px)',
+            willChange: 'transform',
+          }}
+        />
+      )}
+
+      {/* CSS Animations */}
       <style jsx>{`
-        @keyframes energyWave0 {
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+
+        @keyframes nebulaDrift1 {
           0%, 100% { 
-            transform: scale(1.2) translate(0%, 0%); 
-            opacity: 0.6;
+            transform: translate(0%, 0%) scale(1);
+            opacity: ${effectiveOpacity};
+          }
+          25% { 
+            transform: translate(5%, 3%) scale(1.05);
+            opacity: ${effectiveOpacity * 1.2};
           }
           50% { 
-            transform: scale(1.5) translate(5%, 5%); 
+            transform: translate(3%, -2%) scale(1.1);
+            opacity: ${effectiveOpacity * 0.9};
+          }
+          75% { 
+            transform: translate(-3%, 2%) scale(1.02);
+            opacity: ${effectiveOpacity * 1.1};
+          }
+        }
+
+        @keyframes nebulaDrift2 {
+          0%, 100% { 
+            transform: translate(0%, 0%) scale(1);
+            opacity: ${effectiveOpacity * 0.8};
+          }
+          33% { 
+            transform: translate(-4%, 4%) scale(1.08);
+            opacity: ${effectiveOpacity};
+          }
+          66% { 
+            transform: translate(4%, -3%) scale(0.95);
+            opacity: ${effectiveOpacity * 0.7};
+          }
+        }
+
+        @keyframes nebulaDrift3 {
+          0%, 100% { 
+            transform: translate(0%, 0%) scale(1);
+            opacity: ${effectiveOpacity * 0.7};
+          }
+          40% { 
+            transform: translate(3%, -4%) scale(1.06);
+            opacity: ${effectiveOpacity * 0.9};
+          }
+          70% { 
+            transform: translate(-2%, 3%) scale(0.98);
+            opacity: ${effectiveOpacity * 0.6};
+          }
+        }
+
+        @keyframes coreGlow {
+          0%, 100% { 
+            transform: scale(1);
             opacity: 0.8;
           }
-        }
-
-        @keyframes energyWave1 {
-          0%, 100% { 
-            transform: scale(1.5) translate(0%, 0%); 
-            opacity: 0.5;
-          }
           50% { 
-            transform: scale(1.8) translate(-5%, 5%); 
-            opacity: 0.7;
+            transform: scale(1.15);
+            opacity: 1;
           }
         }
 
-        @keyframes energyWave2 {
-          0%, 100% { 
-            transform: scale(1.8) translate(0%, 0%); 
-            opacity: 0.4;
-          }
-          50% { 
-            transform: scale(2.1) translate(3%, -5%); 
-            opacity: 0.6;
-          }
+        @keyframes auroraFlow {
+          0% { background-position: 0% 100%; }
+          50% { background-position: 100% 0%; }
+          100% { background-position: 0% 100%; }
         }
 
-        @keyframes energyWave3 {
-          0%, 100% { 
-            transform: scale(2.1) translate(0%, 0%); 
-            opacity: 0.3;
-          }
-          50% { 
-            transform: scale(2.4) translate(-3%, 3%); 
-            opacity: 0.5;
-          }
+        @keyframes auroraFlow2 {
+          0% { background-position: 100% 100%; }
+          50% { background-position: 0% 0%; }
+          100% { background-position: 100% 100%; }
         }
 
-        @keyframes energyWave4 {
-          0%, 100% { 
-            transform: scale(2.4) translate(0%, 0%); 
-            opacity: 0.25;
-          }
-          50% { 
-            transform: scale(2.7) translate(4%, -4%); 
-            opacity: 0.4;
-          }
-        }
-
-        @keyframes energyPulse {
-          0%, 100% { 
-            transform: translate(-50%, -50%) scale(1); 
-            opacity: 0.4;
-          }
-          50% { 
-            transform: translate(-50%, -50%) scale(1.3); 
-            opacity: 0.7;
-          }
-        }
-
-        @keyframes auraFlow1 {
+        @keyframes shootingStar {
           0% { 
-            transform: translateX(-100%) rotate(45deg); 
+            transform: translate(0, 0) rotate(35deg);
+            opacity: 0;
+          }
+          5% { 
+            opacity: 1;
+          }
+          30% { 
+            opacity: 1;
           }
           100% { 
-            transform: translateX(100%) rotate(45deg); 
+            transform: translate(400px, 250px) rotate(35deg);
+            opacity: 0;
           }
         }
 
-        @keyframes auraFlow2 {
-          0% { 
-            transform: translateX(100%) rotate(-45deg); 
-          }
-          100% { 
-            transform: translateX(-100%) rotate(-45deg); 
-          }
+        @keyframes dustDrift {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(-20px, 20px); }
         }
 
-        @keyframes lightBeam {
-          0% { 
-            transform: rotate(0deg); 
-          }
-          100% { 
-            transform: rotate(360deg); 
-          }
+        @keyframes spiralRotate {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
 
-        /* Performance optimization - use GPU acceleration */
+        /* Performance: GPU acceleration */
         @media (prefers-reduced-motion: reduce) {
           * {
             animation: none !important;
@@ -246,10 +414,10 @@ export function AnimatedBackground() {
           }
         }
 
-        /* Further simplification on low-end devices */
+        /* Mobile optimizations */
         @media (max-width: 768px) {
           [style*="blur"] {
-            filter: blur(20px) !important;
+            filter: blur(30px) !important;
           }
         }
       `}</style>
