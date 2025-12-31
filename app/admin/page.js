@@ -486,7 +486,17 @@ export default function AdminPage() {
 
           {/* Orders Tab */}
           <TabsContent value="orders" className="space-y-6">
-            <h2 className="text-2xl font-bold">Orders</h2>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <h2 className="text-2xl font-bold">Orders</h2>
+              <div className="w-full sm:w-80">
+                <Input
+                  value={orderSearch}
+                  onChange={(e) => setOrderSearch(e.target.value)}
+                  placeholder="Search by order number..."
+                  className="bg-background border-border focus:border-bio-green-500"
+                />
+              </div>
+            </div>
             
             <div className="grid grid-cols-1 gap-4">
               {orders.map((order) => (
