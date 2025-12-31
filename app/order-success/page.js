@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Check, Flame, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
+import { usePerf } from '@/lib/contexts/PerfContext';
 import OrderCelebrationFX from '@/components/OrderCelebrationFX';
 import { getVictoryCopy, makeSeededRng, pickVictoryQuote } from '@/lib/orderSuccessUtils';
 import { useCart } from '@/lib/contexts/CartContext';
