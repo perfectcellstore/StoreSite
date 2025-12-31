@@ -93,7 +93,7 @@ export function Navigation() {
 
           {/* Cart */}
           <Link href="/cart">
-            <Button variant="ghost" size="sm" className="relative hover:bg-bio-green-500/10 hover:text-bio-green-500">
+            <Button variant="ghost" size="sm" className="relative overflow-visible hover:bg-bio-green-500/10 hover:text-bio-green-500">
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-bio-green-500 text-xs text-white flex items-center justify-center animate-glow-pulse">
