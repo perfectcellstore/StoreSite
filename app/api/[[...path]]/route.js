@@ -39,6 +39,98 @@ function verifyToken(request) {
   }
 }
 
+
+// -----------------------------
+// Auth hardening helpers
+// -----------------------------
+const AUTH_RATE_LIMIT_MAX_FAILS = 5;
+const AUTH_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+
+function isValidEmail(email) {
+  // Basic RFC-like validation (practical, not overly strict)
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getClientIp(request) {
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) {
+    // first value is original client
+    return xff.split(',')[0]?.trim() || 'unknown';
+  }
+  const xRealIp = request.headers.get('x-real-ip');
+  if (xRealIp) return xRealIp.trim();
+  return 'unknown';
+}
+
+let authIndexesEnsured = false;
+async function ensureAuthIndexes(db) {
+  if (authIndexesEnsured) return;
+
+  // Unique emailLower prevents duplicate accounts regardless of email casing.
+  await db.collection('users').createIndex({ emailLower: 1 }, { unique: true });
+
+  // Rate-limit docs expire automatically (cleanup). We update updatedAt on every change.
+  await db.collection('auth_rate_limits').createIndex(
+    { updatedAt: 1 },
+    { expireAfterSeconds: 60 * 60 }
+  );
+
+  authIndexesEnsured = true;
+}
+
+async function getAuthRateLimit(db, key) {
+  const doc = await db.collection('auth_rate_limits').findOne({ key });
+  return doc || null;
+}
+
+async function recordAuthFailure(db, key) {
+  const now = Date.now();
+  const nowIso = new Date(now).toISOString();
+
+  const existing = await db.collection('auth_rate_limits').findOne({ key });
+
+  if (!existing) {
+    await db.collection('auth_rate_limits').insertOne({
+      id: uuidv4(),
+      key,
+      failedCount: 1,
+      firstFailedAt: now,
+      lockedUntil: null,
+      updatedAt: nowIso,
+    });
+    return;
+  }
+
+  const windowStart = existing.firstFailedAt || now;
+  const inWindow = now - windowStart <= AUTH_RATE_LIMIT_WINDOW_MS;
+  const nextFailedCount = inWindow ? (existing.failedCount || 0) + 1 : 1;
+
+  const lockedUntil =
+    nextFailedCount >= AUTH_RATE_LIMIT_MAX_FAILS
+      ? now + AUTH_RATE_LIMIT_WINDOW_MS
+      : existing.lockedUntil || null;
+
+  await db.collection('auth_rate_limits').updateOne(
+    { key },
+    {
+      $set: {
+        failedCount: nextFailedCount,
+        firstFailedAt: inWindow ? windowStart : now,
+        lockedUntil,
+        updatedAt: nowIso,
+      },
+    }
+  );
+}
+
+async function clearAuthFailures(db, key) {
+  await db.collection('auth_rate_limits').deleteOne({ key });
+}
+
 // GET Handler
 export async function GET(request, { params }) {
   const { path } = params;
