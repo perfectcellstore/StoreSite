@@ -6,6 +6,7 @@ import { AuthProvider } from "@/lib/contexts/AuthContext";
 import { EffectsProvider } from "@/lib/contexts/EffectsContext";
 import { NotificationProvider } from "@/lib/contexts/NotificationContext";
 import { CustomizationProvider } from "@/lib/contexts/CustomizationContext";
+import { PerfProvider } from "@/lib/contexts/PerfContext";
 import { Toaster } from "@/components/ui/toaster";
 import { GlobalClickEffects } from "@/components/GlobalClickEffects";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
