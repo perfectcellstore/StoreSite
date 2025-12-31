@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/FooterSSR';
+import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';

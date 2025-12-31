@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/FooterSSR';
+import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

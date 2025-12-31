@@ -8,7 +8,7 @@ import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { useCurrency } from '@/lib/contexts/CurrencyContext';
 import { useCart } from '@/lib/contexts/CartContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/FooterSSR';
+import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';

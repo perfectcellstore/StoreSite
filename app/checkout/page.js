@@ -7,7 +7,7 @@ import { useCurrency } from '@/lib/contexts/CurrencyContext';
 import { useCart } from '@/lib/contexts/CartContext';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/FooterSSR';
+import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
