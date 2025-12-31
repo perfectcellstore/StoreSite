@@ -11,7 +11,7 @@ export default function AudioBootstrapper() {
     if (typeof window === 'undefined') return;
 
     const unlock = () => {
-      bootstrapAudio();
+      unlockAudio();
     };
 
     // Use capture so we run before other handlers, and once so it doesn't add overhead.
