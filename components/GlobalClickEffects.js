@@ -136,21 +136,31 @@ export function GlobalClickEffects() {
 
   useEffect(() => {
     const handlePointer = (e) => {
+      // AUDIO: Always play if effects enabled (works on ALL tiers)
+      if (effectsEnabled) {
+        const now = Date.now();
+        if (now - lastSoundTime.current >= soundCooldown) {
+          lastSoundTime.current = now;
+          playClick(); // Synchronous, zero-latency playback
+        }
+      }
+
+      // VISUAL: Only create burst if effects enabled
       if (!effectsEnabled) return;
 
       // Get click position
       const x = e.clientX;
       const y = e.clientY;
 
-      // Create visual burst at click location (sound handled separately by GlobalClickSound)
+      // Create visual burst at click location
       createEnergyBurst(x, y);
     };
 
-    // Add global pointer listener for visual effects only
+    // SINGLE global listener for BOTH audio and visuals
     document.addEventListener('pointerdown', handlePointer, { passive: true });
     return () => document.removeEventListener('pointerdown', handlePointer);
   }, [effectsEnabled, createEnergyBurst]);
 
-  // No render output - visual effects are created via direct DOM manipulation for performance
+  // No render output - all effects created via direct DOM manipulation for performance
   return null;
 }
