@@ -29,9 +29,9 @@ export function GlobalClickEffects() {
       if (now - lastSoundTime.current < soundCooldown) return;
       lastSoundTime.current = now;
 
-      // Shared SFX (handles mobile AudioContext unlock)
+      // Shared SFX (unlocked on first user gesture by AudioBootstrapper)
       // Important: do NOT tie this to perf tiers; click sounds must stay enabled.
-      playClickWhoosh();
+      playClick();
     } catch {
       // ignore
     }
