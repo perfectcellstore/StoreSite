@@ -31,7 +31,7 @@ export function NotificationBell() {
         <Button
           variant="ghost"
           size="sm"
-          className="relative hover:bg-bio-green-500/10 hover:text-bio-green-500"
+          className="relative overflow-visible hover:bg-bio-green-500/10 hover:text-bio-green-500"
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
