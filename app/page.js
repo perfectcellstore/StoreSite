@@ -45,15 +45,9 @@ export default function HomePage() {
   const { t, language } = useLanguage();
   const perf = usePerf();
   const isLow = perf?.tier === 'low';
-  const [mounted, setMounted] = useState(false);
+  // NOTE: Avoid mount-gating the entire page; it causes extra renders and hurts performance.
+  // This page only uses client-side hooks that are safe to render directly.
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-background">
