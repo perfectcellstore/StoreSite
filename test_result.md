@@ -753,3 +753,77 @@ agent_communication:
       ❌ Low Power Mode button in menu
       
       Low power mode feature has been completely removed from the application.
+      
+  - agent: "main"
+    message: |
+      PROMO CODE SYSTEM FIXED - NONA1603 WITH 99% DISCOUNT ADDED
+      
+      ISSUE:
+      - Promo code input field forced uppercase only (via .toUpperCase())
+      - This prevented entering codes with lowercase letters like "Nona1603"
+      - User had 99% discount promo code "Nona1603" that couldn't be used
+      
+      ROOT CAUSE:
+      - Line 325: onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+      - Line 58-72: Validation converted all codes to uppercase before checking
+      - This broke case-sensitive codes
+      
+      FIX APPLIED:
+      1. Checkout Page (checkout/page.js):
+         - Removed .toUpperCase() from input onChange handler
+         - Input now accepts both lowercase and uppercase characters
+         - Users can type "Nona1603" exactly as needed
+      
+      2. Promo Code Validation (handleApplyPromo):
+         - First checks for EXACT match (case-sensitive)
+         - If no exact match, falls back to case-insensitive for other codes
+         - This allows both case-sensitive codes (Nona1603) and case-insensitive codes (PERFECT10, CELL20)
+      
+      3. Added Nona1603 Promo Code:
+         - Code: "Nona1603" (case-sensitive)
+         - Discount: 99% (0.99)
+         - Description: "99% off - Special Discount!"
+      
+      PROMO CODES NOW AVAILABLE:
+      - PERFECT10: 10% off (case-insensitive)
+      - CELL20: 20% off (case-insensitive)
+      - WELCOME: 5% off (case-insensitive)
+      - 2026: 20% off (case-insensitive)
+      - Nona1603: 99% off (case-sensitive)
+      
+      VALIDATION LOGIC:
+      ```javascript
+      // Check exact match first (case-sensitive)
+      if (PROMO_CODES[promoCode]) {
+        // Apply promo
+      }
+      // Fall back to uppercase check
+      else if (PROMO_CODES[promoCode.toUpperCase()]) {
+        // Apply promo
+      }
+      ```
+      
+      TESTING:
+      ✅ Input accepts lowercase: "Nona1603" works
+      ✅ Input accepts uppercase: "PERFECT10" works
+      ✅ Input accepts mixed case: "Nona1603" works
+      ✅ Case-sensitive validation: "Nona1603" applies 99% discount
+      ✅ Case-insensitive fallback: "perfect10", "PERFECT10", "PeRfEcT10" all work
+      ✅ Invalid codes rejected: "invalid123" shows error
+      ✅ 99% discount calculation: $100 → $1 (99% off)
+      
+      EXAMPLE CALCULATION WITH NONA1603:
+      - Cart Total: $100.00
+      - Shipping: $3.57
+      - Subtotal: $103.57
+      - Discount (99%): -$99.00
+      - Final Total: $4.57
+      
+      PRESERVED:
+      ✅ All existing promo codes still work
+      ✅ Checkout functionality unchanged
+      ✅ Pricing logic unchanged
+      ✅ UI/UX behavior unchanged
+      ✅ Other input fields unaffected
+      
+      Promo code "Nona1603" now works correctly with 99% discount!
