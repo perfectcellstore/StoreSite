@@ -64,95 +64,115 @@ export default function HomePage() {
         <div className="absolute inset-0 z-0 pointer-events-none mask-fade-bottom">
           {/* Base Dark Overlay (transparent enough to keep stars/galaxy visible) */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/35 to-transparent"></div>
-          
-          {/* Main Kamehameha Beam - Horizontal Concentrated Blast */}
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-32"
+
+          {/* Main Beam */}
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full"
             style={{
+              height: isLow ? '84px' : '128px',
               background: 'linear-gradient(to right, rgba(16, 185, 129, 0) 0%, rgba(16, 185, 129, 0.9) 20%, rgba(16, 185, 129, 0.9) 80%, rgba(16, 185, 129, 0) 100%)',
-              boxShadow: '0 0 80px 40px rgba(16, 185, 129, 0.6), 0 0 120px 60px rgba(16, 185, 129, 0.4)',
+              boxShadow: isLow
+                ? '0 0 40px 18px rgba(16, 185, 129, 0.45), 0 0 70px 28px rgba(16, 185, 129, 0.25)'
+                : '0 0 80px 40px rgba(16, 185, 129, 0.6), 0 0 120px 60px rgba(16, 185, 129, 0.4)',
               animation: 'beamPulse 3s ease-in-out infinite',
-              filter: 'blur(20px)',
+              filter: isLow ? 'blur(12px)' : 'blur(20px)',
+              willChange: 'transform, opacity',
             }}
           />
-          
-          {/* Secondary Beam Layer - Thinner Concentrated Core */}
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-16"
+
+          {/* Secondary Beam Core */}
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full"
             style={{
+              height: isLow ? '42px' : '64px',
               background: 'linear-gradient(to right, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, 1) 25%, rgba(16, 185, 129, 1) 50%, rgba(59, 130, 246, 1) 75%, rgba(59, 130, 246, 0) 100%)',
-              boxShadow: '0 0 60px 30px rgba(59, 130, 246, 0.8)',
+              boxShadow: isLow ? '0 0 28px 14px rgba(59, 130, 246, 0.55)' : '0 0 60px 30px rgba(59, 130, 246, 0.8)',
               animation: 'beamPulse 2s ease-in-out infinite',
               animationDelay: '0.5s',
-              filter: 'blur(10px)',
+              filter: isLow ? 'blur(7px)' : 'blur(10px)',
+              willChange: 'transform, opacity',
             }}
           />
-          
-          {/* Inner Core - Bright White Center */}
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-6"
+
+          {/* Bright inner core */}
+          <div
+            className="absolute left-0 top-1/2 -translate-y-1/2 w-full"
             style={{
+              height: isLow ? '12px' : '24px',
               background: 'linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0.9) 70%, rgba(255, 255, 255, 0) 100%)',
-              boxShadow: '0 0 40px 20px rgba(255, 255, 255, 0.9), 0 0 80px 40px rgba(16, 185, 129, 0.6)',
+              boxShadow: isLow
+                ? '0 0 18px 10px rgba(255, 255, 255, 0.7), 0 0 38px 18px rgba(16, 185, 129, 0.4)'
+                : '0 0 40px 20px rgba(255, 255, 255, 0.9), 0 0 80px 40px rgba(16, 185, 129, 0.6)',
               animation: 'beamIntensity 1.5s ease-in-out infinite',
+              willChange: 'transform, opacity',
             }}
           />
-          
-          {/* Energy Particles Along Beam */}
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-40"
-            style={{
-              background: 'repeating-linear-gradient(90deg, transparent 0px, rgba(16, 185, 129, 0.3) 50px, transparent 100px)',
-              animation: 'particleFlow 2s linear infinite',
-              filter: 'blur(5px)',
-            }}
-          />
-          
-          {/* Blast Origin Glow - Left Side */}
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2"
-            style={{
-              width: '300px',
-              height: '300px',
-              background: 'radial-gradient(circle, rgba(16, 185, 129, 1) 0%, rgba(59, 130, 246, 0.8) 30%, rgba(16, 185, 129, 0.4) 50%, transparent 70%)',
-              boxShadow: '0 0 150px 80px rgba(16, 185, 129, 0.8)',
-              animation: 'originPulse 2s ease-in-out infinite',
-              filter: 'blur(40px)',
-            }}
-          />
-          
-          {/* Energy Waves Expanding from Beam */}
-          <div 
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={{
-              width: '100%',
-              height: '400px',
-              background: 'radial-gradient(ellipse 100% 40% at 50% 50%, rgba(16, 185, 129, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%)',
-              animation: 'waveExpand 4s ease-out infinite',
-              filter: 'blur(60px)',
-            }}
-          />
-          
-          {/* Diagonal Energy Streaks */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.15) 48%, rgba(255, 255, 255, 0.3) 50%, rgba(16, 185, 129, 0.15) 52%, transparent 100%)',
-              animation: 'streakFlow 8s linear infinite',
-              filter: 'blur(15px)',
-            }}
-          />
-          
-          <div 
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(-45deg, transparent 0%, rgba(59, 130, 246, 0.15) 48%, rgba(255, 255, 255, 0.2) 50%, rgba(59, 130, 246, 0.15) 52%, transparent 100%)',
-              animation: 'streakFlow 6s linear infinite',
-              animationDelay: '2s',
-              filter: 'blur(15px)',
-            }}
-          />
-          
+
+          {/* Optional heavy layers (disabled on low-end devices) */}
+          {!isLow && (
+            <>
+              {/* Energy Particles Along Beam */}
+              <div
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-40"
+                style={{
+                  background: 'repeating-linear-gradient(90deg, transparent 0px, rgba(16, 185, 129, 0.3) 50px, transparent 100px)',
+                  animation: 'particleFlow 2s linear infinite',
+                  filter: 'blur(5px)',
+                  willChange: 'transform',
+                }}
+              />
+
+              {/* Blast Origin Glow - Left Side */}
+              <div
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2"
+                style={{
+                  width: '300px',
+                  height: '300px',
+                  background: 'radial-gradient(circle, rgba(16, 185, 129, 1) 0%, rgba(59, 130, 246, 0.8) 30%, rgba(16, 185, 129, 0.4) 50%, transparent 70%)',
+                  boxShadow: '0 0 150px 80px rgba(16, 185, 129, 0.8)',
+                  animation: 'originPulse 2s ease-in-out infinite',
+                  filter: 'blur(40px)',
+                  willChange: 'transform, opacity',
+                }}
+              />
+
+              {/* Energy Waves */}
+              <div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{
+                  width: '100%',
+                  height: '400px',
+                  background: 'radial-gradient(ellipse 100% 40% at 50% 50%, rgba(16, 185, 129, 0.3) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%)',
+                  animation: 'waveExpand 4s ease-out infinite',
+                  filter: 'blur(60px)',
+                  willChange: 'transform, opacity',
+                }}
+              />
+
+              {/* Diagonal Energy Streaks */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(45deg, transparent 0%, rgba(16, 185, 129, 0.15) 48%, rgba(255, 255, 255, 0.3) 50%, rgba(16, 185, 129, 0.15) 52%, transparent 100%)',
+                  animation: 'streakFlow 8s linear infinite',
+                  filter: 'blur(15px)',
+                  willChange: 'transform',
+                }}
+              />
+
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(-45deg, transparent 0%, rgba(59, 130, 246, 0.15) 48%, rgba(255, 255, 255, 0.2) 50%, rgba(59, 130, 246, 0.15) 52%, transparent 100%)',
+                  animation: 'streakFlow 6s linear infinite',
+                  animationDelay: '2s',
+                  filter: 'blur(15px)',
+                  willChange: 'transform',
+                }}
+              />
+            </>
+          )}
+
           {/* Gradient Overlay for Readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background/80"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-background/70"></div>
