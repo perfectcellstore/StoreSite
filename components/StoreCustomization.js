@@ -728,7 +728,7 @@ export function StoreCustomization() {
             <CardContent className="space-y-2 text-sm">
               <p>✅ GPU-accelerated CSS animations (no Canvas)</p>
               <p>✅ Automatically simplified on mobile devices</p>
-              <p>✅ Respects user's reduced-motion settings</p>
+              <p>✅ Respects user&apos;s reduced-motion settings</p>
               <p>✅ Positioned behind all content (z-index: 0)</p>
               <p>✅ Pointer-events disabled (no interaction blocking)</p>
               <p>✅ Opacity-controlled for perfect readability</p>
