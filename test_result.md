@@ -1029,3 +1029,72 @@ agent_communication:
       ✅ Hover states
       
       The click effect is now polished, scoped, and performant without affecting header stability.
+      
+  - agent: "main"
+    message: |
+      DRAGON BALL ENERGY EXPLOSION CLICK EFFECT IMPLEMENTED
+      
+      REQUIREMENT:
+      - Implement Dragon Ball-style energy explosion effect on click
+      - Strict performance constraints: CSS transforms, opacity, scale only
+      - No canvas, WebGL, SVG filters, heavy shadows, or particle systems
+      - Effect confined to click location (small radius)
+      - Animation ≤200ms, GPU-friendly
+      - Throttled to prevent stacking
+      - Respect prefers-reduced-motion
+      - Keep existing click sound
+      - No layout reflow or global state updates
+      
+      IMPLEMENTATION:
+      1. GlobalClickEffects Component (GlobalClickEffects.js):
+         - Added createEnergyBurst function for visual effect
+         - Uses direct DOM manipulation (no React state = no re-renders)
+         - 3-layer radial burst design:
+           * Layer 1 (Outer): 80px ring, green gradient, blur(2px), 180ms
+           * Layer 2 (Middle): 50px ring, blue-green gradient, blur(1px), 150ms
+           * Layer 3 (Core): 24px bright center, white-green gradient, 120ms
+         - All animations use transform + opacity only (GPU-accelerated)
+         - requestAnimationFrame for smooth animation start
+         - DOM nodes removed after 200ms (immediate cleanup)
+      
+      2. Performance Safeguards:
+         - Throttle: 150ms cooldown between bursts (prevents stacking)
+         - prefers-reduced-motion: Skips effect if user prefers reduced motion
+         - No React state updates (zero re-renders)
+         - No layout reflow (position: fixed, pointer-events: none)
+         - will-change: transform, opacity (GPU hints)
+         - Static blur (filter: blur set once, not animated)
+      
+      3. Technical Details:
+         - Effect position: Fixed to click coordinates (e.clientX, e.clientY)
+         - Effect scope: Max ~120px radius (outer ring 80px + 1.5x scale)
+         - z-index: 9998 (below modals but above content)
+         - Total animation: ≤180ms (within 200ms requirement)
+         - DOM cleanup: setTimeout 200ms (immediate after animation)
+      
+      PERFORMANCE METRICS:
+      | Metric | Value | Requirement |
+      |--------|-------|-------------|
+      | Animation Duration | 120-180ms | ≤200ms ✓ |
+      | Layers | 3 | 1-3 max ✓ |
+      | CSS Properties | transform, opacity | GPU-friendly ✓ |
+      | Throttle | 150ms | Prevents stacking ✓ |
+      | DOM Cleanup | 200ms | Immediate after animation ✓ |
+      | React Re-renders | 0 | No state updates ✓ |
+      | Layout Reflow | None | position: fixed ✓ |
+      
+      PRESERVED FEATURES:
+      ✅ Click sound (100ms throttle)
+      ✅ Effects toggle (effectsEnabled check)
+      ✅ All existing functionality
+      ✅ Navigation timing unaffected
+      ✅ UI responsiveness intact
+      
+      DRAGON BALL VISUAL DESIGN:
+      - Green energy (bio-green-500 color scheme)
+      - Blue-green transition (ki energy feel)
+      - Bright white core (power center)
+      - Radial burst expansion (energy explosion)
+      - Fast scale + fade (instant transmission feel)
+      
+      Energy explosion click effect is now implemented with minimal performance impact.
