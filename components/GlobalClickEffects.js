@@ -43,6 +43,7 @@ export function GlobalClickEffects() {
       lastSoundTime.current = now;
 
       // Shared SFX (handles mobile AudioContext unlock)
+      // Important: do NOT tie this to perf tiers; click sounds must stay enabled.
       playClickWhoosh();
     } catch {
       // ignore
