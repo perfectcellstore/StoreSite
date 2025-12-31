@@ -60,10 +60,46 @@ export default function LoginPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Client-side validation (matches backend)
+    const email = (registerData.email || '').trim();
+    const password = String(registerData.password || '');
+    const name = (registerData.name || '').trim();
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase());
+    const passOk = password.trim().length >= 8 && /[A-Za-z]/.test(password) && /\d/.test(password);
+
+    if (!name || !email || !password) {
+      toast({
+        title: 'Error',
+        description: 'Please fill in all required fields',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!emailOk) {
+      toast({
+        title: 'Error',
+        description: 'Please enter a valid email address',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!passOk) {
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 8 characters and contain at least 1 letter and 1 number',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const result = await register(registerData.email, registerData.password, registerData.name);
+      const result = await register(email, password, name);
       if (result.success) {
         toast({
           title: 'Success!',
