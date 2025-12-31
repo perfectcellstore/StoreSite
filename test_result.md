@@ -243,15 +243,13 @@ metadata:
   run_ui: false
 
 test_plan:
-    - "Order success victory screen (random quotes EN/AR + fire/ki/aura FX)"
-    - "Auth hardening: validation + unique email + rate limiting"
   current_focus:
-    - "Review submission functionality"
-    - "Rating aggregation accuracy"
-    - "UI synchronization after review"
+    - "Performance tier system (High/Mid/Low) + lazy-loaded FX + image optimization"
+    - "Mobile performance + sound effects restoration"
+    - "Notification/checkout icon badge cropping"
   stuck_tasks: []
   test_all: false
-  test_priority: "high_first"
+  test_priority: "sequential"
 
 
   - task: "Auth hardening: email validation + unique index + brute-force rate limiting"
