@@ -11,7 +11,11 @@ export default function AudioBootstrapper() {
     if (typeof window === 'undefined') return;
 
     const unlock = () => {
-      unlockAudio();
+      // Must be triggered by user gesture.
+      // Also pre-play the click immediately so the first interaction has sound too.
+      unlockAudio().then(() => {
+        // no-op; playback handled by GlobalClickSound on subsequent taps
+      });
     };
 
     // Use capture so we run before other handlers, and once so it doesn't add overhead.
