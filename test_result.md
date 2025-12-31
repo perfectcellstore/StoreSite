@@ -154,17 +154,20 @@ backend:
 
   - task: "Admin order search by order number (partial match)"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added support for /api/orders?search=... (admin-only) to filter by order.id partial match. Added search input in /app/app/admin/page.js with debounce."
         agent: "main"
         comment: "Fixed route matching by moving the more specific /products/{id}/reviews route BEFORE the general /products/{id} route. Reviews endpoint now returns correct data."
+      - working: true
+        agent: "testing"
+        comment: "ADMIN ORDER SEARCH BACKEND TESTING COMPLETED - All functionality working correctly. ✅ Admin login with perfectcellstore@gmail.com/admin123456 successful. ✅ GET /api/orders without search returns all orders for admin (4 orders found). ✅ GET /api/orders?search=174c10 returns matching orders (1 order found with partial ID match). ✅ GET /api/orders?search=nonexistent123 returns empty array as expected. ✅ Normal user GET /api/orders returns only user's own orders (1 order). ✅ Normal user GET /api/orders?search=174c10 cannot access other user's orders - properly filtered to user's orders only. ✅ Case-insensitive regex search working correctly. ✅ Security: Non-admin users cannot broaden access via search parameter. Admin order search by partial order ID is fully functional and secure."
 
 frontend:
   - task: "Order success victory screen (random quotes EN/AR + fire/ki/aura FX)"
