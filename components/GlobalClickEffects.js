@@ -1,108 +1,78 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
-  const [sparks, setSparks] = useState([]);
-  const [flash, setFlash] = useState(false);
-  const lastFlashTime = useRef(0);
-  const isFlashing = useRef(false);
-  const flashCooldown = 1000; // Increased from 600ms to 1000ms (1 second)
+  const audioContextRef = useRef(null);
+  const lastSoundTime = useRef(0);
+  const soundCooldown = 100; // Only play sound every 100ms max
+
+  // Initialize AudioContext once and reuse it
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        console.log('Audio not supported');
+      }
+    }
+  }, []);
+
+  const playSound = useCallback(() => {
+    if (!audioContextRef.current) return;
+
+    try {
+      const audioContext = audioContextRef.current;
+      const now = Date.now();
+      
+      // Throttle sound to prevent audio stacking
+      if (now - lastSoundTime.current < soundCooldown) return;
+      lastSoundTime.current = now;
+
+      // Main whoosh oscillator
+      const oscillator1 = audioContext.createOscillator();
+      const gainNode1 = audioContext.createGain();
+      
+      oscillator1.connect(gainNode1);
+      gainNode1.connect(audioContext.destination);
+      
+      // Main frequency sweep (sharp drop like instant transmission)
+      oscillator1.frequency.setValueAtTime(2000, audioContext.currentTime);
+      oscillator1.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.3);
+      
+      // Volume envelope
+      gainNode1.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode1.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.02);
+      gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      
+      // Use sawtooth for "electric" feel
+      oscillator1.type = 'sawtooth';
+      
+      oscillator1.start(audioContext.currentTime);
+      oscillator1.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+      // Silently fail
+    }
+  }, []);
 
   useEffect(() => {
     const handleClick = (e) => {
       // Don't create effects if disabled
       if (!effectsEnabled) return;
       
-      // Get viewport dimensions for responsive scaling
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const isMobile = vw < 768;
-      const isTablet = vw >= 768 && vw < 1024;
-      
-      // Create spark effect with viewport-aware positioning
-      const spark = {
-        id: Date.now() + Math.random(),
-        x: e.clientX,
-        y: e.clientY,
-        scale: isMobile ? 0.5 : isTablet ? 0.7 : 1, // Scale based on device
-      };
-      
-      setSparks(prev => [...prev, spark]);
-
-      // Ultra-conservative throttling - only allow one flash at a time with 1 second cooldown
-      const now = Date.now();
-      if (!isFlashing.current && now - lastFlashTime.current >= flashCooldown) {
-        // 20% chance for lightning flash (reduced from 30%)
-        if (Math.random() < 0.2) {
-          isFlashing.current = true;
-          setFlash(true);
-          lastFlashTime.current = now;
-          
-          setTimeout(() => {
-            setFlash(false);
-            isFlashing.current = false;
-          }, 100); // Reduced from 120ms to 100ms
-        }
-      }
-
-      // Remove spark after animation
-      setTimeout(() => {
-        setSparks(prev => prev.filter(s => s.id !== spark.id));
-      }, 1200);
-
-      // Play AUTHENTIC Dragon Ball vanishing/instant transmission sound
-      try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        // Main whoosh oscillator
-        const oscillator1 = audioContext.createOscillator();
-        const gainNode1 = audioContext.createGain();
-        
-        // Secondary harmonic for richness
-        const oscillator2 = audioContext.createOscillator();
-        const gainNode2 = audioContext.createGain();
-        
-        oscillator1.connect(gainNode1);
-        gainNode1.connect(audioContext.destination);
-        oscillator2.connect(gainNode2);
-        gainNode2.connect(audioContext.destination);
-        
-        // Main frequency sweep (sharp drop like instant transmission)
-        oscillator1.frequency.setValueAtTime(2000, audioContext.currentTime);
-        oscillator1.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.4);
-        
-        // Secondary harmonic (adds depth)
-        oscillator2.frequency.setValueAtTime(3000, audioContext.currentTime);
-        oscillator2.frequency.exponentialRampToValueAtTime(120, audioContext.currentTime + 0.4);
-        
-        // Volume envelopes
-        gainNode1.gain.setValueAtTime(0, audioContext.currentTime);
-        gainNode1.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.02);
-        gainNode1.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-        
-        gainNode2.gain.setValueAtTime(0, audioContext.currentTime);
-        gainNode2.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.02);
-        gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
-        
-        // Use sawtooth for more "electric" feel
-        oscillator1.type = 'sawtooth';
-        oscillator2.type = 'sine';
-        
-        oscillator1.start(audioContext.currentTime);
-        oscillator2.start(audioContext.currentTime);
-        oscillator1.stop(audioContext.currentTime + 0.4);
-        oscillator2.stop(audioContext.currentTime + 0.4);
-      } catch (e) {
-        console.log('Audio not supported');
-      }
+      // Only play sound, no visual effects that cause re-renders
+      playSound();
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener('click', handleClick, { passive: true });
     return () => document.removeEventListener('click', handleClick);
-  }, [effectsEnabled]);
+  }, [effectsEnabled, playSound]);
+
+  // No render output - no visual effects that cause performance issues
+  return null;
+}
 
   return (
     <>
