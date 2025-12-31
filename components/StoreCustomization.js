@@ -533,10 +533,13 @@ export function StoreCustomization() {
                 />
                 {customization.images.aboutBanner && (
                   <div className="mt-2 p-4 border border-border rounded-lg">
-                    <img 
-                      src={customization.images.aboutBanner} 
-                      alt="About Banner Preview" 
+                    <Image
+                      src={customization.images.aboutBanner}
+                      alt="About Banner Preview"
+                      width={1200}
+                      height={400}
                       className="max-h-40 w-full object-cover rounded"
+                      sizes="(max-width: 768px) 100vw, 900px"
                     />
                   </div>
                 )}
