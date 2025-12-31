@@ -148,16 +148,17 @@ export function AnimatedBackground() {
         ))}
       </div>
 
-      {/* Aurora/Nebula Layer 1 - Green Energy */}
+      {/* Aurora/Nebula Layer 1 - Green Energy (strong at hero, fades smoothly on scroll) */}
       <div
         className="absolute inset-0"
         style={{
-          opacity: effectiveOpacity,
+          opacity: auroraOpacity,
           background: `
-            radial-gradient(ellipse 80% 50% at 20% 40%, 
-              rgba(16, 185, 129, 0.4) 0%, 
-              rgba(5, 150, 105, 0.2) 30%,
-              transparent 70%)
+            radial-gradient(ellipse 85% 55% at 18% 38%,
+              rgba(16, 185, 129, 0.55) 0%,
+              rgba(5, 150, 105, 0.28) 28%,
+              rgba(16, 185, 129, 0.12) 46%,
+              transparent 72%)
           `,
           animation: `nebulaDrift1 ${baseDuration}s ease-in-out infinite`,
           filter: isMobile ? 'blur(40px)' : 'blur(60px)',
@@ -165,16 +166,16 @@ export function AnimatedBackground() {
         }}
       />
 
-      {/* Aurora/Nebula Layer 2 - Purple/Pink */}
+      {/* Aurora/Nebula Layer 2 - Purple/Pink (subtle, supports galaxy depth) */}
       <div
         className="absolute inset-0"
         style={{
-          opacity: effectiveOpacity * 0.8,
+          opacity: Math.max(0.08, auroraOpacity * 0.55),
           background: `
-            radial-gradient(ellipse 70% 60% at 75% 30%, 
-              rgba(139, 92, 246, 0.35) 0%, 
-              rgba(168, 85, 247, 0.2) 30%,
-              transparent 65%)
+            radial-gradient(ellipse 75% 65% at 78% 28%,
+              rgba(139, 92, 246, 0.32) 0%,
+              rgba(168, 85, 247, 0.18) 30%,
+              transparent 66%)
           `,
           animation: `nebulaDrift2 ${baseDuration * 1.2}s ease-in-out infinite`,
           animationDelay: '-5s',
@@ -183,16 +184,16 @@ export function AnimatedBackground() {
         }}
       />
 
-      {/* Aurora/Nebula Layer 3 - Cyan/Blue */}
+      {/* Aurora/Nebula Layer 3 - Cyan/Blue (ki shimmer) */}
       <div
         className="absolute inset-0"
         style={{
-          opacity: effectiveOpacity * 0.7,
+          opacity: Math.max(0.06, auroraOpacity * 0.45),
           background: `
-            radial-gradient(ellipse 60% 70% at 60% 70%, 
-              rgba(34, 211, 238, 0.3) 0%, 
-              rgba(59, 130, 246, 0.2) 35%,
-              transparent 60%)
+            radial-gradient(ellipse 65% 75% at 62% 72%,
+              rgba(34, 211, 238, 0.28) 0%,
+              rgba(59, 130, 246, 0.18) 35%,
+              transparent 62%)
           `,
           animation: `nebulaDrift3 ${baseDuration * 0.9}s ease-in-out infinite`,
           animationDelay: '-10s',
