@@ -29,6 +29,7 @@ export default function RootLayout({ children }) {
                     <CustomizationProvider>
                       <AnimatedBackground />
                       <GlobalClickEffects />
+                      <LanguageSelectionPopup />
                       {children}
                       <Toaster />
                     </CustomizationProvider>
