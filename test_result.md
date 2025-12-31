@@ -202,15 +202,18 @@ test_plan:
 
   - task: "Password policy upgrade: reject whitespace-only + require letter+number"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented isStrongPassword(): rejects whitespace-only passwords and enforces >=1 letter and >=1 number (min length 8 still enforced). Applied to /api/auth/register. Added matching client-side validation and clearer toast message in /app/app/login/page.js."
+      - working: true
+        agent: "testing"
+        comment: "PASSWORD POLICY UPGRADE TESTING COMPLETED - All requirements verified. ✅ POST /api/auth/register with password '        ' (8 spaces) → 400 with 'Password must contain at least 1 letter and 1 number'. ✅ Password 'abcdefgh' (letters only) → 400 with correct error message. ✅ Password '12345678' (numbers only) → 400 with correct error message. ✅ Password 'abcd1234' (letters + numbers) → 200 successful registration. ✅ Login works for user created with valid password → 200 with token. ✅ Rate limiting sanity check: wrong logins return 401 as expected. isStrongPassword() function correctly rejects whitespace-only passwords and enforces letter+number requirement while maintaining existing 8-character minimum length validation."
   - task: "Admin login (auth) restores admin user + normalizes email"
     implemented: true
     working: true
