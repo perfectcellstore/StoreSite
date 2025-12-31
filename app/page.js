@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { usePerf } from '@/lib/contexts/PerfContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/FooterSSR';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
