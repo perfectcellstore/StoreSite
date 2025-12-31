@@ -174,6 +174,7 @@ metadata:
   run_ui: false
 
 test_plan:
+    - "Auth hardening: validation + unique email + rate limiting"
   current_focus:
     - "Review submission functionality"
     - "Rating aggregation accuracy"
