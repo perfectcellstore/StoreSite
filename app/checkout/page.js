@@ -322,7 +322,7 @@ export default function CheckoutPage() {
                         <div className="flex gap-2">
                           <Input
                             value={promoCode}
-                            onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                            onChange={(e) => setPromoCode(e.target.value)}
                             placeholder={t('enterCode')}
                             className="bg-background border-border focus:border-bio-green-500"
                           />
