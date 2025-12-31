@@ -19,6 +19,10 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useLanguage();
+
+  // Next.js build requires useSearchParams to be within Suspense.
+  // This page is client-only, but we still comply for production prerender.
+
   const { login, register } = useAuth();
   const { toast } = useToast();
   
