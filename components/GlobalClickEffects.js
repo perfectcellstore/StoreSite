@@ -150,7 +150,7 @@ export function GlobalClickEffects() {
         burst.parentNode.removeChild(burst);
       }
     }, 200);
-  }, []);
+  }, [perf?.fx?.allowClickBurst]);
 
   useEffect(() => {
     const handleClick = (e) => {
