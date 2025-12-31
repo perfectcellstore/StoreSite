@@ -141,6 +141,18 @@ backend:
       - working: true
 
   - task: "Mobile performance + sound effects restoration"
+
+  - task: "Performance tier system (High/Mid/Low) + lazy-loaded FX + image optimization"
+    implemented: true
+    working: "NA"
+    file: "lib/contexts/PerfContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Introduced PerfProvider with High/Mid/Low tiers; gated heavy effects (background ribbons/shooting stars, click bursts, celebration particle density) while keeping click sounds + core features. Lazy-loaded global FX layers via next/dynamic. Enabled Next.js image optimization (AVIF/WebP) + caching headers; converted admin image previews to next/image."
     implemented: true
     working: "NA"
     file: "components/GlobalClickEffects.js"
