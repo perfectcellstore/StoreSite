@@ -31,6 +31,7 @@ export default function AdminPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showProductDialog, setShowProductDialog] = useState(false);
+  const [orderSearch, setOrderSearch] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
   
   const [productForm, setProductForm] = useState({
