@@ -324,7 +324,7 @@ export function AnimatedBackground() {
         />
       ))}
 
-      {/* Cosmic Dust Particles (Desktop only) */}
+      {/* Cosmic Dust Particles (Desktop only) - Disabled on mobile for performance */}
       {effectiveIntensity === 'high' && !isMobile && (
         <div
           className="absolute inset-0"
@@ -345,7 +345,7 @@ export function AnimatedBackground() {
         />
       )}
 
-      {/* Galactic Spiral Hint (High intensity only) */}
+      {/* Galactic Spiral Hint (Desktop high intensity only) - Disabled on mobile */}
       {effectiveIntensity === 'high' && !isMobile && (
         <div
           className="absolute"
