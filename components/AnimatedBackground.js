@@ -10,6 +10,7 @@ import { usePerf } from '@/lib/contexts/PerfContext';
 export function AnimatedBackground() {
   const pathname = usePathname();
   const { customization } = useCustomization();
+  const perf = usePerf();
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
