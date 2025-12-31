@@ -115,7 +115,7 @@ export function PerfectCellLogo() {
             overflow: 'visible'
           }}
         >
-          {[...Array(8)].map((_, i) => (
+          {[...Array(5)].map((_, i) => (
             <div
               key={`sparkle-${i}`}
               className="absolute text-yellow-400 text-xl"
