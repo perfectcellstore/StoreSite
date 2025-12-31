@@ -31,6 +31,7 @@ export default function RootLayout({ children }) {
                     <PerfProvider>
                       <CustomizationProvider>
                         <AudioBootstrapper />
+                        <GlobalClickSound />
                         <PerfDynamicLayers />
                         <LanguageSelectionPopup />
                         {children}
