@@ -498,6 +498,13 @@ export async function POST(request, { params }) {
         return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
       }
 
+      if (!isStrongPassword(password)) {
+        return NextResponse.json(
+          { error: 'Password must contain at least 1 letter and 1 number' },
+          { status: 400 }
+        );
+      }
+
       const hashedPassword = await bcrypt.hash(password, 10);
       const userId = uuidv4();
 
