@@ -5,7 +5,7 @@
 ### Admin Credentials
 - **Email**: perfectcellstore@gmail.com
 - **Password**: admin123456
-- **Admin Dashboard**: https://zen-click-effect.preview.emergentagent.com/admin
+- **Admin Dashboard**: https://galaxy-blend.preview.emergentagent.com/admin
 
 ---
 
