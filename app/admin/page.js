@@ -55,15 +55,19 @@ export default function AdminPage() {
     }
   }, [user, authLoading]);
 
-  const fetchData = async () => {
+  const fetchData = async (opts = {}) => {
+    const { searchOverride } = opts;
+
     try {
       const token = localStorage.getItem('token');
       const headers = { 'Authorization': `Bearer ${token}` };
 
+      const searchValue = typeof searchOverride === 'string' ? searchOverride : orderSearch;
+
       const [statsRes, productsRes, ordersRes] = await Promise.all([
         fetch('/api/admin/stats', { headers }),
         fetch('/api/products'),
-        fetch(`/api/orders?search=${encodeURIComponent(orderSearch)}`, { headers })
+        fetch(`/api/orders?search=${encodeURIComponent(searchValue || '')}`, { headers })
       ]);
 
       const statsData = await statsRes.json();
