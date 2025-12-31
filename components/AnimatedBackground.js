@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react/no-unknown-property */
+
 import React, { useEffect, useState, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useCustomization } from '@/lib/contexts/CustomizationContext';
