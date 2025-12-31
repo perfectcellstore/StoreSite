@@ -27,13 +27,15 @@ export default function RootLayout({ children }) {
               <NotificationProvider>
                 <CartProvider>
                   <EffectsProvider>
-                    <CustomizationProvider>
-                      <AnimatedBackground />
-                      <GlobalClickEffects />
-                      <LanguageSelectionPopup />
-                      {children}
-                      <Toaster />
-                    </CustomizationProvider>
+                    <PerfProvider>
+                      <CustomizationProvider>
+                        <AnimatedBackground />
+                        <GlobalClickEffects />
+                        <LanguageSelectionPopup />
+                        {children}
+                        <Toaster />
+                      </CustomizationProvider>
+                    </PerfProvider>
                   </EffectsProvider>
                 </CartProvider>
               </NotificationProvider>
