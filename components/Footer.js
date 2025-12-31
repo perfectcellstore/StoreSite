@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Instagram, MessageCircle } from 'lucide-react';
 
 export function Footer() {
   const { t } = useLanguage();
+  const [year, setYear] = useState(null);
 
   return (
     <footer className="w-full border-t border-border/40 bg-card/50 mt-20">
