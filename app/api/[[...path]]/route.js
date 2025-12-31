@@ -374,55 +374,73 @@ export async function POST(request, { params }) {
     // Auth Routes
     if (pathname === 'auth/register') {
       const { email, password, name } = body;
-      
-      if (!email || !password || !name) {
+
+      const normalizedEmail = (email || '').trim();
+      const emailLower = normalizedEmail.toLowerCase();
+      const normalizedName = (name || '').trim();
+
+      if (!normalizedEmail || !password || !normalizedName) {
         return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
       }
-      
-      const existingUser = await db.collection('users').findOne({ email });
+
+      const existingUser = await db.collection('users').findOne({
+        $or: [
+          { email: normalizedEmail },
+          { emailLower },
+        ],
+      });
       if (existingUser) {
         return NextResponse.json({ error: 'User already exists' }, { status: 400 });
       }
-      
+
       const hashedPassword = await bcrypt.hash(password, 10);
       const userId = uuidv4();
-      
+
       const user = {
         id: userId,
-        email,
+        email: normalizedEmail,
+        emailLower,
         password: hashedPassword,
-        name,
+        name: normalizedName,
         role: 'user',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       };
-      
+
       await db.collection('users').insertOne(user);
-      
+
       const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
-      
+
       const { password: _, ...userWithoutPassword } = user;
       return NextResponse.json({ token, user: userWithoutPassword });
     }
 
     if (pathname === 'auth/login') {
       const { email, password } = body;
-      
-      if (!email || !password) {
+
+      const normalizedEmail = (email || '').trim();
+      const emailLower = normalizedEmail.toLowerCase();
+
+      if (!normalizedEmail || !password) {
         return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
       }
-      
-      const user = await db.collection('users').findOne({ email });
+
+      const user = await db.collection('users').findOne({
+        $or: [
+          { email: normalizedEmail },
+          { emailLower },
+        ],
+      });
       if (!user) {
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
-      
+
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       }
-      
+
       const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
-      
+
       const { password: _, ...userWithoutPassword } = user;
       return NextResponse.json({ token, user: userWithoutPassword });
     }
