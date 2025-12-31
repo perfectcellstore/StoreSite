@@ -1,5 +1,7 @@
 'use client';
 
+/* eslint-disable react/no-unknown-property */
+
 import React, { useState } from 'react';
 import { MessageCircle, Heart, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
