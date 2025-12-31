@@ -201,7 +201,7 @@ export default function OrderCelebrationFX({ seed = 'victory', className = '', p
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     };
-  }, [reducedMotion, rng]);
+  }, [reducedMotion, rng, particleLevel]);
 
   return (
     <div className={`pointer-events-none absolute inset-0 ${className}`}>
