@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useCallback } from 'react';
 import { useEffects } from '@/lib/contexts/EffectsContext';
+import { playClickWhoosh, ensureAudioRunning } from '@/lib/audioSfx';
 
 export function GlobalClickEffects() {
   const { effectsEnabled } = useEffects();
