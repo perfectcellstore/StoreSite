@@ -188,7 +188,7 @@ export function AnimatedBackground() {
               transparent 72%)
           `,
           animation: `nebulaDrift1 ${baseDuration}s ease-in-out infinite`,
-          filter: isMobile ? 'blur(40px)' : 'blur(60px)',
+          filter: isMobile ? 'blur(25px)' : 'blur(45px)',
           willChange: 'transform, opacity',
         }}
       />
@@ -206,28 +206,30 @@ export function AnimatedBackground() {
           `,
           animation: `nebulaDrift2 ${baseDuration * 1.2}s ease-in-out infinite`,
           animationDelay: '-5s',
-          filter: isMobile ? 'blur(50px)' : 'blur(70px)',
+          filter: isMobile ? 'blur(30px)' : 'blur(50px)',
           willChange: 'transform, opacity',
         }}
       />
 
-      {/* Aurora/Nebula Layer 3 - Cyan/Blue (ki shimmer) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          opacity: Math.max(0.06, auroraOpacity * 0.45),
-          background: `
-            radial-gradient(ellipse 65% 75% at 62% 72%,
-              rgba(34, 211, 238, 0.28) 0%,
-              rgba(59, 130, 246, 0.18) 35%,
-              transparent 62%)
-          `,
-          animation: `nebulaDrift3 ${baseDuration * 0.9}s ease-in-out infinite`,
-          animationDelay: '-10s',
-          filter: isMobile ? 'blur(45px)' : 'blur(65px)',
-          willChange: 'transform, opacity',
-        }}
-      />
+      {/* Aurora/Nebula Layer 3 - Cyan/Blue (ki shimmer) - Simplified on mobile */}
+      {!isMobile && (
+        <div
+          className="absolute inset-0"
+          style={{
+            opacity: Math.max(0.06, auroraOpacity * 0.45),
+            background: `
+              radial-gradient(ellipse 65% 75% at 62% 72%,
+                rgba(34, 211, 238, 0.28) 0%,
+                rgba(59, 130, 246, 0.18) 35%,
+                transparent 62%)
+            `,
+            animation: `nebulaDrift3 ${baseDuration * 0.9}s ease-in-out infinite`,
+            animationDelay: '-10s',
+            filter: 'blur(45px)',
+            willChange: 'transform, opacity',
+          }}
+        />
+      )}
 
       {/* Galaxy Core Glow */}
       <div
