@@ -19,6 +19,7 @@ export default function OrderSuccessPage() {
   const router = useRouter();
   const orderId = searchParams.get('orderId');
   const { language } = useLanguage();
+  const perf = usePerf();
   const { cart } = useCart();
   const { formatPrice } = useCurrency();
 
