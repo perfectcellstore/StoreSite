@@ -57,7 +57,12 @@ export default function OrderCelebrationFX({ seed = 'victory', className = '', p
 
     resize();
 
-    const maxParticles = window.innerWidth < 768 ? 70 : 120;
+    const maxParticles = (() => {
+      const base = window.innerWidth < 768 ? 70 : 120;
+      if (particleLevel === 'low') return Math.floor(base * 0.35);
+      if (particleLevel === 'mid') return Math.floor(base * 0.6);
+      return base;
+    })();
 
     const spawn = (kind) => {
       const w = canvas.getBoundingClientRect().width;
