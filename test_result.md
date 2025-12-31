@@ -1098,3 +1098,82 @@ agent_communication:
       - Fast scale + fade (instant transmission feel)
       
       Energy explosion click effect is now implemented with minimal performance impact.
+      
+  - agent: "main"
+    message: |
+      FIRST-VISIT LANGUAGE SELECTION POPUP IMPLEMENTED
+      
+      REQUIREMENT:
+      - First-visit only popup with energy burst entrance animation
+      - Language options: English and Arabic (العربية)
+      - Apply LTR/RTL direction immediately after selection
+      - Store preference in localStorage (never show again)
+      - Animation ≤250ms, GPU-friendly properties only
+      - Max 2 pseudo-elements for glow effect
+      - Respect prefers-reduced-motion
+      - No blocking of page load
+      
+      IMPLEMENTATION:
+      1. LanguageSelectionPopup Component (components/LanguageSelectionPopup.js):
+         - First-visit detection via localStorage key 'perfect_sell_language_selected'
+         - 4-phase animation state: hidden → burst → visible → exit
+         - Energy burst animation with 2 radial gradient layers
+         - Integration with existing LanguageContext
+      
+      2. Animation Design (Energy Burst Effect):
+         Phase 1 (hidden): scale(0), opacity 0
+         Phase 2 (burst): scale(1.05), opacity 1, glow layers scale(1.3) + scale(1.15)
+         Phase 3 (visible): scale(1), opacity 1, glow fades out
+         Phase 4 (exit): scale(0.95), opacity 0
+         
+         Glow Layers:
+         - Outer Glow: radial-gradient green (60% → 20% → transparent)
+         - Inner Glow: radial-gradient white-green (40% → 30% → transparent)
+      
+      3. Technical Implementation:
+         - GPU-friendly: Only transform and opacity animations
+         - will-change: transform, opacity (optimization hints)
+         - 100ms delay before showing (doesn't block page load)
+         - requestAnimationFrame for smooth animation start
+         - z-index: 9999 (above all content)
+         - backdrop: rgba(0,0,0,0.7) for focus
+      
+      4. Performance Metrics:
+         | Metric | Value | Requirement |
+         |--------|-------|-------------|
+         | Burst Animation | 150ms | ≤250ms ✓ |
+         | Exit Animation | 200ms | ≤250ms ✓ |
+         | Glow Layers | 2 | Max 2 ✓ |
+         | CSS Properties | transform, opacity | GPU-friendly ✓ |
+         | Reduced Motion | Supported | 50ms fallback ✓ |
+         | Page Blocking | None | 100ms delay ✓ |
+      
+      5. UX Features:
+         - Language icon with translation symbol
+         - Flag emojis for language recognition (🇺🇸, 🇮🇶)
+         - Bilingual title (English + Arabic)
+         - Hover effects on buttons
+         - Arrow indicators for selection
+         - Footer note about changing later
+      
+      6. Integration:
+         - Added to layout.js after GlobalClickEffects
+         - Uses existing LanguageContext for language switching
+         - Saves both 'language' and 'perfect_sell_language_selected' to localStorage
+         - Applies document.dir RTL/LTR immediately via toggleLanguage
+      
+      STORAGE KEYS:
+      - 'perfect_sell_language_selected': Boolean flag for first-visit
+      - 'language': Selected language ('en' or 'ar')
+      
+      REDUCED MOTION BEHAVIOR:
+      - Animation duration: 250ms → 50ms
+      - Transitions: cubic-bezier → instant
+      - Glow layers: hidden (no animation)
+      - Exit: 200ms → 50ms
+      
+      FILES CREATED/MODIFIED:
+      - Created: /app/components/LanguageSelectionPopup.js
+      - Modified: /app/app/layout.js (added import and component)
+      
+      First-visit language selection popup with energy burst animation is complete.
