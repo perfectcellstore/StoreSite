@@ -30,13 +30,11 @@ export function PerfectCellLogo() {
     setIsSmiling(true);
     setTimeout(() => setIsSmiling(false), 1200);
 
-    // Generate MORE hearts (5 instead of 3!)
+    // Generate fewer hearts for better mobile performance
     const newHearts = [
-      { id: Date.now() + 1, delay: 0, offset: -15 },
-      { id: Date.now() + 2, delay: 0.1, offset: 15 },
-      { id: Date.now() + 3, delay: 0.2, offset: 0 },
-      { id: Date.now() + 4, delay: 0.15, offset: -25 },
-      { id: Date.now() + 5, delay: 0.25, offset: 25 }
+      { id: Date.now() + 1, delay: 0, offset: -12 },
+      { id: Date.now() + 2, delay: 0.1, offset: 12 },
+      { id: Date.now() + 3, delay: 0.2, offset: 0 }
     ];
     setHearts(newHearts);
     
