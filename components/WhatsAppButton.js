@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { MessageCircle, Heart, Sparkles, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { playClick } from '@/lib/audioManager';
 
 export function WhatsAppButton() {
   const [isAnimating, setIsAnimating] = useState(false);
