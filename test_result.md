@@ -185,15 +185,18 @@ test_plan:
   # Added by main agent (Dec 31, 2025)
   - task: "Admin login (auth) restores admin user + normalizes email"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "User reported admin login failing with 'Invalid credentials'. DB check found admin user missing. Re-seeded admin user and updated auth register/login to trim+lowercase email and support lookup by emailLower. Needs backend retest."
+      - working: true
+        agent: "testing"
+        comment: "BACKEND TESTING COMPLETED - All auth flows working correctly. Fixed missing emailLower field for admin user. Tests passed: (1) Admin login with perfectcellstore@gmail.com/admin123456 returns 200 with token+role=admin, (2) Email case variants and spaces work (tested ' PerfectCellStore@Gmail.com ', 'PERFECTCELLSTORE@GMAIL.COM', etc.), (3) Registration prevents duplicates with case variants (Test@Email.com vs test@email.com), (4) GET /api/customization/public returns 200 with valid structure, (5) Invalid credentials properly rejected with 401, (6) /auth/me endpoint works with admin token. Email normalization (trim+lowercase) and emailLower lookup working as designed."
 
 agent_communication:
   - agent: "main"
