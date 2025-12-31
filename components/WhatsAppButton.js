@@ -45,7 +45,9 @@ export function WhatsAppButton() {
     // NOTE: GlobalClickSound already handles most taps, but keep this for reliability.
     try {
       playClick();
-    } catch (e) {}
+    } catch (e) {
+      // ignore
+    }
 
     // Reset after animation
     setTimeout(() => {
