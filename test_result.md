@@ -143,6 +143,17 @@ backend:
         comment: "Fixed route matching by moving the more specific /products/{id}/reviews route BEFORE the general /products/{id} route. Reviews endpoint now returns correct data."
 
 frontend:
+  - task: "Order success victory screen (random quotes EN/AR + fire/ki/aura FX)"
+    implemented: true
+    working: "NA"
+    file: "app/order-success/page.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Upgraded /order-success into a victory-style thank-you screen with seeded random quote selection (orderId), bilingual EN/AR copy, and new animated fire embers + green ki particles + aura shimmer via canvas. Quotes live in lib/orderSuccessQuotes.js (user-provided lines)."
   - task: "ProductReviews Component State Management"
     implemented: true
     working: true
