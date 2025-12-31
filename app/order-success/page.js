@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/FooterSSR';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Check, Flame, Sparkles } from 'lucide-react';

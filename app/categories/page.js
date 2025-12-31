@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/FooterSSR';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Card, CardContent } from '@/components/ui/card';
 

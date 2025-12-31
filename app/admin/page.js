@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { useCurrency } from '@/lib/contexts/CurrencyContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/FooterSSR';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

@@ -3,7 +3,7 @@
 import React from 'react';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { Navigation } from '@/components/Navigation';
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/FooterSSR';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent } from '@/components/ui/card';
