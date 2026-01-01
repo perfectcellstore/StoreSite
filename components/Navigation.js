@@ -149,6 +149,7 @@ export function Navigation() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-64 bg-card border-border flex flex-col">
+              {/* Main Menu Content */}
               <div className="flex flex-col gap-4 mt-8 flex-1">
                 {navLinks.map((link) => (
                   <Link
@@ -204,8 +205,8 @@ export function Navigation() {
                 </div>
               </div>
 
-              {/* Dark Souls Bonfire Easter Egg - Bottom Right Corner */}
-              <div className="mt-auto pb-4 pr-4 flex justify-end">
+              {/* Dark Souls Bonfire Easter Egg - Dedicated Section */}
+              <div className="mt-auto border-t border-border/50" style={{ overflow: 'visible' }}>
                 <DarkSoulsBonfire />
               </div>
             </SheetContent>
