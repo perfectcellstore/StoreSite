@@ -1076,6 +1076,25 @@ export async function PUT(request, { params }) {
       });
     }
 
+    // Update Collection
+    if (pathname.startsWith('collections/')) {
+      const collectionId = pathname.split('/')[1];
+      
+      const { id, createdAt, ...updateData } = body;
+      
+      const result = await db.collection('collections').updateOne(
+        { id: collectionId },
+        { $set: { ...updateData, updatedAt: new Date().toISOString() } }
+      );
+      
+      if (result.matchedCount === 0) {
+        return NextResponse.json({ error: 'Collection not found' }, { status: 404 });
+      }
+      
+      const collection = await db.collection('collections').findOne({ id: collectionId });
+      return NextResponse.json({ collection });
+    }
+
     // Update Product
     if (pathname.startsWith('products/') && !pathname.includes('/reviews/')) {
       const productId = pathname.split('/')[1];
