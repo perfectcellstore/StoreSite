@@ -291,6 +291,12 @@ export async function GET(request, { params }) {
       return NextResponse.json({ categories });
     }
 
+    // Collections Route (GET - Public)
+    if (pathname === 'collections') {
+      const collections = await db.collection('collections').find({}).sort({ createdAt: -1 }).toArray();
+      return NextResponse.json({ collections });
+    }
+
     // Orders Routes
     if (pathname === 'orders') {
       const decoded = verifyToken(request);
