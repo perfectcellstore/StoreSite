@@ -205,6 +205,18 @@ export default function AdminPage() {
       description: '',
       descriptionAr: '',
       price: '',
+      originalPrice: '',
+      category: 'collectibles',
+      image: '',
+      stock: '',
+      onSale: false,
+      dealLabel: ''
+    });
+  };
+      nameAr: '',
+      description: '',
+      descriptionAr: '',
+      price: '',
       category: 'collectibles',
       image: '',
       stock: ''
