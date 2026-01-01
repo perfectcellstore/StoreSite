@@ -8,7 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'perfect-sell-jwt-secret';
 
 // Admin auto-initialization
 const ADMIN_EMAIL = 'perfectcellstore@gmail.com';
-const ADMIN_PASSWORD = 'admin123456';
+const ADMIN_PASSWORD = 'DragonBall123!';
 let adminInitialized = false;
 
 async function ensureAdminUserExists(db) {
