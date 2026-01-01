@@ -465,6 +465,37 @@ export default function AdminPage() {
                       </p>
                     </div>
 
+                    {/* Featured & Tags Row */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="flex items-center space-x-2 border border-border rounded-lg p-4 bg-background/50">
+                        <input
+                          type="checkbox"
+                          id="featured"
+                          checked={productForm.featured}
+                          onChange={(e) => setProductForm({ ...productForm, featured: e.target.checked })}
+                          className="w-4 h-4 text-bio-green-500 border-gray-300 rounded focus:ring-bio-green-500"
+                        />
+                        <div className="flex-1">
+                          <Label htmlFor="featured" className="cursor-pointer font-semibold">
+                            ⭐ Featured Product
+                          </Label>
+                          <p className="text-xs text-muted-foreground">Show on homepage carousel</p>
+                        </div>
+                      </div>
+                      <div>
+                        <Label>Tags (Optional)</Label>
+                        <Input
+                          value={productForm.tags}
+                          onChange={(e) => setProductForm({ ...productForm, tags: e.target.value })}
+                          className="bg-background border-border"
+                          placeholder="collectible, limited, exclusive"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Comma-separated (for search & SEO)
+                        </p>
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label>Category</Label>
