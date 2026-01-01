@@ -5,7 +5,7 @@
 ### Admin Credentials
 - **Email**: perfectcellstore@gmail.com
 - **Password**: admin123456
-- **Admin Dashboard**: https://clickjump-quotes.preview.emergentagent.com/admin
+- **Admin Dashboard**: https://nextjs-store-4.preview.emergentagent.com/admin
 
 ---
 

@@ -11,7 +11,7 @@ import uuid
 from typing import Dict, Any, Optional
 
 # Configuration
-BASE_URL = "https://clickjump-quotes.preview.emergentagent.com"
+BASE_URL = "https://nextjs-store-4.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api"
 
 # Test credentials
