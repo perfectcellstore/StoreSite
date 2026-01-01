@@ -40,9 +40,12 @@ export default function AdminPage() {
     description: '',
     descriptionAr: '',
     price: '',
+    originalPrice: '', // For discount feature
     category: 'collectibles',
     image: '',
-    stock: ''
+    stock: '',
+    onSale: false, // Whether product is on sale
+    dealLabel: '' // Optional: "Limited Time", "Hot Deal", etc.
   });
 
   useEffect(() => {
