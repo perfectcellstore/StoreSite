@@ -1693,3 +1693,115 @@ agent_communication:
 
 
       All requested functionality working as designed with proper access controls.
+
+  - agent: "main"
+    message: |
+      ROBOT QUOTE FEATURE + PROMO CODE ENHANCEMENT (Jan 2026)
+      
+      USER REQUEST:
+      1. Make robot jump, smile, and have effects when clicked
+      2. Make robot show quotes from video games, movies, shows, and historical characters
+      3. Add promo code "Ayajonkler" with 95% discount
+      
+      IMPLEMENTATION COMPLETED:
+      
+      1. ROBOT ENHANCEMENTS (PerfectCellLogo.js):
+         ✅ Robot already had jump animation, smile, hearts, sparkles, glow, and sound
+         ✅ Robot already had 30 diverse quotes stored (video games, movies, historical figures)
+         ✅ ADDED: Visible quote bubble display that appears when robot is clicked
+         
+         Quote Bubble Features:
+         - Appears below the robot with speech bubble arrow
+         - Green gradient background with glow effect
+         - Shows random quote text and source attribution
+         - Pop-in animation with bounce effect (0.3s)
+         - Auto-disappears after 4 seconds
+         - Fixed positioning to prevent clipping
+         - Responsive sizing (max-w-xs on mobile, max-w-sm on desktop)
+         
+         Quote Categories (30 total):
+         - Video Games: "It's-a me, Mario!", "The cake is a lie", "War never changes", etc.
+         - Movies & Shows: "May the Force be with you", "I am inevitable", "Winter is coming", etc.
+         - Historical Figures: "I came, I saw, I conquered", "I have a dream", "I think, therefore I am", etc.
+      
+      2. PROMO CODE ADDITION (checkout/page.js):
+         ✅ Added "Ayajonkler" promo code with 95% discount
+         - Code: "Ayajonkler" (case-sensitive)
+         - Discount: 95% (0.95)
+         - Description: "95% off - Ultimate Discount! 🃏"
+         - Works alongside existing codes (PERFECT10, CELL20, Nona1603, etc.)
+      
+      TECHNICAL IMPLEMENTATION:
+      
+      1. Quote Display:
+         - Uses fixed positioning with z-index 10000 (above all content)
+         - Calculates position based on robot's current location (logoPosition)
+         - Speech bubble created with CSS triangle technique
+         - Gradient background: from-bio-green-500/95 to-emerald-600/95
+         - Border: 2px solid bio-green-400
+         - Animation: cubic-bezier(0.68, -0.55, 0.265, 1.55) for bouncy effect
+         - Glow effect: absolute positioned blur layer with animate-pulse
+      
+      2. Animation Keyframe:
+         ```css
+         @keyframes quote-pop-in {
+           0% { opacity: 0; transform: translateX(-50%) scale(0.5) translateY(-20px); }
+           60% { opacity: 1; transform: translateX(-50%) scale(1.05) translateY(0); }
+           100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+         }
+         ```
+      
+      3. Promo Code Logic:
+         - Case-sensitive exact match first (for special codes like "Ayajonkler")
+         - Falls back to case-insensitive check for other codes
+         - Validation works same as existing codes
+      
+      ROBOT CLICK BEHAVIOR (COMPLETE):
+      When robot is clicked:
+      1. ✅ Jumps with rotation animation (0.8s)
+      2. ✅ Shows bigger smile with happy eyes (1.2s)
+      3. ✅ Spawns 3 green hearts that float up
+      4. ✅ Shows 5 sparkles that pop out radially
+      5. ✅ Displays glow burst effect (scale 1 → 3)
+      6. ✅ Plays robot sound effect
+      7. ✅ Shows random quote in speech bubble (NEW!)
+      8. ✅ All effects optimized for mobile performance
+      
+      QUOTE EXAMPLES:
+      - "It's-a me, Mario!" — Mario - Super Mario
+      - "May the Force be with you." — Star Wars
+      - "I think, therefore I am." — René Descartes
+      - "Do a barrel roll!" — Peppy - Star Fox
+      - "Winter is coming." — Game of Thrones
+      - "I came, I saw, I conquered." — Julius Caesar
+      
+      PROMO CODE TESTING:
+      ✅ "Ayajonkler" applies 95% discount correctly
+      ✅ Example: $100 cart → $5 after discount
+      ✅ Works with shipping calculation
+      ✅ Shows in applied promo section with joker emoji
+      ✅ Can be removed and reapplied
+      
+      ALL PROMO CODES NOW AVAILABLE:
+      - PERFECT10: 10% off
+      - CELL20: 20% off
+      - WELCOME: 5% off
+      - 2026: 20% off
+      - Nona1603: 99% off (case-sensitive)
+      - Ayajonkler: 95% off (case-sensitive) ⭐ NEW
+      
+      PRESERVED:
+      ✅ All existing robot animations and effects
+      ✅ Mobile performance optimizations
+      ✅ Click effects toggle functionality
+      ✅ All existing promo codes
+      ✅ Checkout flow unchanged
+      
+      BENEFITS:
+      ✅ Robot is now more interactive and entertaining
+      ✅ Quotes add personality and pop culture references
+      ✅ New ultra-high discount code for special promotions
+      ✅ Quote bubble is responsive and doesn't clip on mobile
+      ✅ No performance impact (quote is pure CSS animation)
+      
+      Feature enhancement complete - robot now shows quotes and new promo code is active!
