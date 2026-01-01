@@ -3,16 +3,13 @@
 import React, { useState, useEffect } from 'react';
 
 /**
- * Assassin's Creed Easter Egg
+ * Assassin's Creed Easter Egg - FIXED VERSION
  * 
- * Authentic transformation between Assassin and Templar symbols
- * Inspired by AC Rogue home screen transition
- * 
- * Features:
- * - Smooth Y-axis rotation morph
- * - Contextual quotes based on state
- * - Subtle, hidden placement
- * - Performance optimized
+ * Fixed:
+ * 1. Accurate, recognizable symbols
+ * 2. Position stability (no layout shifts)
+ * 3. Correct quote logic (reversed)
+ * 4. Smooth AC Rogue-style animation
  */
 export function AssassinsCreedEasterEgg() {
   const [isTemplar, setIsTemplar] = useState(false);
@@ -20,7 +17,6 @@ export function AssassinsCreedEasterEgg() {
   const [showQuote, setShowQuote] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  // Check for reduced motion preference
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -51,28 +47,39 @@ export function AssassinsCreedEasterEgg() {
 
   const animationDuration = prefersReducedMotion ? '300ms' : '700ms';
 
+  // CORRECTED LOGIC: Templar shows Templar quote, Assassin shows Assassin quote
+  const currentQuote = isTemplar 
+    ? '"May the Father of Understanding guide us."'  // Templar quote when showing Templar
+    : '"Requiescat in pace."';  // Assassin quote when showing Assassin
+
   return (
-    <div className="flex flex-col items-center gap-3">
-      {/* Quote Display - Above symbol */}
-      <div className="h-6 flex items-center justify-center">
-        {showQuote && (
-          <p 
-            className="text-xs text-gray-400 italic tracking-wide text-center px-4"
-            style={{
-              fontFamily: 'serif',
-              animation: 'quote-fade 0.5s ease-out forwards',
-              textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-            }}
-          >
-            {isTemplar 
-              ? '"Requiescat in pace."'
-              : '"May the Father of Understanding guide us."'
-            }
-          </p>
-        )}
+    // Fixed-size container to prevent layout shifts
+    <div className="flex flex-col items-center" style={{ width: '48px', height: '80px' }}>
+      
+      {/* Quote Display - Fixed height container (always present) */}
+      <div 
+        className="flex items-center justify-center"
+        style={{ 
+          height: '32px',
+          width: '200px',
+          marginBottom: '4px'
+        }}
+      >
+        <p 
+          className="text-xs text-gray-400 italic tracking-wide text-center px-2"
+          style={{
+            fontFamily: 'serif',
+            opacity: showQuote ? 1 : 0,
+            visibility: showQuote ? 'visible' : 'hidden',
+            transition: 'opacity 0.5s ease-out',
+            textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+          }}
+        >
+          {currentQuote}
+        </p>
       </div>
 
-      {/* Symbol Container */}
+      {/* Symbol Container - Fixed size */}
       <button
         onClick={handleClick}
         disabled={isAnimating}
@@ -82,11 +89,11 @@ export function AssassinsCreedEasterEgg() {
           height: '48px',
           perspective: '1000px',
         }}
-        aria-label={isTemplar ? "Assassin's Creed Symbol" : "Templar Symbol"}
+        aria-label={isTemplar ? "Templar Symbol" : "Assassin's Creed Symbol"}
       >
-        {/* Rotating container for 3D effect */}
+        {/* 3D Rotating container */}
         <div
-          className="relative w-full h-full transition-transform"
+          className="relative w-full h-full"
           style={{
             transformStyle: 'preserve-3d',
             transform: isTemplar ? 'rotateY(180deg)' : 'rotateY(0deg)',
@@ -102,7 +109,7 @@ export function AssassinsCreedEasterEgg() {
               WebkitBackfaceVisibility: 'hidden',
             }}
           >
-            <AssassinSymbol />
+            <AccurateAssassinSymbol />
           </div>
 
           {/* Templar Symbol (Back) */}
@@ -114,160 +121,158 @@ export function AssassinsCreedEasterEgg() {
               transform: 'rotateY(180deg)',
             }}
           >
-            <TemplarSymbol />
+            <AccurateTemplarSymbol />
           </div>
         </div>
 
-        {/* Subtle hover hint */}
-        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        {/* Hover hint - doesn't affect layout */}
+        <div 
+          className="absolute left-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+          style={{
+            bottom: '-20px',
+            transform: 'translateX(-50%)',
+          }}
+        >
           <div className="text-[10px] text-gray-500 whitespace-nowrap">
             {isTemplar ? 'Assassin' : 'Templar'}
           </div>
         </div>
       </button>
-
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes quote-fade {
-          0% {
-            opacity: 0;
-            transform: translateY(4px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }
 
 /**
- * Assassin's Creed Insignia
- * Clean, accurate representation
+ * ACCURATE Assassin's Creed Insignia
+ * Based on the iconic logo with proper proportions
  */
-function AssassinSymbol() {
+function AccurateAssassinSymbol() {
   return (
     <svg
-      width="40"
-      height="40"
-      viewBox="0 0 100 100"
+      width="44"
+      height="44"
+      viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="transition-opacity group-hover:opacity-90"
     >
-      {/* Assassin insignia - simplified but recognizable */}
-      {/* Top triangle/point */}
+      {/* Accurate Assassin's Creed logo - sharp blade silhouette */}
+      
+      {/* Top point/hood peak */}
       <path
-        d="M50 10 L35 40 L65 40 Z"
-        fill="currentColor"
-        className="text-gray-300"
+        d="M60 15 L48 42 L72 42 Z"
+        fill="#d1d5db"
+        stroke="#9ca3af"
+        strokeWidth="1"
       />
       
-      {/* Left wing */}
+      {/* Left blade wing */}
       <path
-        d="M35 40 L10 50 L20 70 L40 55 Z"
-        fill="currentColor"
-        className="text-gray-300"
+        d="M48 42 L20 52 L25 68 L32 78 L45 68 L50 52 Z"
+        fill="#d1d5db"
+        stroke="#9ca3af"
+        strokeWidth="1"
       />
       
-      {/* Right wing */}
+      {/* Right blade wing */}
       <path
-        d="M65 40 L90 50 L80 70 L60 55 Z"
-        fill="currentColor"
-        className="text-gray-300"
+        d="M72 42 L100 52 L95 68 L88 78 L75 68 L70 52 Z"
+        fill="#d1d5db"
+        stroke="#9ca3af"
+        strokeWidth="1"
       />
       
-      {/* Center body */}
+      {/* Center blade body - tapered */}
       <path
-        d="M40 55 L35 90 L50 85 L65 90 L60 55 Z"
-        fill="currentColor"
-        className="text-gray-300"
+        d="M50 52 L45 68 L48 85 L52 100 L60 105 L68 100 L72 85 L75 68 L70 52 Z"
+        fill="#d1d5db"
+        stroke="#9ca3af"
+        strokeWidth="1"
       />
       
-      {/* Center detail */}
+      {/* Inner negative space detail */}
+      <path
+        d="M60 55 L55 65 L57 78 L60 85 L63 78 L65 65 Z"
+        fill="#1f2937"
+        opacity="0.6"
+      />
+      
+      {/* Center accent */}
       <circle
-        cx="50"
-        cy="50"
-        r="6"
-        fill="currentColor"
-        className="text-gray-400"
+        cx="60"
+        cy="55"
+        r="4"
+        fill="#9ca3af"
       />
     </svg>
   );
 }
 
 /**
- * Templar Cross
- * Clean, accurate representation
+ * ACCURATE Templar Cross
+ * Based on the Knights Templar cross with proper proportions
  */
-function TemplarSymbol() {
+function AccurateTemplarSymbol() {
   return (
     <svg
-      width="40"
-      height="40"
-      viewBox="0 0 100 100"
+      width="44"
+      height="44"
+      viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="transition-opacity group-hover:opacity-90"
     >
-      {/* Templar cross - recognizable design */}
-      {/* Vertical bar */}
+      {/* Accurate Templar cross with pattée (flared) ends */}
+      
+      {/* Vertical bar with flare */}
+      <path
+        d="M52 15 L48 10 L60 8 L72 10 L68 15 L68 52 L52 52 Z"
+        fill="#ef4444"
+        stroke="#dc2626"
+        strokeWidth="1"
+      />
+      
+      <path
+        d="M52 68 L52 105 L48 110 L60 112 L72 110 L68 105 L68 68 Z"
+        fill="#ef4444"
+        stroke="#dc2626"
+        strokeWidth="1"
+      />
+      
+      {/* Horizontal bar with flare */}
+      <path
+        d="M15 52 L10 48 L8 60 L10 72 L15 68 L52 68 L52 52 Z"
+        fill="#ef4444"
+        stroke="#dc2626"
+        strokeWidth="1"
+      />
+      
+      <path
+        d="M68 52 L105 52 L110 48 L112 60 L110 72 L105 68 L68 68 Z"
+        fill="#ef4444"
+        stroke="#dc2626"
+        strokeWidth="1"
+      />
+      
+      {/* Center square */}
       <rect
-        x="42"
-        y="10"
+        x="52"
+        y="52"
         width="16"
-        height="80"
-        fill="currentColor"
-        className="text-red-400"
-      />
-      
-      {/* Horizontal bar */}
-      <rect
-        x="20"
-        y="35"
-        width="60"
         height="16"
-        fill="currentColor"
-        className="text-red-400"
+        fill="#ef4444"
+        stroke="#dc2626"
+        strokeWidth="1"
       />
       
-      {/* Top flare */}
-      <path
-        d="M42 10 L38 5 L50 5 L62 5 L58 10 Z"
-        fill="currentColor"
-        className="text-red-400"
-      />
-      
-      {/* Left flare */}
-      <path
-        d="M20 35 L15 39 L15 43 L15 47 L20 51 Z"
-        fill="currentColor"
-        className="text-red-400"
-      />
-      
-      {/* Right flare */}
-      <path
-        d="M80 35 L85 39 L85 43 L85 47 L80 51 Z"
-        fill="currentColor"
-        className="text-red-400"
-      />
-      
-      {/* Bottom flare */}
-      <path
-        d="M42 90 L38 95 L50 95 L62 95 L58 90 Z"
-        fill="currentColor"
-        className="text-red-400"
-      />
-      
-      {/* Center circle */}
+      {/* Center detail */}
       <circle
-        cx="50"
-        cy="43"
-        r="8"
-        fill="currentColor"
-        className="text-red-500"
+        cx="60"
+        cy="60"
+        r="6"
+        fill="#dc2626"
+        stroke="#b91c1c"
+        strokeWidth="1"
       />
     </svg>
   );
