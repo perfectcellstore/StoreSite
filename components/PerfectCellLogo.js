@@ -7,49 +7,185 @@ import { playRobot } from '@/lib/audioManager';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 // Diverse quotes from video games, movies, shows, and historical figures
-// Each quote has English text and Arabic translation (ar)
+// Each quote has English text, Arabic translation (ar), and translated source (arSource)
 const QUOTES = [
   // God of War
-  { text: "Boy!", ar: "يا فتى!", source: "Kratos - God of War" },
-  { text: "We must be better than this.", ar: "يجب أن نكون أفضل من هذا", source: "Kratos - God of War" },
-  { text: "The cycle ends here.", ar: "الدورة تنتهي هنا", source: "Kratos - God of War" },
-  { text: "Do not be sorry. Be better.", ar: "لا تأسف. كن أفضل", source: "Kratos - God of War" },
-  { text: "The gods are cruel and petty.", ar: "الآلهة قاسية وتافهة", source: "Kratos - God of War" },
-  { text: "In the direction of our dreams.", ar: "في اتجاه أحلامنا", source: "Atreus - God of War" },
-  { text: "We will be the gods we choose to be.", ar: "سنكون الآلهة التي نختار أن نكونها", source: "Kratos - God of War" },
+  { text: "Boy!", ar: "يا فتى!", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
+  { text: "We must be better than this.", ar: "يجب أن نكون أفضل من هذا", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
+  { text: "The cycle ends here.", ar: "الدورة تنتهي هنا", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
+  { text: "Do not be sorry. Be better.", ar: "لا تأسف. كن أفضل", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
+  { text: "The gods are cruel and petty.", ar: "الآلهة قاسية وتافهة", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
+  { text: "In the direction of our dreams.", ar: "في اتجاه أحلامنا", source: "Atreus - God of War", arSource: "أتريوس - إله الحرب" },
+  { text: "We will be the gods we choose to be.", ar: "سنكون الآلهة التي نختار أن نكونها", source: "Kratos - God of War", arSource: "كريتوس - إله الحرب" },
 
   // Doom
-  { text: "Rip and tear, until it is done.", ar: "مزق واقتلع، حتى ينتهي الأمر", source: "Doom Slayer" },
-  { text: "They are rage, brutal, without mercy.", ar: "إنهم غضب، وحشيون، بلا رحمة", source: "Doom" },
-  { text: "But you will be worse.", ar: "لكنك ستكون أسوأ", source: "Doom" },
-  { text: "Against all the evil Hell can conjure...", ar: "ضد كل الشر الذي يمكن للجحيم أن يستحضره", source: "Doom" },
-  { text: "The only thing they fear is you.", ar: "الشيء الوحيد الذي يخافونه هو أنت", source: "Doom Eternal" },
+  { text: "Rip and tear, until it is done.", ar: "مزق واقتلع، حتى ينتهي الأمر", source: "Doom Slayer", arSource: "قاتل الشياطين" },
+  { text: "They are rage, brutal, without mercy.", ar: "إنهم غضب، وحشيون، بلا رحمة", source: "Doom", arSource: "دووم" },
+  { text: "But you will be worse.", ar: "لكنك ستكون أسوأ", source: "Doom", arSource: "دووم" },
+  { text: "Against all the evil Hell can conjure...", ar: "ضد كل الشر الذي يمكن للجحيم أن يستحضره", source: "Doom", arSource: "دووم" },
+  { text: "The only thing they fear is you.", ar: "الشيء الوحيد الذي يخافونه هو أنت", source: "Doom Eternal", arSource: "دووم الأبدي" },
 
   // Dexter
-  { text: "Tonight's the night.", ar: "هذه هي الليلة", source: "Dexter Morgan" },
-  { text: "I'm not the monster he wanted me to be.", ar: "أنا لست الوحش الذي أراد لي أن أكونه", source: "Dexter Morgan" },
-  { text: "I fake it all. I fake everything.", ar: "أنا أزيف كل شيء. أزيف كل شيء", source: "Dexter Morgan" },
-  { text: "Born in blood, both of us.", ar: "ولدنا في الدماء، كلانا", source: "Dexter Morgan" },
-  { text: "Harry was right. I am a monster.", ar: "كان هاري محقاً. أنا وحش", source: "Dexter Morgan" },
+  { text: "Tonight's the night.", ar: "هذه هي الليلة", source: "Dexter Morgan", arSource: "دكستر مورغان" },
+  { text: "I'm not the monster he wanted me to be.", ar: "أنا لست الوحش الذي أراد لي أن أكونه", source: "Dexter Morgan", arSource: "دكستر مورغان" },
+  { text: "I fake it all. I fake everything.", ar: "أنا أزيف كل شيء. أزيف كل شيء", source: "Dexter Morgan", arSource: "دكستر مورغان" },
+  { text: "Born in blood, both of us.", ar: "ولدنا في الدماء، كلانا", source: "Dexter Morgan", arSource: "دكستر مورغان" },
+  { text: "Harry was right. I am a monster.", ar: "كان هاري محقاً. أنا وحش", source: "Dexter Morgan", arSource: "دكستر مورغان" },
 
   // Breaking Bad
-  { text: "I am the one who knocks.", ar: "أنا من يطرق الباب", source: "Walter White" },
-  { text: "Say my name.", ar: "قل اسمي", source: "Walter White" },
-  { text: "I did it for me.", ar: "فعلتها من أجلي", source: "Walter White" },
-  { text: "Yeah, science!", ar: "نعم، العلم!", source: "Jesse Pinkman" },
-  { text: "We're done when I say we're done.", ar: "سننتهي عندما أقول أننا انتهينا", source: "Walter White" },
-  { text: "Tread lightly.", ar: "امش بحذر", source: "Walter White" },
-  { text: "I am not in danger, I am the danger.", ar: "أنا لست في خطر، أنا الخطر", source: "Walter White" },
+  { text: "I am the one who knocks.", ar: "أنا من يطرق الباب", source: "Walter White", arSource: "والتر وايت" },
+  { text: "Say my name.", ar: "قل اسمي", source: "Walter White", arSource: "والتر وايت" },
+  { text: "I did it for me.", ar: "فعلتها من أجلي", source: "Walter White", arSource: "والتر وايت" },
+  { text: "Yeah, science!", ar: "نعم، العلم!", source: "Jesse Pinkman", arSource: "جيسي بينكمان" },
+  { text: "We're done when I say we're done.", ar: "سننتهي عندما أقول أننا انتهينا", source: "Walter White", arSource: "والتر وايت" },
+  { text: "Tread lightly.", ar: "امش بحذر", source: "Walter White", arSource: "والتر وايت" },
+  { text: "I am not in danger, I am the danger.", ar: "أنا لست في خطر، أنا الخطر", source: "Walter White", arSource: "والتر وايت" },
 
   // Harry Potter
-  { text: "It does not do to dwell on dreams.", ar: "ليس من الحكمة الاستغراق في الأحلام", source: "Dumbledore - Harry Potter" },
-  { text: "After all this time? Always.", ar: "بعد كل هذا الوقت؟ دائماً", source: "Severus Snape - Harry Potter" },
-  { text: "Happiness can be found in the darkest of times.", ar: "يمكن إيجاد السعادة في أحلك الأوقات", source: "Dumbledore - Harry Potter" },
-  { text: "It is our choices that show what we truly are.", ar: "خياراتنا هي التي تظهر من نحن حقاً", source: "Dumbledore - Harry Potter" },
-  { text: "Mischief managed.", ar: "تم إدارة الأذى", source: "Harry Potter" },
-  { text: "Not all who wander are lost.", ar: "ليس كل من يتجول تائه", source: "Harry Potter" },
+  { text: "It does not do to dwell on dreams.", ar: "ليس من الحكمة الاستغراق في الأحلام", source: "Dumbledore - Harry Potter", arSource: "دمبلدور - هاري بوتر" },
+  { text: "After all this time? Always.", ar: "بعد كل هذا الوقت؟ دائماً", source: "Severus Snape - Harry Potter", arSource: "سيفيروس سناب - هاري بوتر" },
+  { text: "Happiness can be found in the darkest of times.", ar: "يمكن إيجاد السعادة في أحلك الأوقات", source: "Dumbledore - Harry Potter", arSource: "دمبلدور - هاري بوتر" },
+  { text: "It is our choices that show what we truly are.", ar: "خياراتنا هي التي تظهر من نحن حقاً", source: "Dumbledore - Harry Potter", arSource: "دمبلدور - هاري بوتر" },
+  { text: "Mischief managed.", ar: "تم إدارة الأذى", source: "Harry Potter", arSource: "هاري بوتر" },
+  { text: "Not all who wander are lost.", ar: "ليس كل من يتجول تائه", source: "Harry Potter", arSource: "هاري بوتر" },
 
   // Game of Thrones
+  { text: "Winter is coming.", ar: "الشتاء قادم", source: "House Stark - Game of Thrones", arSource: "عائلة ستارك - صراع العروش" },
+  { text: "A Lannister always pays his debts.", ar: "لانيستر دائماً يسدد ديونه", source: "Game of Thrones", arSource: "صراع العروش" },
+  { text: "When you play the game of thrones, you win or you die.", ar: "عندما تلعب لعبة العروش، إما أن تفوز أو تموت", source: "Cersei - GoT", arSource: "سيرسي - صراع العروش" },
+  { text: "The night is dark and full of terrors.", ar: "الليل مظلم ومليء بالأهوال", source: "Melisandre - GoT", arSource: "ميليساندرا - صراع العروش" },
+  { text: "What do we say to the god of death? Not today.", ar: "ماذا نقول لإله الموت؟ ليس اليوم", source: "Syrio Forel - GoT", arSource: "سيريو فوريل - صراع العروش" },
+  { text: "I drink and I know things.", ar: "أشرب وأعرف أشياء", source: "Tyrion - GoT", arSource: "تيريون - صراع العروش" },
+  { text: "Chaos isn't a pit. Chaos is a ladder.", ar: "الفوضى ليست حفرة. الفوضى سلم", source: "Littlefinger - GoT", arSource: "ليتل فينغر - صراع العروش" },
+  { text: "The North remembers.", ar: "الشمال يتذكر", source: "Game of Thrones", arSource: "صراع العروش" },
+
+  // Gumball (Amazing World of Gumball)
+  { text: "Don't hug me, I'm scared!", ar: "لا تعانقني، أنا خائف!", source: "Gumball", arSource: "غامبول" },
+  { text: "I reject your reality and substitute my own!", ar: "أرفض واقعك وأستبدله بواقعي!", source: "Gumball", arSource: "غامبول" },
+  { text: "This is a cartoon. Physics doesn't apply.", ar: "هذا كرتون. الفيزياء لا تنطبق", source: "Gumball", arSource: "غامبول" },
+  { text: "When life gives you lemons, call them yellow oranges.", ar: "عندما تعطيك الحياة ليموناً، سمها برتقالاً أصفر", source: "Gumball", arSource: "غامبول" },
+
+  // Dragon Ball
+  { text: "It's over 9000!", ar: "إنها أكثر من 9000!", source: "Vegeta - Dragon Ball Z", arSource: "فيجيتا - دراغون بول زد" },
+  { text: "I am the hope of the universe!", ar: "أنا أمل الكون!", source: "Goku - Dragon Ball", arSource: "غوكو - دراغون بول" },
+  { text: "I am the prince of all Saiyans!", ar: "أنا أمير جميع السايان!", source: "Vegeta - Dragon Ball", arSource: "فيجيتا - دراغون بول" },
+  { text: "Power comes in response to a need, not a desire.", ar: "القوة تأتي استجابة للحاجة، وليس للرغبة", source: "Goku - Dragon Ball", arSource: "غوكو - دراغون بول" },
+  { text: "Even the mightiest warriors experience fears.", ar: "حتى أقوى المحاربين يختبرون المخاوف", source: "Piccolo - Dragon Ball", arSource: "بيكولو - دراغون بول" },
+  { text: "Push through the pain!", ar: "تجاوز الألم!", source: "Goku - Dragon Ball", arSource: "غوكو - دراغون بول" },
+  { text: "I won't let you destroy my world!", ar: "لن أدعك تدمر عالمي!", source: "Gohan - Dragon Ball", arSource: "غوهان - دراغون بول" },
+
+  // Naruto
+  { text: "Believe it!", ar: "صدق ذلك!", source: "Naruto Uzumaki", arSource: "ناروتو أوزوماكي" },
+  { text: "I never go back on my word, that's my nindo!", ar: "لا أتراجع أبداً عن كلمتي، هذا هو ننيدو الخاص بي!", source: "Naruto", arSource: "ناروتو" },
+  { text: "Those who break the rules are scum.", ar: "من يكسرون القواعد حثالة", source: "Obito - Naruto", arSource: "أوبيتو - ناروتو" },
+  { text: "Hard work is worthless for those that don't believe.", ar: "العمل الشاق لا قيمة له لمن لا يؤمن", source: "Naruto", arSource: "ناروتو" },
+  { text: "The pain of being alone is truly unbearable.", ar: "ألم الوحدة لا يحتمل حقاً", source: "Naruto", arSource: "ناروتو" },
+  { text: "If you don't take risks, you can't create a future.", ar: "إذا لم تخاطر، لا يمكنك صنع مستقبل", source: "Monkey D. Luffy", arSource: "مونكي دي لوفي" },
+  { text: "A hero always arrives late.", ar: "البطل يصل دائماً متأخراً", source: "Naruto", arSource: "ناروتو" },
+
+  // 300
+  { text: "This is Sparta!", ar: "هذه سبارتا!", source: "King Leonidas - 300", arSource: "الملك ليونيداس - 300" },
+  { text: "Tonight we dine in hell!", ar: "الليلة نتعشى في الجحيم!", source: "King Leonidas - 300", arSource: "الملك ليونيداس - 300" },
+  { text: "Spartans never retreat!", ar: "السبارتيون لا ينسحبون أبداً!", source: "300", arSource: "300" },
+  { text: "Come back with your shield, or on it.", ar: "عد بدرعك، أو عليه", source: "Spartan Mother - 300", arSource: "أم سبارتية - 300" },
+  { text: "Give them nothing, but take from them everything!", ar: "لا تعطهم شيئاً، لكن خذ منهم كل شيء!", source: "300", arSource: "300" },
+
+  // Assassin's Creed (Ezio)
+  { text: "Requiescat in pace.", ar: "ارقد في سلام", source: "Ezio Auditore", arSource: "إيزيو أوديتوري" },
+  { text: "Nothing is true, everything is permitted.", ar: "لا شيء حقيقي، كل شيء مباح", source: "Ezio - Assassin's Creed", arSource: "إيزيو - أساسنز كريد" },
+  { text: "We work in the dark to serve the light.", ar: "نعمل في الظلام لنخدم النور", source: "Ezio", arSource: "إيزيو" },
+  { text: "It is a good life we lead, brother.", ar: "إنها حياة جيدة نعيشها، يا أخي", source: "Ezio", arSource: "إيزيو" },
+  { text: "I have lived my life as best I could.", ar: "عشت حياتي بأفضل ما أستطيع", source: "Ezio", arSource: "إيزيو" },
+
+  // Imam Ali (Historical Islamic Figure)
+  { text: "Silence is the best reply to a fool.", ar: "الصمت هو أفضل رد على الأحمق", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "Knowledge enlivens the soul.", ar: "العلم يحيي الروح", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "Patience is of two kinds: patience over what pains you.", ar: "الصبر نوعان: صبر على ما يؤلمك", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "He who has a thousand friends has not a friend to spare.", ar: "من له ألف صديق ليس له صديق يستغني عنه", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "Your remedy is within you, but you do not sense it.", ar: "دواؤك فيك وما تشعر، وداؤك منك وما تبصر", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "Do not let your difficulties fill you with anxiety.", ar: "لا تدع صعوباتك تملأك بالقلق", source: "Imam Ali", arSource: "الإمام علي" },
+  { text: "A fool's mind is at the mercy of his tongue.", ar: "عقل الأحمق رهينة لسانه", source: "Imam Ali", arSource: "الإمام علي" },
+
+  // Imam Hussein
+  { text: "I only desire to spread good values and prevent evil.", ar: "إنما خرجت لطلب الإصلاح في أمة جدي", source: "Imam Hussein", arSource: "الإمام الحسين" },
+  { text: "Death with dignity is better than a life of humiliation.", ar: "الموت بعز خير من الحياة بذل", source: "Imam Hussein", arSource: "الإمام الحسين" },
+  { text: "I will never give you my hand like a man who has been humiliated.", ar: "لا أعطيكم بيدي إعطاء الذليل", source: "Imam Hussein", arSource: "الإمام الحسين" },
+  { text: "If you don't believe in any religion, at least be free.", ar: "إن لم تكن لك دين، فكن حراً في دنياك", source: "Imam Hussein", arSource: "الإمام الحسين" },
+
+  // Alexander the Great
+  { text: "I am not afraid of an army of lions led by a sheep.", ar: "لست خائفاً من جيش من الأسود يقوده خروف", source: "Alexander the Great", arSource: "الإسكندر الأكبر" },
+  { text: "There is nothing impossible to him who will try.", ar: "لا شيء مستحيل لمن يحاول", source: "Alexander the Great", arSource: "الإسكندر الأكبر" },
+  { text: "I would rather excel in the knowledge of what is excellent.", ar: "أفضل أن أتفوق في معرفة ما هو ممتاز", source: "Alexander the Great", arSource: "الإسكندر الأكبر" },
+  { text: "Remember upon the conduct of each depends the fate of all.", ar: "تذكر أن مصير الجميع يعتمد على تصرف كل فرد", source: "Alexander the Great", arSource: "الإسكندر الأكبر" },
+  { text: "Through every generation of the human race there has been a constant war.", ar: "عبر كل جيل من الجنس البشري كانت هناك حرب مستمرة", source: "Alexander the Great", arSource: "الإسكندر الأكبر" },
+
+  // Khalid ibn al-Walid (Islamic General)
+  { text: "I bring you men who love death as you love life.", ar: "جئتكم برجال يحبون الموت كما تحبون الحياة", source: "Khalid ibn al-Walid", arSource: "خالد بن الوليد" },
+  { text: "No matter how numerous the enemy, they cannot withstand us.", ar: "مهما كان عدد العدو، لا يمكنهم الصمود أمامنا", source: "Khalid ibn al-Walid", arSource: "خالد بن الوليد" },
+  { text: "I have fought in so many battles seeking martyrdom.", ar: "لقد قاتلت في معارك كثيرة طلباً للشهادة", source: "Khalid ibn al-Walid", arSource: "خالد بن الوليد" },
+
+  // Saladin (Salah ad-Din)
+  { text: "Victory is changing the hearts of your opponents by gentleness.", ar: "النصر هو تغيير قلوب خصومك باللطف", source: "Saladin", arSource: "صلاح الدين" },
+  { text: "I warn you against shedding blood.", ar: "أحذركم من سفك الدماء", source: "Saladin", arSource: "صلاح الدين" },
+  { text: "Knowledge is a weapon, I intend to be formidably armed.", ar: "المعرفة سلاح، وأنوي أن أكون مسلحاً بقوة", source: "Saladin", arSource: "صلاح الدين" },
+  { text: "If you want to destroy any nation, destroy its education.", ar: "إذا أردت تدمير أي أمة، دمر تعليمها", source: "Saladin", arSource: "صلاح الدين" },
+
+  // Classic Video Games
+  { text: "It's-a me, Mario!", ar: "إنه أنا، ماريو!", source: "Mario - Super Mario", arSource: "ماريو - سوبر ماريو" },
+  { text: "The cake is a lie.", ar: "الكعكة كذبة", source: "Portal", arSource: "بورتال" },
+  { text: "War. War never changes.", ar: "الحرب. الحرب لا تتغير أبداً", source: "Fallout", arSource: "فول آوت" },
+  { text: "All we had to do, was follow the damn train!", ar: "كل ما علينا فعله كان اتباع القطار اللعين!", source: "Big Smoke - GTA San Andreas", arSource: "بيغ سموك - جي تي إيه سان أندرياس" },
+  { text: "Do a barrel roll!", ar: "افعل دحرجة برميلية!", source: "Peppy - Star Fox", arSource: "بيبي - ستار فوكس" },
+  { text: "Would you kindly?", ar: "هل لك أن تتفضل؟", source: "BioShock", arSource: "بايو شوك" },
+  { text: "I used to be an adventurer like you...", ar: "كنت مغامراً مثلك...", source: "Skyrim Guard", arSource: "حارس سكايريم" },
+  { text: "Stay awhile and listen!", ar: "ابق لبرهة واستمع!", source: "Deckard Cain - Diablo", arSource: "ديكارد كاين - ديابلو" },
+  { text: "The right man in the wrong place...", ar: "الرجل المناسب في المكان الخطأ...", source: "G-Man - Half-Life", arSource: "جي-مان - هاف لايف" },
+  { text: "Remember, no Russian.", ar: "تذكر، لا روسية", source: "Call of Duty: MW2", arSource: "كول أوف ديوتي: الحرب الحديثة 2" },
+  { text: "Get over here!", ar: "تعال إلى هنا!", source: "Scorpion - Mortal Kombat", arSource: "سكوربيون - مورتال كومبات" },
+  { text: "Finish him!", ar: "أجهز عليه!", source: "Mortal Kombat", arSource: "مورتال كومبات" },
+  { text: "A man chooses, a slave obeys.", ar: "الرجل يختار، العبد يطيع", source: "BioShock", arSource: "بايو شوك" },
+  { text: "The truth is, the game was rigged from the start.", ar: "الحقيقة هي، اللعبة كانت مزورة منذ البداية", source: "Fallout: New Vegas", arSource: "فول آوت: نيو فيغاس" },
+  { text: "Had to be me. Someone else might have gotten it wrong.", ar: "كان يجب أن أكون أنا. شخص آخر ربما أخطأ", source: "Mass Effect", arSource: "ماس إيفكت" },
+
+  // More Anime
+  { text: "People die when they are killed.", ar: "الناس يموتون عندما يُقتلون", source: "Shirou - Fate/Stay Night", arSource: "شيرو - فيت/ستاي نايت" },
+  { text: "I'll take a potato chip... and eat it!", ar: "سآخذ رقاقة بطاطس... وآكلها!", source: "Light - Death Note", arSource: "لايت - مذكرة الموت" },
+  { text: "I am going to be King of the Pirates!", ar: "سأصبح ملك القراصنة!", source: "Luffy - One Piece", arSource: "لوفي - ون بيس" },
+  { text: "The world isn't perfect, but it's there for us trying.", ar: "العالم ليس مثالياً، لكنه موجود من أجلنا نحاول", source: "Roy Mustang - FMA", arSource: "روي موستانغ - الخيميائي الفولاذي" },
+  { text: "A lesson without pain is meaningless.", ar: "درس بلا ألم لا معنى له", source: "Edward Elric - FMA", arSource: "إدوارد إلريك - الخيميائي الفولاذي" },
+  { text: "I won't run away anymore!", ar: "لن أهرب بعد الآن!", source: "Hinata - Naruto", arSource: "هيناتا - ناروتو" },
+  { text: "Fun things are fun.", ar: "الأشياء الممتعة ممتعة", source: "Yui - K-On!", arSource: "يوي - كي-أون!" },
+  
+  // Movies & Shows
+  { text: "May the Force be with you.", ar: "لتكن القوة معك", source: "Star Wars", arSource: "حرب النجوم" },
+  { text: "I am inevitable.", ar: "أنا حتمي", source: "Thanos - Avengers", arSource: "ثانوس - المنتقمون" },
+  { text: "You shall not pass!", ar: "لن تمر!", source: "Gandalf - LOTR", arSource: "غاندالف - سيد الخواتم" },
+  { text: "I'll be back.", ar: "سأعود", source: "Terminator", arSource: "المدمر" },
+  { text: "With great power comes great responsibility.", ar: "مع القوة العظيمة تأتي المسؤولية العظيمة", source: "Spider-Man", arSource: "الرجل العنكبوت" },
+  { text: "I am Iron Man.", ar: "أنا الرجل الحديدي", source: "Tony Stark", arSource: "توني ستارك" },
+  { text: "No, I am your father.", ar: "لا، أنا والدك", source: "Darth Vader", arSource: "دارث فيدر" },
+  { text: "To infinity and beyond!", ar: "إلى ما لا نهاية وما بعدها!", source: "Buzz Lightyear", arSource: "باز يطير" },
+  { text: "Why so serious?", ar: "لماذا جاد جداً؟", source: "Joker - The Dark Knight", arSource: "الجوكر - فارس الظلام" },
+  { text: "I live, I die, I live again!", ar: "أعيش، أموت، أعيش مرة أخرى!", source: "Mad Max: Fury Road", arSource: "ماد ماكس: طريق الغضب" },
+  { text: "Witnesses!", ar: "شهود!", source: "Mad Max: Fury Road", arSource: "ماد ماكس: طريق الغضب" },
+  
+  // Historical Figures
+  { text: "I came, I saw, I conquered.", ar: "أتيت، رأيت، انتصرت", source: "Julius Caesar", arSource: "يوليوس قيصر" },
+  { text: "Give me liberty, or give me death!", ar: "أعطني الحرية، أو أعطني الموت!", source: "Patrick Henry", arSource: "باتريك هنري" },
+  { text: "I think, therefore I am.", ar: "أنا أفكر، إذن أنا موجود", source: "René Descartes", arSource: "رينيه ديكارت" },
+  { text: "Be the change you wish to see.", ar: "كن التغيير الذي تريد أن تراه", source: "Gandhi", arSource: "غاندي" },
+  { text: "The only thing we have to fear is fear itself.", ar: "الشيء الوحيد الذي يجب أن نخافه هو الخوف نفسه", source: "FDR", arSource: "فرانكلين روزفلت" },
+  { text: "Knowledge is power.", ar: "المعرفة قوة", source: "Francis Bacon", arSource: "فرانسيس بيكون" },
+  { text: "I have a dream.", ar: "لدي حلم", source: "Martin Luther King Jr.", arSource: "مارتن لوثر كينغ" },
+  { text: "Et tu, Brute?", ar: "وأنت يا بروتوس؟", source: "Julius Caesar", arSource: "يوليوس قيصر" },
+  { text: "One small step for man...", ar: "خطوة صغيرة للإنسان...", source: "Neil Armstrong", arSource: "نيل أرمسترونغ" },
+  { text: "Ask not what your country can do for you...", ar: "لا تسأل ماذا يمكن لبلدك أن تفعل لك...", source: "JFK", arSource: "جون كينيدي" },
+  { text: "The only true wisdom is knowing you know nothing.", ar: "الحكمة الحقيقية الوحيدة هي معرفة أنك لا تعرف شيئاً", source: "Socrates", arSource: "سقراط" },
+  { text: "Veni, vidi, vici.", ar: "أتيت، رأيت، انتصرت", source: "Julius Caesar", arSource: "يوليوس قيصر" },
+  { text: "In the middle of difficulty lies opportunity.", ar: "في وسط الصعوبة تكمن الفرصة", source: "Albert Einstein", arSource: "ألبرت أينشتاين" },
+  { text: "The unexamined life is not worth living.", ar: "الحياة التي لا تُفحص لا تستحق العيش", source: "Socrates", arSource: "سقراط" },
+  { text: "I cannot teach anybody anything. I can only make them think.", ar: "لا أستطيع تعليم أي شخص أي شيء. أستطيع فقط جعلهم يفكرون", source: "Socrates", arSource: "سقراط" }
+];
   { text: "Winter is coming.", ar: "الشتاء قادم", source: "House Stark - Game of Thrones" },
   { text: "A Lannister always pays his debts.", ar: "لانيستر دائماً يسدد ديونه", source: "Game of Thrones" },
   { text: "When you play the game of thrones, you win or you die.", ar: "عندما تلعب لعبة العروش، إما أن تفوز أو تموت", source: "Cersei - GoT" },
