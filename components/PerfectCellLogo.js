@@ -223,7 +223,7 @@ export function PerfectCellLogo() {
     }
   }, [hearts, isJumping]);
 
-  // Calculate optimal quote position (responsive for mobile)
+  // Calculate optimal quote position (responsive for mobile, direction-aware)
   useEffect(() => {
     if (showQuote && logoRef.current && currentQuote) {
       const calculatePosition = () => {
@@ -243,65 +243,75 @@ export function PerfectCellLogo() {
         const robotCenterX = robotRect.left + robotRect.width / 2;
         const robotCenterY = robotRect.top + robotRect.height / 2;
         
-        // Space available in each direction
-        const spaceAbove = robotRect.top;
-        const spaceBelow = viewportHeight - robotRect.bottom;
-        const spaceLeft = robotRect.left;
-        const spaceRight = viewportWidth - robotRect.right;
+        // Check if RTL mode
+        const isRTL = language === 'ar';
         
         let placement = 'below';
         let style = {};
         
         // Determine vertical placement (above or below)
+        const spaceAbove = robotRect.top;
+        const spaceBelow = viewportHeight - robotRect.bottom;
+        
         if (spaceBelow >= estimatedQuoteHeight + 20) {
-          // Enough space below - place below
           placement = 'below';
           style.top = `${robotRect.bottom + 12}px`;
         } else if (spaceAbove >= estimatedQuoteHeight + 20) {
-          // Not enough space below but space above - place above
           placement = 'above';
           style.top = `${robotRect.top - estimatedQuoteHeight - 12}px`;
         } else {
-          // Very tight space - place below with scroll
           placement = 'below';
           style.top = `${robotRect.bottom + 12}px`;
         }
         
-        // Determine horizontal positioning
-        // For Arabic (RTL), flip the position horizontally
-        const isRTL = language === 'ar';
-        let leftPosition;
-        
+        // Determine horizontal positioning (direction-aware)
+        // For RTL, anchor to robot and position near it
         if (isRTL) {
-          // For RTL (Arabic), position on the opposite side
-          // If robot is on left side of screen, show quote on right
-          // If robot is on right side of screen, show quote on left
-          if (robotCenterX < viewportWidth / 2) {
-            // Robot on left half - position quote on right
-            leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
+          // In RTL, calculate from the right edge
+          const robotRightEdge = robotRect.right;
+          const spaceOnRight = viewportWidth - robotRightEdge;
+          const spaceOnLeft = robotRect.left;
+          
+          // Try to position near the robot on the inline-start side (right in RTL)
+          // If robot is near right edge, position on left side
+          if (spaceOnRight >= quoteMaxWidth + edgePadding) {
+            // Enough space on right - position there (natural RTL flow)
+            const insetInlineStart = viewportWidth - robotRightEdge - quoteMaxWidth - 8;
+            style.right = `${insetInlineStart}px`;
+            style.left = 'auto';
+          } else if (spaceOnLeft >= quoteMaxWidth + edgePadding) {
+            // Not enough on right, use left side
+            style.left = `${edgePadding}px`;
+            style.right = 'auto';
           } else {
-            // Robot on right half - position quote on left
-            leftPosition = edgePadding;
+            // Very tight - center with padding
+            style.right = `${edgePadding}px`;
+            style.left = 'auto';
           }
         } else {
-          // For LTR (English), center on robot with edge safety
-          leftPosition = robotCenterX - (quoteMaxWidth / 2);
+          // LTR mode - anchor to robot's position
+          const robotLeftEdge = robotRect.left;
+          const spaceOnLeft = robotLeftEdge;
+          const spaceOnRight = viewportWidth - robotRect.right;
           
-          // Check if it would go off the left edge
+          // Try to position near the robot, centered or slightly offset
+          let leftPosition = robotCenterX - (quoteMaxWidth / 2);
+          
+          // Adjust if going off edges
           if (leftPosition < edgePadding) {
             leftPosition = edgePadding;
-          }
-          
-          // Check if it would go off the right edge
-          if (leftPosition + quoteMaxWidth > viewportWidth - edgePadding) {
+          } else if (leftPosition + quoteMaxWidth > viewportWidth - edgePadding) {
             leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
           }
+          
+          style.left = `${leftPosition}px`;
+          style.right = 'auto';
         }
         
-        style.left = `${leftPosition}px`;
         style.maxWidth = `${quoteMaxWidth}px`;
+        style.direction = isRTL ? 'rtl' : 'ltr';
         
-        setQuotePosition({ placement, style });
+        setQuotePosition({ placement, style, isRTL });
       };
       
       // Calculate immediately
