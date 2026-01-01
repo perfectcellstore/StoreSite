@@ -111,9 +111,9 @@ export function Navigation() {
             title={musicEnabled ? 'Disable background music' : 'Enable background music'}
           >
             {musicEnabled ? (
-              <Music className="h-4 w-4 text-bio-green-500" />
+              <Volume2 className="h-4 w-4 text-bio-green-500" />
             ) : (
-              <MusicOff className="h-4 w-4" />
+              <VolumeX className="h-4 w-4" />
             )}
           </Button>
 
