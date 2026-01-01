@@ -593,6 +593,7 @@ export async function POST(request, { params }) {
 
     if (pathname === 'auth/login') {
       await ensureAuthIndexes(db);
+      await ensureAdminUserExists(db);
 
       const { email, password } = body;
 
