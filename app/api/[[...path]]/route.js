@@ -677,7 +677,16 @@ export async function POST(request, { params }) {
         const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
 
         const { password: _, ...userWithoutPassword } = user;
-      return NextResponse.json({ token, user: userWithoutPassword });
+        console.log('[Register] ✅ Registration successful:', emailLower);
+        return NextResponse.json({ token, user: userWithoutPassword });
+        
+      } catch (error) {
+        console.error('[Register] ❌ Unexpected error:', error.message);
+        return NextResponse.json({ 
+          error: 'An unexpected error occurred during registration. Please try again.',
+          errorCode: 'UNEXPECTED_ERROR'
+        }, { status: 500 });
+      }
     }
 
     if (pathname === 'auth/login') {
