@@ -546,10 +546,25 @@ export default function AdminPage() {
                       <div className="flex-grow">
                         <h3 className="font-semibold text-lg">{product.name}</h3>
                         <p className="text-sm text-muted-foreground line-clamp-2">{product.description}</p>
-                        <div className="flex gap-4 mt-2">
-                          <span className="text-bio-green-500 font-bold">{formatPrice(product.price)}</span>
-                          <span className="text-muted-foreground">Stock: {product.stock}</span>
-                          <span className="text-muted-foreground capitalize">Category: {product.category}</span>
+                        <div className="flex flex-wrap gap-3 mt-2 items-center">
+                          {product.onSale && product.originalPrice ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-muted-foreground line-through text-sm">{formatPrice(product.originalPrice)}</span>
+                              <span className="text-bio-green-500 font-bold text-lg">{formatPrice(product.price)}</span>
+                              <span className="bg-destructive text-destructive-foreground text-xs font-bold px-2 py-1 rounded">
+                                {product.discountPercentage || Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                              </span>
+                              {product.dealLabel && (
+                                <span className="bg-bio-green-500/20 text-bio-green-500 text-xs font-semibold px-2 py-1 rounded border border-bio-green-500/30">
+                                  {product.dealLabel}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-bio-green-500 font-bold">{formatPrice(product.price)}</span>
+                          )}
+                          <span className="text-muted-foreground text-sm">Stock: {product.stock}</span>
+                          <span className="text-muted-foreground text-sm capitalize">Category: {product.category}</span>
                         </div>
                       </div>
                       
