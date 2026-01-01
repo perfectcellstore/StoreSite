@@ -188,6 +188,7 @@ const QUOTES = [
 ];
 
 export function PerfectCellLogo() {
+  const { language } = useLanguage(); // Get current language
   const [isJumping, setIsJumping] = useState(false);
   const [hearts, setHearts] = useState([]);
   const [isSmiling, setIsSmiling] = useState(false);
