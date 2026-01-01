@@ -51,7 +51,9 @@ export function PerfectCellLogo() {
   const [logoPosition, setLogoPosition] = useState({ x: 0, y: 0 });
   const [currentQuote, setCurrentQuote] = useState(null);
   const [showQuote, setShowQuote] = useState(false);
+  const [quotePosition, setQuotePosition] = useState({ placement: 'below', style: {} });
   const logoRef = useRef(null);
+  const quoteRef = useRef(null);
 
   // Update logo position for fixed effects
   useEffect(() => {
@@ -60,6 +62,88 @@ export function PerfectCellLogo() {
       setLogoPosition({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
     }
   }, [hearts, isJumping]);
+
+  // Calculate optimal quote position (responsive for mobile)
+  useEffect(() => {
+    if (showQuote && logoRef.current && currentQuote) {
+      const calculatePosition = () => {
+        const robotRect = logoRef.current.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        
+        // Safe padding from edges (more on mobile)
+        const isMobile = viewportWidth < 640;
+        const edgePadding = isMobile ? 16 : 24;
+        const quoteMaxWidth = isMobile ? viewportWidth - (edgePadding * 2) : 280;
+        
+        // Estimate quote height (rough calculation)
+        const estimatedQuoteHeight = isMobile ? 120 : 100;
+        
+        // Robot center position
+        const robotCenterX = robotRect.left + robotRect.width / 2;
+        const robotCenterY = robotRect.top + robotRect.height / 2;
+        
+        // Space available in each direction
+        const spaceAbove = robotRect.top;
+        const spaceBelow = viewportHeight - robotRect.bottom;
+        const spaceLeft = robotRect.left;
+        const spaceRight = viewportWidth - robotRect.right;
+        
+        let placement = 'below';
+        let style = {};
+        
+        // Determine vertical placement (above or below)
+        if (spaceBelow >= estimatedQuoteHeight + 20) {
+          // Enough space below - place below
+          placement = 'below';
+          style.top = `${robotRect.bottom + 12}px`;
+        } else if (spaceAbove >= estimatedQuoteHeight + 20) {
+          // Not enough space below but space above - place above
+          placement = 'above';
+          style.top = `${robotRect.top - estimatedQuoteHeight - 12}px`;
+        } else {
+          // Very tight space - place below with scroll
+          placement = 'below';
+          style.top = `${robotRect.bottom + 12}px`;
+        }
+        
+        // Determine horizontal positioning
+        // Try to center on robot, but keep within safe bounds
+        let leftPosition = robotCenterX - (quoteMaxWidth / 2);
+        
+        // Check if it would go off the left edge
+        if (leftPosition < edgePadding) {
+          leftPosition = edgePadding;
+        }
+        
+        // Check if it would go off the right edge
+        if (leftPosition + quoteMaxWidth > viewportWidth - edgePadding) {
+          leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
+        }
+        
+        style.left = `${leftPosition}px`;
+        style.maxWidth = `${quoteMaxWidth}px`;
+        
+        setQuotePosition({ placement, style });
+      };
+      
+      // Calculate immediately
+      calculatePosition();
+      
+      // Recalculate on resize (debounced)
+      let resizeTimeout;
+      const handleResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(calculatePosition, 100);
+      };
+      
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(resizeTimeout);
+      };
+    }
+  }, [showQuote, currentQuote]);
 
   const handleClick = (e) => {
     e.preventDefault();
