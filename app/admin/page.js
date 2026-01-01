@@ -106,6 +106,16 @@ export default function AdminPage() {
       const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
       const method = editingProduct ? 'PUT' : 'POST';
 
+      // Calculate discount percentage if both prices are provided
+      const finalPrice = parseFloat(productForm.price);
+      const originalPrice = productForm.originalPrice ? parseFloat(productForm.originalPrice) : null;
+      
+      // If originalPrice is provided and greater than price, mark as on sale
+      const isOnSale = originalPrice && originalPrice > finalPrice;
+      const discountPercentage = isOnSale 
+        ? Math.round(((originalPrice - finalPrice) / originalPrice) * 100)
+        : 0;
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -114,15 +124,18 @@ export default function AdminPage() {
         },
         body: JSON.stringify({
           ...productForm,
-          price: parseFloat(productForm.price),
-          stock: parseInt(productForm.stock)
+          price: finalPrice,
+          originalPrice: originalPrice || null,
+          stock: parseInt(productForm.stock),
+          onSale: isOnSale,
+          discountPercentage: discountPercentage
         })
       });
 
       if (response.ok) {
         toast({
           title: 'Success',
-          description: `Product ${editingProduct ? 'updated' : 'created'} successfully`
+          description: `Product ${editingProduct ? 'updated' : 'created'} successfully${isOnSale ? ` with ${discountPercentage}% discount` : ''}`
         });
         setShowProductDialog(false);
         setEditingProduct(null);
