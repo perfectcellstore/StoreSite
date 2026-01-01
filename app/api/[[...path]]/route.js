@@ -599,8 +599,28 @@ export async function POST(request, { params }) {
 
     if (pathname === 'auth/login') {
       try {
-        await ensureAuthIndexes(db);
-        await ensureAdminUserExists(db);
+        console.log('[Login] Login attempt started for:', body?.email);
+        
+        // First, ensure database connection is healthy
+        try {
+          await ensureAuthIndexes(db);
+          console.log('[Login] Auth indexes verified');
+        } catch (dbError) {
+          console.error('[Login] ❌ Database index error:', dbError.message);
+          return NextResponse.json({ 
+            error: 'Database connection error. Please try again in a moment.',
+            errorCode: 'DB_INDEX_ERROR'
+          }, { status: 503 });
+        }
+        
+        // Ensure admin user exists
+        try {
+          await ensureAdminUserExists(db);
+          console.log('[Login] Admin user check complete');
+        } catch (adminError) {
+          console.error('[Login] ⚠️ Admin initialization error:', adminError.message);
+          // Continue with login even if admin init fails
+        }
 
         const { email, password } = body;
 
@@ -620,46 +640,88 @@ export async function POST(request, { params }) {
         const ip = getClientIp(request);
         const rateKey = `login:${ip}:${emailLower}`;
 
-        const limiter = await getAuthRateLimit(db, rateKey);
-        if (limiter?.lockedUntil && Date.now() < limiter.lockedUntil) {
-          const retryAfterSeconds = Math.max(1, Math.ceil((limiter.lockedUntil - Date.now()) / 1000));
-          console.log('[Login] Rate limited:', emailLower);
-          return NextResponse.json(
-            {
-              error: 'Too many login attempts. Please try again later.',
-              retryAfterSeconds,
-            },
-            {
-              status: 429,
-              headers: {
-                'Retry-After': String(retryAfterSeconds),
+        // Check rate limiting
+        try {
+          const limiter = await getAuthRateLimit(db, rateKey);
+          if (limiter?.lockedUntil && Date.now() < limiter.lockedUntil) {
+            const retryAfterSeconds = Math.max(1, Math.ceil((limiter.lockedUntil - Date.now()) / 1000));
+            console.log('[Login] Rate limited:', emailLower);
+            return NextResponse.json(
+              {
+                error: 'Too many login attempts. Please try again later.',
+                retryAfterSeconds,
               },
-            }
-          );
+              {
+                status: 429,
+                headers: {
+                  'Retry-After': String(retryAfterSeconds),
+                },
+              }
+            );
+          }
+        } catch (rateLimitError) {
+          console.error('[Login] Rate limit check error:', rateLimitError.message);
+          // Continue with login if rate limit check fails
         }
 
-        // Backward compatibility: some older users may not have emailLower
-        const user = await db.collection('users').findOne({
-          $or: [
-            { emailLower },
-            { email: { $regex: `^${escapeRegExp(emailLower)}$`, $options: 'i' } },
-          ],
-        });
+        // Find user in database
+        let user;
+        try {
+          console.log('[Login] Searching for user:', emailLower);
+          user = await db.collection('users').findOne({
+            $or: [
+              { emailLower },
+              { email: { $regex: `^${escapeRegExp(emailLower)}$`, $options: 'i' } },
+            ],
+          });
+          console.log('[Login] User search result:', user ? `Found (ID: ${user.id})` : 'Not found');
+        } catch (findError) {
+          console.error('[Login] ❌ Database query error:', findError.message);
+          return NextResponse.json({ 
+            error: 'Database error while searching for user. Please try again.',
+            errorCode: 'DB_QUERY_ERROR'
+          }, { status: 503 });
+        }
 
         if (!user) {
           console.log('[Login] User not found:', emailLower);
-          await recordAuthFailure(db, rateKey);
+          try {
+            await recordAuthFailure(db, rateKey);
+          } catch (e) {
+            console.error('[Login] Failed to record auth failure:', e.message);
+          }
           return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
-        const validPassword = await bcrypt.compare(password, user.password);
+        // Verify password
+        let validPassword;
+        try {
+          validPassword = await bcrypt.compare(password, user.password);
+        } catch (bcryptError) {
+          console.error('[Login] ❌ Password comparison error:', bcryptError.message);
+          return NextResponse.json({ 
+            error: 'Authentication error. Please try again.',
+            errorCode: 'AUTH_ERROR'
+          }, { status: 500 });
+        }
+
         if (!validPassword) {
           console.log('[Login] Invalid password for:', emailLower);
-          await recordAuthFailure(db, rateKey);
+          try {
+            await recordAuthFailure(db, rateKey);
+          } catch (e) {
+            console.error('[Login] Failed to record auth failure:', e.message);
+          }
           return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
-        await clearAuthFailures(db, rateKey);
+        // Clear auth failures on successful login
+        try {
+          await clearAuthFailures(db, rateKey);
+        } catch (e) {
+          console.error('[Login] Failed to clear auth failures:', e.message);
+          // Continue with login
+        }
 
         // If user is legacy (missing emailLower), backfill it (best-effort)
         if (!user.emailLower) {
@@ -675,16 +737,20 @@ export async function POST(request, { params }) {
           }
         }
 
+        // Generate JWT token
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
         const { password: _, ...userWithoutPassword } = user;
-        console.log('[Login] Success:', emailLower, 'Role:', user.role);
+        console.log('[Login] ✅ Success:', emailLower, 'Role:', user.role);
         return NextResponse.json({ token, user: userWithoutPassword });
         
       } catch (error) {
-        console.error('[Login] Internal error:', error);
+        console.error('[Login] ❌ Unexpected error:', error.message);
+        console.error('[Login] Stack trace:', error.stack);
         return NextResponse.json({ 
-          error: 'Internal server error. Please try again or contact support.' 
+          error: 'An unexpected error occurred during login. Please try again.',
+          errorCode: 'UNEXPECTED_ERROR',
+          errorMessage: process.env.NODE_ENV === 'development' ? error.message : undefined
         }, { status: 500 });
       }
     }
