@@ -74,66 +74,107 @@ export function DarkSoulsBonfire() {
             />
           )}
 
-          {/* IMPROVED ROCK/COAL FORMATION - More realistic circular arrangement */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-10">
-            {/* Back left rock */}
+          {/* CLUMPED WOOD & ROCK BONFIRE BASE - Realistic pile */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-12">
+            {/* Back wood log - diagonal */}
             <div 
               className={`absolute transition-all duration-700 ${
                 isLit 
-                  ? 'bg-gradient-to-br from-red-700 via-red-800 to-gray-900' 
-                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+                  ? 'bg-gradient-to-br from-orange-900 via-amber-950 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-800 via-gray-900 to-black'
               }`}
               style={{
-                bottom: '4px',
-                left: '8px',
-                width: '14px',
-                height: '10px',
-                clipPath: 'polygon(20% 0%, 80% 5%, 90% 30%, 85% 70%, 70% 95%, 30% 100%, 10% 80%, 5% 40%)',
+                bottom: '8px',
+                left: '18px',
+                width: '24px',
+                height: '8px',
+                transform: 'rotate(-15deg)',
+                borderRadius: '4px',
                 boxShadow: isLit 
-                  ? '0 0 12px rgba(185, 28, 28, 0.7), inset -2px -3px 6px rgba(0,0,0,0.6)' 
-                  : 'inset -2px -3px 6px rgba(0,0,0,0.8)',
+                  ? '0 0 10px rgba(234, 88, 12, 0.5), inset 0 -2px 4px rgba(0,0,0,0.7)' 
+                  : 'inset 0 -2px 4px rgba(0,0,0,0.9)',
               }}
             />
-            
-            {/* Back right rock */}
+
+            {/* Back wood log - opposite angle */}
+            <div 
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-amber-950 via-orange-900 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-800 via-gray-900 to-black'
+              }`}
+              style={{
+                bottom: '7px',
+                right: '16px',
+                width: '26px',
+                height: '7px',
+                transform: 'rotate(18deg)',
+                borderRadius: '3px',
+                boxShadow: isLit 
+                  ? '0 0 10px rgba(234, 88, 12, 0.5), inset 0 -2px 4px rgba(0,0,0,0.7)' 
+                  : 'inset 0 -2px 4px rgba(0,0,0,0.9)',
+              }}
+            />
+
+            {/* Left rock - overlapping wood */}
             <div 
               className={`absolute transition-all duration-700 ${
                 isLit 
                   ? 'bg-gradient-to-br from-orange-600 via-red-700 to-gray-900' 
-                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-black'
               }`}
               style={{
                 bottom: '3px',
-                right: '10px',
-                width: '13px',
-                height: '9px',
-                clipPath: 'polygon(15% 10%, 75% 0%, 95% 25%, 90% 65%, 80% 90%, 35% 100%, 10% 75%, 8% 35%)',
+                left: '8px',
+                width: '18px',
+                height: '12px',
+                clipPath: 'polygon(15% 5%, 70% 0%, 90% 20%, 95% 60%, 85% 95%, 40% 100%, 10% 80%, 5% 35%)',
                 boxShadow: isLit 
-                  ? '0 0 12px rgba(234, 88, 12, 0.7), inset -2px -3px 6px rgba(0,0,0,0.6)' 
+                  ? '0 0 14px rgba(234, 88, 12, 0.8), inset -2px -3px 6px rgba(0,0,0,0.5)' 
                   : 'inset -2px -3px 6px rgba(0,0,0,0.8)',
               }}
             />
 
-            {/* Front left rock - larger */}
+            {/* Right rock - overlapping wood */}
             <div 
               className={`absolute transition-all duration-700 ${
                 isLit 
-                  ? 'bg-gradient-to-br from-orange-500 via-red-600 to-red-900' 
-                  : 'bg-gradient-to-br from-gray-600 via-gray-800 to-gray-900'
+                  ? 'bg-gradient-to-br from-orange-500 via-red-600 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-black'
+              }`}
+              style={{
+                bottom: '2px',
+                right: '6px',
+                width: '20px',
+                height: '13px',
+                clipPath: 'polygon(20% 0%, 75% 5%, 95% 30%, 98% 70%, 88% 95%, 35% 100%, 8% 85%, 5% 40%)',
+                boxShadow: isLit 
+                  ? '0 0 14px rgba(234, 88, 12, 0.8), inset -2px -3px 6px rgba(0,0,0,0.5)' 
+                  : 'inset -2px -3px 6px rgba(0,0,0,0.8)',
+              }}
+            />
+
+            {/* Front wood log - horizontal */}
+            <div 
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-orange-800 via-amber-900 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-800 via-gray-900 to-black'
               }`}
               style={{
                 bottom: '0px',
-                left: '12px',
-                width: '16px',
-                height: '13px',
-                clipPath: 'polygon(25% 0%, 85% 8%, 95% 35%, 92% 75%, 75% 98%, 25% 100%, 8% 80%, 5% 30%)',
+                left: '50%',
+                transform: 'translateX(-50%) rotate(-5deg)',
+                width: '32px',
+                height: '9px',
+                borderRadius: '4px',
                 boxShadow: isLit 
-                  ? '0 0 16px rgba(234, 88, 12, 0.9), inset -3px -4px 8px rgba(0,0,0,0.5)' 
-                  : 'inset -3px -4px 8px rgba(0,0,0,0.8)',
+                  ? '0 0 12px rgba(234, 88, 12, 0.7), inset 0 -3px 5px rgba(0,0,0,0.6)' 
+                  : 'inset 0 -3px 5px rgba(0,0,0,0.9)',
               }}
             />
-            
-            {/* Front right rock - larger */}
+
+            {/* Center rock - on top of logs */}
             <div 
               className={`absolute transition-all duration-700 ${
                 isLit 
@@ -141,34 +182,53 @@ export function DarkSoulsBonfire() {
                   : 'bg-gradient-to-br from-gray-600 via-gray-800 to-gray-900'
               }`}
               style={{
-                bottom: '0px',
-                right: '14px',
-                width: '18px',
+                bottom: '5px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '22px',
                 height: '14px',
-                clipPath: 'polygon(20% 5%, 80% 0%, 98% 30%, 95% 70%, 85% 95%, 30% 100%, 5% 85%, 3% 40%)',
+                clipPath: 'polygon(25% 3%, 70% 0%, 95% 22%, 98% 60%, 90% 90%, 50% 100%, 10% 90%, 2% 60%, 5% 22%)',
                 boxShadow: isLit 
-                  ? '0 0 16px rgba(251, 146, 60, 0.9), inset -3px -4px 8px rgba(0,0,0,0.5)' 
+                  ? '0 0 18px rgba(251, 146, 60, 0.9), inset -3px -4px 8px rgba(0,0,0,0.4)' 
                   : 'inset -3px -4px 8px rgba(0,0,0,0.8)',
               }}
             />
 
-            {/* Center front rock - biggest, most lit */}
+            {/* Small left coal - filling gaps */}
             <div 
               className={`absolute transition-all duration-700 ${
                 isLit 
-                  ? 'bg-gradient-to-br from-orange-300 via-orange-500 to-red-700' 
-                  : 'bg-gradient-to-br from-gray-600 via-gray-700 to-gray-900'
+                  ? 'bg-gradient-to-br from-red-600 via-red-800 to-black' 
+                  : 'bg-gradient-to-br from-gray-700 via-gray-900 to-black'
               }`}
               style={{
                 bottom: '1px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '20px',
-                height: '16px',
-                clipPath: 'polygon(30% 2%, 70% 0%, 95% 25%, 98% 65%, 88% 92%, 50% 100%, 12% 92%, 2% 65%, 5% 25%)',
+                left: '25px',
+                width: '10px',
+                height: '7px',
+                clipPath: 'polygon(20% 10%, 75% 0%, 95% 40%, 90% 85%, 50% 100%, 10% 80%)',
                 boxShadow: isLit 
-                  ? '0 0 20px rgba(251, 146, 60, 1), inset -3px -5px 10px rgba(0,0,0,0.4)' 
-                  : 'inset -3px -5px 10px rgba(0,0,0,0.8)',
+                  ? '0 0 10px rgba(185, 28, 28, 0.7)' 
+                  : 'none',
+              }}
+            />
+
+            {/* Small right coal - filling gaps */}
+            <div 
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-red-700 via-red-800 to-black' 
+                  : 'bg-gradient-to-br from-gray-700 via-gray-900 to-black'
+              }`}
+              style={{
+                bottom: '1px',
+                right: '22px',
+                width: '11px',
+                height: '8px',
+                clipPath: 'polygon(25% 5%, 80% 0%, 95% 50%, 85% 95%, 40% 100%, 10% 75%)',
+                boxShadow: isLit 
+                  ? '0 0 10px rgba(185, 28, 28, 0.7)' 
+                  : 'none',
               }}
             />
           </div>
