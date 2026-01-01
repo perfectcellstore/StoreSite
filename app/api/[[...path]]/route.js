@@ -220,6 +220,40 @@ export async function GET(request, { params }) {
     const url = new URL(request.url);
     const searchParams = url.searchParams;
 
+    // Health Check Endpoint
+    if (pathname === 'health') {
+      try {
+        // Check database connection
+        const { checkDatabaseHealth } = await import('@/lib/db');
+        const dbHealth = await checkDatabaseHealth();
+        
+        // Check user collection
+        const userCount = await db.collection('users').countDocuments();
+        const adminExists = await db.collection('users').findOne({ 
+          emailLower: 'perfectcellstore@gmail.com' 
+        });
+        
+        return NextResponse.json({
+          status: 'healthy',
+          timestamp: new Date().toISOString(),
+          database: {
+            connected: dbHealth.connected,
+            name: dbHealth.database,
+            userCount,
+            adminAccountExists: !!adminExists
+          },
+          uptime: process.uptime()
+        });
+      } catch (healthError) {
+        console.error('[Health] Health check failed:', healthError.message);
+        return NextResponse.json({
+          status: 'unhealthy',
+          timestamp: new Date().toISOString(),
+          error: healthError.message
+        }, { status: 503 });
+      }
+    }
+
     // Auth Routes
     if (pathname === 'auth/me') {
       const decoded = verifyToken(request);
