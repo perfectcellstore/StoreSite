@@ -16,7 +16,6 @@ import { PerfectCellLogo } from '@/components/PerfectCellLogo';
 import { SwordInStone } from '@/components/SwordInStone';
 import { NotificationBell } from '@/components/NotificationBell';
 import { DarkSoulsBonfire } from '@/components/DarkSoulsBonfire';
-import { toggleBackgroundMusic, getMusicEnabled, isMusicCurrentlyPlaying } from '@/lib/audioManager';
 
 export function Navigation() {
   const pathname = usePathname();
