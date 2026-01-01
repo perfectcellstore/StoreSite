@@ -5,11 +5,52 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { playRobot } from '@/lib/audioManager';
 
+// Diverse quotes from video games, movies, shows, and historical figures
+const QUOTES = [
+  // Video Games
+  { text: "It's-a me, Mario!", source: "Mario - Super Mario" },
+  { text: "The cake is a lie.", source: "Portal" },
+  { text: "War. War never changes.", source: "Fallout" },
+  { text: "All we had to do, was follow the damn train!", source: "Big Smoke - GTA San Andreas" },
+  { text: "Do a barrel roll!", source: "Peppy - Star Fox" },
+  { text: "Would you kindly?", source: "BioShock" },
+  { text: "I used to be an adventurer like you...", source: "Skyrim Guard" },
+  { text: "Stay awhile and listen!", source: "Deckard Cain - Diablo" },
+  { text: "The right man in the wrong place...", source: "G-Man - Half-Life" },
+  { text: "Remember, no Russian.", source: "Call of Duty: MW2" },
+  
+  // Movies & Shows
+  { text: "May the Force be with you.", source: "Star Wars" },
+  { text: "I am inevitable.", source: "Thanos - Avengers" },
+  { text: "You shall not pass!", source: "Gandalf - LOTR" },
+  { text: "I'll be back.", source: "Terminator" },
+  { text: "Winter is coming.", source: "Game of Thrones" },
+  { text: "With great power comes great responsibility.", source: "Spider-Man" },
+  { text: "I am Iron Man.", source: "Tony Stark" },
+  { text: "No, I am your father.", source: "Darth Vader" },
+  { text: "To infinity and beyond!", source: "Buzz Lightyear" },
+  { text: "Why so serious?", source: "Joker - The Dark Knight" },
+  
+  // Historical Figures
+  { text: "I came, I saw, I conquered.", source: "Julius Caesar" },
+  { text: "Give me liberty, or give me death!", source: "Patrick Henry" },
+  { text: "I think, therefore I am.", source: "René Descartes" },
+  { text: "Be the change you wish to see.", source: "Gandhi" },
+  { text: "The only thing we have to fear is fear itself.", source: "FDR" },
+  { text: "Knowledge is power.", source: "Francis Bacon" },
+  { text: "I have a dream.", source: "Martin Luther King Jr." },
+  { text: "Et tu, Brute?", source: "Julius Caesar" },
+  { text: "One small step for man...", source: "Neil Armstrong" },
+  { text: "Ask not what your country can do for you...", source: "JFK" }
+];
+
 export function PerfectCellLogo() {
   const [isJumping, setIsJumping] = useState(false);
   const [hearts, setHearts] = useState([]);
   const [isSmiling, setIsSmiling] = useState(false);
   const [logoPosition, setLogoPosition] = useState({ x: 0, y: 0 });
+  const [currentQuote, setCurrentQuote] = useState(null);
+  const [showQuote, setShowQuote] = useState(false);
   const logoRef = useRef(null);
 
   // Update logo position for fixed effects
@@ -43,6 +84,16 @@ export function PerfectCellLogo() {
     setTimeout(() => {
       setHearts([]);
     }, 2000);
+
+    // Pick random quote
+    const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    setCurrentQuote(randomQuote);
+    setShowQuote(true);
+
+    // Hide quote after 4 seconds
+    setTimeout(() => {
+      setShowQuote(false);
+    }, 4000);
 
     // Play robot sound (shared audio manager)
     playRobot();
