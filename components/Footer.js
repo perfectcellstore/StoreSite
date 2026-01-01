@@ -27,7 +27,7 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               {t('heroDescription')}
             </p>
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <a
                 href="https://instagram.com/perfectsell_store"
                 target="_blank"
@@ -44,6 +44,11 @@ export function Footer() {
               >
                 <MessageCircle className="h-5 w-5" />
               </a>
+              
+              {/* Assassin's Creed Easter Egg - Visible placement */}
+              <div className="ml-2 pl-3 border-l border-border/40">
+                <AssassinsCreedEasterEgg />
+              </div>
             </div>
           </div>
 
