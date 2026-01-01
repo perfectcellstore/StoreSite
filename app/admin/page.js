@@ -29,10 +29,23 @@ export default function AdminPage() {
   const [stats, setStats] = useState(null);
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showProductDialog, setShowProductDialog] = useState(false);
+  const [showCollectionDialog, setShowCollectionDialog] = useState(false);
   const [orderSearch, setOrderSearch] = useState('');
   const [editingProduct, setEditingProduct] = useState(null);
+  const [editingCollection, setEditingCollection] = useState(null);
+  
+  const [collectionForm, setCollectionForm] = useState({
+    name: '',
+    nameAr: '',
+    description: '',
+    descriptionAr: '',
+    image: '',
+    icon: '📦',
+    showOnHome: true
+  });
   
   const [productForm, setProductForm] = useState({
     name: '',
