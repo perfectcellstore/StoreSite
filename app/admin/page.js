@@ -213,21 +213,24 @@ export default function AdminPage() {
       dealLabel: ''
     });
   };
-      nameAr: '',
-      description: '',
-      descriptionAr: '',
-      price: '',
-      category: 'collectibles',
-      image: '',
-      stock: ''
-    });
-  };
 
   const handleEditProduct = (product) => {
     setEditingProduct(product);
     setProductForm({
       name: product.name,
       nameAr: product.nameAr || '',
+      description: product.description,
+      descriptionAr: product.descriptionAr || '',
+      price: product.price.toString(),
+      originalPrice: product.originalPrice ? product.originalPrice.toString() : '',
+      category: product.category,
+      image: product.image,
+      stock: product.stock.toString(),
+      onSale: product.onSale || false,
+      dealLabel: product.dealLabel || ''
+    });
+    setShowProductDialog(true);
+  };
       description: product.description,
       descriptionAr: product.descriptionAr || '',
       price: product.price.toString(),
