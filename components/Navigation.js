@@ -236,6 +236,19 @@ export function Navigation() {
                   <Button
                     variant="ghost"
                     size="sm"
+                    onClick={handleMusicToggle}
+                    className="w-full justify-start hover:bg-bio-green-500/10 hover:text-bio-green-500"
+                  >
+                    {musicEnabled ? (
+                      <Volume2 className="mr-2 h-4 w-4 text-bio-green-500" />
+                    ) : (
+                      <VolumeX className="mr-2 h-4 w-4" />
+                    )}
+                    {t('music')}: {musicEnabled ? t('on') : t('off')}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => {
                       setSheetOpen(false);
                       setTimeout(() => setShowEasterEgg(true), 300);
