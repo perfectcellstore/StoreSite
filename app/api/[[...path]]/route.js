@@ -6,6 +6,58 @@ import { v4 as uuidv4 } from 'uuid';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'perfect-sell-jwt-secret';
 
+// Admin auto-initialization
+const ADMIN_EMAIL = 'perfectcellstore@gmail.com';
+const ADMIN_PASSWORD = 'admin123456';
+let adminInitialized = false;
+
+async function ensureAdminUserExists(db) {
+  if (adminInitialized) return;
+  
+  try {
+    const emailLower = ADMIN_EMAIL.toLowerCase().trim();
+    
+    const existingAdmin = await db.collection('users').findOne({
+      $or: [
+        { emailLower },
+        { email: { $regex: `^${ADMIN_EMAIL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' } }
+      ]
+    });
+    
+    if (!existingAdmin) {
+      console.log('[Admin Init] Creating admin user...');
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      
+      await db.collection('users').insertOne({
+        id: uuidv4(),
+        email: ADMIN_EMAIL,
+        emailLower,
+        password: hashedPassword,
+        name: 'Perfect Cell Admin',
+        role: 'admin',
+        createdAt: new Date().toISOString()
+      });
+      
+      console.log('[Admin Init] ✅ Admin user created');
+    } else {
+      // Ensure admin has all required fields
+      const updates = {};
+      if (!existingAdmin.emailLower) updates.emailLower = emailLower;
+      if (existingAdmin.role !== 'admin') updates.role = 'admin';
+      
+      if (Object.keys(updates).length > 0) {
+        await db.collection('users').updateOne({ id: existingAdmin.id }, { $set: updates });
+        console.log('[Admin Init] ✅ Admin user updated');
+      }
+    }
+    
+    adminInitialized = true;
+  } catch (error) {
+    console.error('[Admin Init] Error:', error.message);
+    // Don't throw - allow app to continue
+  }
+}
+
 // Helper function to create a notification
 async function createNotification(db, { userId, title, titleAr, message, messageAr, type }) {
   const notification = {
