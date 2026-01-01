@@ -476,36 +476,21 @@ export function PerfectCellLogo() {
               }}
             />
             
-            {/* Quote text - English */}
+            {/* Quote text - displays in selected language only */}
             <p 
-              className="font-semibold mb-1 leading-tight break-words"
+              className="font-semibold mb-1.5 leading-tight break-words"
               style={{
                 fontSize: 'clamp(13px, 3.5vw, 15px)',
-                lineHeight: '1.4',
+                lineHeight: language === 'ar' ? '1.5' : '1.4',
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word',
                 hyphens: 'auto',
+                direction: language === 'ar' ? 'rtl' : 'ltr',
+                fontFamily: language === 'ar' ? 'Arial, sans-serif' : 'inherit',
               }}
             >
-              &ldquo;{currentQuote.text}&rdquo;
+              &ldquo;{language === 'ar' && currentQuote.ar ? currentQuote.ar : currentQuote.text}&rdquo;
             </p>
-            
-            {/* Quote text - Arabic */}
-            {currentQuote.ar && (
-              <p 
-                className="font-semibold mb-1.5 leading-tight break-words text-bio-green-200"
-                style={{
-                  fontSize: 'clamp(12px, 3.2vw, 14px)',
-                  lineHeight: '1.5',
-                  wordBreak: 'break-word',
-                  overflowWrap: 'break-word',
-                  direction: 'rtl',
-                  fontFamily: 'Arial, sans-serif',
-                }}
-              >
-                &ldquo;{currentQuote.ar}&rdquo;
-              </p>
-            )}
             
             {/* Source - responsive sizing */}
             <p 
@@ -515,6 +500,7 @@ export function PerfectCellLogo() {
                 lineHeight: '1.3',
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word',
+                direction: language === 'ar' ? 'rtl' : 'ltr',
               }}
             >
               &mdash; {currentQuote.source}
