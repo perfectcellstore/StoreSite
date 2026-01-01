@@ -7,7 +7,128 @@ import { playRobot } from '@/lib/audioManager';
 
 // Diverse quotes from video games, movies, shows, and historical figures
 const QUOTES = [
-  // Video Games
+  // God of War
+  { text: "Boy!", source: "Kratos - God of War" },
+  { text: "We must be better than this.", source: "Kratos - God of War" },
+  { text: "The cycle ends here.", source: "Kratos - God of War" },
+  { text: "Do not be sorry. Be better.", source: "Kratos - God of War" },
+  { text: "The gods are cruel and petty.", source: "Kratos - God of War" },
+  { text: "In the direction of our dreams.", source: "Atreus - God of War" },
+  { text: "We will be the gods we choose to be.", source: "Kratos - God of War" },
+
+  // Doom
+  { text: "Rip and tear, until it is done.", source: "Doom Slayer" },
+  { text: "They are rage, brutal, without mercy.", source: "Doom" },
+  { text: "But you will be worse.", source: "Doom" },
+  { text: "Against all the evil Hell can conjure...", source: "Doom" },
+  { text: "The only thing they fear is you.", source: "Doom Eternal" },
+
+  // Dexter
+  { text: "Tonight's the night.", source: "Dexter Morgan" },
+  { text: "I'm not the monster he wanted me to be.", source: "Dexter Morgan" },
+  { text: "I fake it all. I fake everything.", source: "Dexter Morgan" },
+  { text: "Born in blood, both of us.", source: "Dexter Morgan" },
+  { text: "Harry was right. I am a monster.", source: "Dexter Morgan" },
+
+  // Breaking Bad
+  { text: "I am the one who knocks.", source: "Walter White" },
+  { text: "Say my name.", source: "Walter White" },
+  { text: "I did it for me.", source: "Walter White" },
+  { text: "Yeah, science!", source: "Jesse Pinkman" },
+  { text: "We're done when I say we're done.", source: "Walter White" },
+  { text: "Tread lightly.", source: "Walter White" },
+  { text: "I am not in danger, I am the danger.", source: "Walter White" },
+
+  // Harry Potter
+  { text: "It does not do to dwell on dreams.", source: "Dumbledore - Harry Potter" },
+  { text: "After all this time? Always.", source: "Severus Snape - Harry Potter" },
+  { text: "Happiness can be found in the darkest of times.", source: "Dumbledore - Harry Potter" },
+  { text: "It is our choices that show what we truly are.", source: "Dumbledore - Harry Potter" },
+  { text: "Mischief managed.", source: "Harry Potter" },
+  { text: "Not all who wander are lost.", source: "Harry Potter" },
+
+  // Game of Thrones
+  { text: "Winter is coming.", source: "House Stark - Game of Thrones" },
+  { text: "A Lannister always pays his debts.", source: "Game of Thrones" },
+  { text: "When you play the game of thrones, you win or you die.", source: "Cersei - GoT" },
+  { text: "The night is dark and full of terrors.", source: "Melisandre - GoT" },
+  { text: "What do we say to the god of death? Not today.", source: "Syrio Forel - GoT" },
+  { text: "I drink and I know things.", source: "Tyrion - GoT" },
+  { text: "Chaos isn't a pit. Chaos is a ladder.", source: "Littlefinger - GoT" },
+  { text: "The North remembers.", source: "Game of Thrones" },
+
+  // Gumball (Amazing World of Gumball)
+  { text: "Don't hug me, I'm scared!", source: "Gumball" },
+  { text: "I reject your reality and substitute my own!", source: "Gumball" },
+  { text: "This is a cartoon. Physics doesn't apply.", source: "Gumball" },
+  { text: "When life gives you lemons, call them yellow oranges.", source: "Gumball" },
+
+  // Dragon Ball
+  { text: "It's over 9000!", source: "Vegeta - Dragon Ball Z" },
+  { text: "I am the hope of the universe!", source: "Goku - Dragon Ball" },
+  { text: "I am the prince of all Saiyans!", source: "Vegeta - Dragon Ball" },
+  { text: "Power comes in response to a need, not a desire.", source: "Goku - Dragon Ball" },
+  { text: "Even the mightiest warriors experience fears.", source: "Piccolo - Dragon Ball" },
+  { text: "Push through the pain!", source: "Goku - Dragon Ball" },
+  { text: "I won't let you destroy my world!", source: "Gohan - Dragon Ball" },
+
+  // Naruto
+  { text: "Believe it!", source: "Naruto Uzumaki" },
+  { text: "I never go back on my word, that's my nindo!", source: "Naruto" },
+  { text: "Those who break the rules are scum.", source: "Obito - Naruto" },
+  { text: "Hard work is worthless for those that don't believe.", source: "Naruto" },
+  { text: "The pain of being alone is truly unbearable.", source: "Naruto" },
+  { text: "If you don't take risks, you can't create a future.", source: "Monkey D. Luffy" },
+  { text: "A hero always arrives late.", source: "Naruto" },
+
+  // 300
+  { text: "This is Sparta!", source: "King Leonidas - 300" },
+  { text: "Tonight we dine in hell!", source: "King Leonidas - 300" },
+  { text: "Spartans never retreat!", source: "300" },
+  { text: "Come back with your shield, or on it.", source: "Spartan Mother - 300" },
+  { text: "Give them nothing, but take from them everything!", source: "300" },
+
+  // Assassin's Creed (Ezio)
+  { text: "Requiescat in pace.", source: "Ezio Auditore" },
+  { text: "Nothing is true, everything is permitted.", source: "Ezio - Assassin's Creed" },
+  { text: "We work in the dark to serve the light.", source: "Ezio" },
+  { text: "It is a good life we lead, brother.", source: "Ezio" },
+  { text: "I have lived my life as best I could.", source: "Ezio" },
+
+  // Imam Ali (Historical Islamic Figure)
+  { text: "Silence is the best reply to a fool.", source: "Imam Ali" },
+  { text: "Knowledge enlivens the soul.", source: "Imam Ali" },
+  { text: "Patience is of two kinds: patience over what pains you.", source: "Imam Ali" },
+  { text: "He who has a thousand friends has not a friend to spare.", source: "Imam Ali" },
+  { text: "Your remedy is within you, but you do not sense it.", source: "Imam Ali" },
+  { text: "Do not let your difficulties fill you with anxiety.", source: "Imam Ali" },
+  { text: "A fool's mind is at the mercy of his tongue.", source: "Imam Ali" },
+
+  // Imam Hussein
+  { text: "I only desire to spread good values and prevent evil.", source: "Imam Hussein" },
+  { text: "Death with dignity is better than a life of humiliation.", source: "Imam Hussein" },
+  { text: "I will never give you my hand like a man who has been humiliated.", source: "Imam Hussein" },
+  { text: "If you don't believe in any religion, at least be free.", source: "Imam Hussein" },
+
+  // Alexander the Great
+  { text: "I am not afraid of an army of lions led by a sheep.", source: "Alexander the Great" },
+  { text: "There is nothing impossible to him who will try.", source: "Alexander the Great" },
+  { text: "I would rather excel in the knowledge of what is excellent.", source: "Alexander the Great" },
+  { text: "Remember upon the conduct of each depends the fate of all.", source: "Alexander the Great" },
+  { text: "Through every generation of the human race there has been a constant war.", source: "Alexander the Great" },
+
+  // Khalid ibn al-Walid (Islamic General)
+  { text: "I bring you men who love death as you love life.", source: "Khalid ibn al-Walid" },
+  { text: "No matter how numerous the enemy, they cannot withstand us.", source: "Khalid ibn al-Walid" },
+  { text: "I have fought in so many battles seeking martyrdom.", source: "Khalid ibn al-Walid" },
+
+  // Saladin (Salah ad-Din)
+  { text: "Victory is changing the hearts of your opponents by gentleness.", source: "Saladin" },
+  { text: "I warn you against shedding blood.", source: "Saladin" },
+  { text: "Knowledge is a weapon, I intend to be formidably armed.", source: "Saladin" },
+  { text: "If you want to destroy any nation, destroy its education.", source: "Saladin" },
+
+  // Classic Video Games
   { text: "It's-a me, Mario!", source: "Mario - Super Mario" },
   { text: "The cake is a lie.", source: "Portal" },
   { text: "War. War never changes.", source: "Fallout" },
@@ -18,18 +139,33 @@ const QUOTES = [
   { text: "Stay awhile and listen!", source: "Deckard Cain - Diablo" },
   { text: "The right man in the wrong place...", source: "G-Man - Half-Life" },
   { text: "Remember, no Russian.", source: "Call of Duty: MW2" },
+  { text: "Get over here!", source: "Scorpion - Mortal Kombat" },
+  { text: "Finish him!", source: "Mortal Kombat" },
+  { text: "A man chooses, a slave obeys.", source: "BioShock" },
+  { text: "The truth is, the game was rigged from the start.", source: "Fallout: New Vegas" },
+  { text: "Had to be me. Someone else might have gotten it wrong.", source: "Mass Effect" },
+
+  // More Anime
+  { text: "People die when they are killed.", source: "Shirou - Fate/Stay Night" },
+  { text: "I'll take a potato chip... and eat it!", source: "Light - Death Note" },
+  { text: "I am going to be King of the Pirates!", source: "Luffy - One Piece" },
+  { text: "The world isn't perfect, but it's there for us trying.", source: "Roy Mustang - FMA" },
+  { text: "A lesson without pain is meaningless.", source: "Edward Elric - FMA" },
+  { text: "I won't run away anymore!", source: "Hinata - Naruto" },
+  { text: "Fun things are fun.", source: "Yui - K-On!" },
   
   // Movies & Shows
   { text: "May the Force be with you.", source: "Star Wars" },
   { text: "I am inevitable.", source: "Thanos - Avengers" },
   { text: "You shall not pass!", source: "Gandalf - LOTR" },
   { text: "I'll be back.", source: "Terminator" },
-  { text: "Winter is coming.", source: "Game of Thrones" },
   { text: "With great power comes great responsibility.", source: "Spider-Man" },
   { text: "I am Iron Man.", source: "Tony Stark" },
   { text: "No, I am your father.", source: "Darth Vader" },
   { text: "To infinity and beyond!", source: "Buzz Lightyear" },
   { text: "Why so serious?", source: "Joker - The Dark Knight" },
+  { text: "I live, I die, I live again!", source: "Mad Max: Fury Road" },
+  { text: "Witnesses!", source: "Mad Max: Fury Road" },
   
   // Historical Figures
   { text: "I came, I saw, I conquered.", source: "Julius Caesar" },
@@ -41,7 +177,12 @@ const QUOTES = [
   { text: "I have a dream.", source: "Martin Luther King Jr." },
   { text: "Et tu, Brute?", source: "Julius Caesar" },
   { text: "One small step for man...", source: "Neil Armstrong" },
-  { text: "Ask not what your country can do for you...", source: "JFK" }
+  { text: "Ask not what your country can do for you...", source: "JFK" },
+  { text: "The only true wisdom is knowing you know nothing.", source: "Socrates" },
+  { text: "Veni, vidi, vici.", source: "Julius Caesar" },
+  { text: "In the middle of difficulty lies opportunity.", source: "Albert Einstein" },
+  { text: "The unexamined life is not worth living.", source: "Socrates" },
+  { text: "I cannot teach anybody anything. I can only make them think.", source: "Socrates" }
 ];
 
 export function PerfectCellLogo() {
