@@ -225,7 +225,9 @@ export default function AdminPage() {
       image: '',
       stock: '',
       onSale: false,
-      dealLabel: ''
+      dealLabel: '',
+      featured: false,
+      tags: ''
     });
   };
 
@@ -242,7 +244,9 @@ export default function AdminPage() {
       image: product.image,
       stock: product.stock.toString(),
       onSale: product.onSale || false,
-      dealLabel: product.dealLabel || ''
+      dealLabel: product.dealLabel || '',
+      featured: product.featured || false,
+      tags: product.tags || ''
     });
     setShowProductDialog(true);
   };
