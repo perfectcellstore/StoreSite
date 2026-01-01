@@ -574,7 +574,7 @@ export default function AdminPage() {
                         maxLength={30}
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Displays on product card when on sale (e.g., "Limited Time", "Hot Deal")
+                        Displays on product card when on sale (e.g., &quot;Limited Time&quot;, &quot;Hot Deal&quot;)
                       </p>
                     </div>
 
