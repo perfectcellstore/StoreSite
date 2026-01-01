@@ -610,9 +610,9 @@ export function PerfectCellLogo() {
               }}
             />
             
-            {/* Quote text - responsive sizing */}
+            {/* Quote text - English */}
             <p 
-              className="font-semibold mb-1.5 leading-tight break-words"
+              className="font-semibold mb-1 leading-tight break-words"
               style={{
                 fontSize: 'clamp(13px, 3.5vw, 15px)',
                 lineHeight: '1.4',
@@ -623,6 +623,23 @@ export function PerfectCellLogo() {
             >
               &ldquo;{currentQuote.text}&rdquo;
             </p>
+            
+            {/* Quote text - Arabic */}
+            {currentQuote.ar && (
+              <p 
+                className="font-semibold mb-1.5 leading-tight break-words text-bio-green-200"
+                style={{
+                  fontSize: 'clamp(12px, 3.2vw, 14px)',
+                  lineHeight: '1.5',
+                  wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
+                  direction: 'rtl',
+                  fontFamily: 'Arial, sans-serif',
+                }}
+              >
+                &ldquo;{currentQuote.ar}&rdquo;
+              </p>
+            )}
             
             {/* Source - responsive sizing */}
             <p 
