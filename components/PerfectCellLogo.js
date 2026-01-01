@@ -268,17 +268,34 @@ export function PerfectCellLogo() {
         }
         
         // Determine horizontal positioning
-        // Try to center on robot, but keep within safe bounds
-        let leftPosition = robotCenterX - (quoteMaxWidth / 2);
+        // For Arabic (RTL), flip the position horizontally
+        const isRTL = language === 'ar';
+        let leftPosition;
         
-        // Check if it would go off the left edge
-        if (leftPosition < edgePadding) {
-          leftPosition = edgePadding;
-        }
-        
-        // Check if it would go off the right edge
-        if (leftPosition + quoteMaxWidth > viewportWidth - edgePadding) {
-          leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
+        if (isRTL) {
+          // For RTL (Arabic), position on the opposite side
+          // If robot is on left side of screen, show quote on right
+          // If robot is on right side of screen, show quote on left
+          if (robotCenterX < viewportWidth / 2) {
+            // Robot on left half - position quote on right
+            leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
+          } else {
+            // Robot on right half - position quote on left
+            leftPosition = edgePadding;
+          }
+        } else {
+          // For LTR (English), center on robot with edge safety
+          leftPosition = robotCenterX - (quoteMaxWidth / 2);
+          
+          // Check if it would go off the left edge
+          if (leftPosition < edgePadding) {
+            leftPosition = edgePadding;
+          }
+          
+          // Check if it would go off the right edge
+          if (leftPosition + quoteMaxWidth > viewportWidth - edgePadding) {
+            leftPosition = viewportWidth - quoteMaxWidth - edgePadding;
+          }
         }
         
         style.left = `${leftPosition}px`;
