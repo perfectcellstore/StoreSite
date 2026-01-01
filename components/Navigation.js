@@ -31,13 +31,29 @@ export function Navigation() {
 
   // Initialize music state from localStorage
   useEffect(() => {
-    setMusicEnabled(getMusicEnabled());
+    if (typeof window !== 'undefined') {
+      const loadAudioManager = async () => {
+        try {
+          const { getMusicEnabled } = await import('@/lib/audioManager');
+          setMusicEnabled(getMusicEnabled());
+        } catch (err) {
+          console.error('Failed to load audio manager:', err);
+        }
+      };
+      loadAudioManager();
+    }
   }, []);
 
-  const handleMusicToggle = () => {
+  const handleMusicToggle = async () => {
     const newState = !musicEnabled;
     setMusicEnabled(newState);
-    toggleBackgroundMusic(newState);
+    
+    try {
+      const { toggleBackgroundMusic } = await import('@/lib/audioManager');
+      toggleBackgroundMusic(newState);
+    } catch (err) {
+      console.error('Failed to toggle music:', err);
+    }
   };
 
   const navLinks = [
