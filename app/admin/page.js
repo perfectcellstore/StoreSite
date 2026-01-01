@@ -393,7 +393,7 @@ export default function AdminPage() {
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <Label>Price (USD)</Label>
+                        <Label>Sale Price (USD) *</Label>
                         <Input
                           type="number"
                           step="0.01"
@@ -401,8 +401,74 @@ export default function AdminPage() {
                           onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
                           required
                           className="bg-background border-border"
+                          placeholder="399.99"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Current selling price
+                        </p>
+                      </div>
+                      <div>
+                        <Label>Original Price (USD)</Label>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          value={productForm.originalPrice}
+                          onChange={(e) => setProductForm({ ...productForm, originalPrice: e.target.value })}
+                          className="bg-background border-border"
+                          placeholder="799.99"
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Before discount (optional)
+                        </p>
+                      </div>
+                      <div>
+                        <Label>Stock</Label>
+                        <Input
+                          type="number"
+                          value={productForm.stock}
+                          onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
+                          required
+                          className="bg-background border-border"
                         />
                       </div>
+                    </div>
+
+                    {/* Discount Preview */}
+                    {productForm.price && productForm.originalPrice && parseFloat(productForm.originalPrice) > parseFloat(productForm.price) && (
+                      <div className="bg-bio-green-500/10 border border-bio-green-500/30 rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-semibold text-bio-green-500">
+                              💰 Deal Active: {Math.round(((parseFloat(productForm.originalPrice) - parseFloat(productForm.price)) / parseFloat(productForm.originalPrice)) * 100)}% OFF
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Save ${(parseFloat(productForm.originalPrice) - parseFloat(productForm.price)).toFixed(2)}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-xs text-muted-foreground line-through">${parseFloat(productForm.originalPrice).toFixed(2)}</p>
+                            <p className="text-lg font-bold text-bio-green-500">${parseFloat(productForm.price).toFixed(2)}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Deal Label */}
+                    <div>
+                      <Label>Deal Label (Optional)</Label>
+                      <Input
+                        value={productForm.dealLabel}
+                        onChange={(e) => setProductForm({ ...productForm, dealLabel: e.target.value })}
+                        className="bg-background border-border"
+                        placeholder="Limited Time • Hot Deal • Flash Sale"
+                        maxLength={30}
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Displays on product card when on sale (e.g., "Limited Time", "Hot Deal")
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label>Stock</Label>
                         <Input
