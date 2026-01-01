@@ -470,9 +470,6 @@ export default function AdminPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label>Stock</Label>
-                        <Input
-                          type="number"
                           value={productForm.stock}
                           onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
                           required
