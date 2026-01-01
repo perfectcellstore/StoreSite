@@ -461,13 +461,6 @@ export default function AdminPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                          value={productForm.stock}
-                          onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
-                          required
-                          className="bg-background border-border"
-                        />
-                      </div>
-                      <div>
                         <Label>Category</Label>
                         <Select value={productForm.category} onValueChange={(value) => setProductForm({ ...productForm, category: value })}>
                           <SelectTrigger className="bg-background border-border">
