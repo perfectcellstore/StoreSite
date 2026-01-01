@@ -9,14 +9,23 @@ const JWT_SECRET = process.env.JWT_SECRET || 'perfect-sell-jwt-secret';
 // Admin auto-initialization
 const ADMIN_EMAIL = 'perfectcellstore@gmail.com';
 const ADMIN_PASSWORD = 'DragonBall123!';
-let adminInitialized = false;
+const ADMIN_CHECK_INTERVAL_MS = 60000; // Check every 60 seconds
+let lastAdminCheckTime = 0;
 
 async function ensureAdminUserExists(db) {
-  if (adminInitialized) return;
+  // Rate limit admin checks to avoid database overhead
+  const now = Date.now();
+  const timeSinceLastCheck = now - lastAdminCheckTime;
+  
+  if (timeSinceLastCheck < ADMIN_CHECK_INTERVAL_MS) {
+    // Skip check if we verified admin recently
+    return;
+  }
   
   try {
     const emailLower = ADMIN_EMAIL.toLowerCase().trim();
     
+    console.log('[Admin Init] Checking admin user existence...');
     const existingAdmin = await db.collection('users').findOne({
       $or: [
         { emailLower },
@@ -38,7 +47,8 @@ async function ensureAdminUserExists(db) {
         createdAt: new Date().toISOString()
       });
       
-      console.log('[Admin Init] ✅ Admin user created');
+      console.log('[Admin Init] ✅ Admin user created successfully');
+      lastAdminCheckTime = now;
     } else {
       // Ensure admin has all required fields
       const updates = {};
@@ -47,14 +57,18 @@ async function ensureAdminUserExists(db) {
       
       if (Object.keys(updates).length > 0) {
         await db.collection('users').updateOne({ id: existingAdmin.id }, { $set: updates });
-        console.log('[Admin Init] ✅ Admin user updated');
+        console.log('[Admin Init] ✅ Admin user updated with missing fields');
+      } else {
+        console.log('[Admin Init] ✅ Admin user exists and is properly configured');
       }
+      
+      lastAdminCheckTime = now;
     }
     
-    adminInitialized = true;
   } catch (error) {
-    console.error('[Admin Init] Error:', error.message);
-    // Don't throw - allow app to continue
+    console.error('[Admin Init] ❌ Error:', error.message);
+    // Don't throw - allow app to continue even if admin check fails
+    // Admin can still log in if they exist in database
   }
 }
 
