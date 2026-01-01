@@ -141,13 +141,27 @@ export default function ShopPage() {
                       fill
                       className="object-cover transition-transform group-hover:scale-110"
                     />
+                    {/* Discount Badge */}
+                    {product.onSale && product.discountPercentage && (
+                      <div className="absolute top-2 left-2 z-10">
+                        <div className="bg-destructive text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg animate-pulse">
+                          {product.discountPercentage}% OFF
+                        </div>
+                        {product.dealLabel && (
+                          <div className="bg-bio-green-500 text-white text-xs font-semibold px-2 py-1 rounded-lg mt-1 shadow-lg">
+                            {product.dealLabel}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {/* Stock Badge */}
                     {product.stock <= 5 && product.stock > 0 && (
-                      <div className="absolute top-2 right-2 px-2 py-1 bg-bio-green-500 text-white text-xs rounded">
+                      <div className="absolute top-2 right-2 px-2 py-1 bg-bio-green-500 text-white text-xs rounded shadow-lg">
                         Only {product.stock} left
                       </div>
                     )}
                     {product.stock === 0 && (
-                      <div className="absolute top-2 right-2 px-2 py-1 bg-destructive text-white text-xs rounded">
+                      <div className="absolute top-2 right-2 px-2 py-1 bg-destructive text-white text-xs rounded shadow-lg">
                         {t('outOfStock')}
                       </div>
                     )}
@@ -161,9 +175,29 @@ export default function ShopPage() {
                     </h3>
                   </Link>
                   
-                  <p className="text-2xl font-bold text-bio-green-500">
-                    {formatPrice(product.price)}
-                  </p>
+                  {/* Price with discount */}
+                  <div className="flex items-center gap-2">
+                    {product.onSale && product.originalPrice ? (
+                      <>
+                        <p className="text-2xl font-bold text-bio-green-500">
+                          {formatPrice(product.price)}
+                        </p>
+                        <p className="text-sm text-muted-foreground line-through">
+                          {formatPrice(product.originalPrice)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="text-2xl font-bold text-bio-green-500">
+                        {formatPrice(product.price)}
+                      </p>
+                    )}
+                  </div>
+                  
+                  {product.onSale && (
+                    <p className="text-xs text-destructive font-semibold">
+                      Save {formatPrice(product.originalPrice - product.price)}!
+                    </p>
+                  )}
                   
                   <Button
                     onClick={() => handleAddToCart(product)}
