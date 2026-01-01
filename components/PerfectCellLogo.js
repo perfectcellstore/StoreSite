@@ -250,39 +250,58 @@ export function PerfectCellLogo() {
         </div>
       )}
 
-      {/* Quote Bubble - appears after click */}
+      {/* Quote Bubble - appears after click (RESPONSIVE) */}
       {showQuote && currentQuote && (
         <div
+          ref={quoteRef}
           className="fixed z-[10000] pointer-events-none"
           style={{
-            left: `${logoPosition.x}px`,
-            top: `${logoPosition.y + 60}px`,
-            transform: 'translateX(-50%)',
+            ...quotePosition.style,
+            width: 'auto',
           }}
         >
           <div 
-            className="relative bg-gradient-to-br from-bio-green-500/95 to-emerald-600/95 text-white px-4 py-3 rounded-2xl shadow-2xl border-2 border-bio-green-400 max-w-xs sm:max-w-sm"
+            className="relative bg-gradient-to-br from-bio-green-500/95 to-emerald-600/95 text-white rounded-2xl shadow-2xl border-2 border-bio-green-400 w-full"
             style={{
-              animation: 'quote-pop-in 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards'
+              animation: 'quote-pop-in 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards',
+              padding: 'clamp(12px, 3vw, 16px)',
             }}
           >
-            {/* Speech bubble arrow */}
+            {/* Speech bubble arrow - positioned based on placement */}
             <div 
-              className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0"
+              className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0"
               style={{
-                borderLeft: '12px solid transparent',
-                borderRight: '12px solid transparent',
-                borderBottom: '12px solid rgb(34 197 94)',
+                [quotePosition.placement === 'above' ? 'bottom' : 'top']: '-10px',
+                borderLeft: '10px solid transparent',
+                borderRight: '10px solid transparent',
+                [quotePosition.placement === 'above' ? 'borderTop' : 'borderBottom']: '10px solid rgb(34 197 94)',
               }}
             />
             
-            {/* Quote text */}
-            <p className="text-sm font-semibold mb-1 leading-tight">
+            {/* Quote text - responsive sizing */}
+            <p 
+              className="font-semibold mb-1.5 leading-tight break-words"
+              style={{
+                fontSize: 'clamp(13px, 3.5vw, 15px)',
+                lineHeight: '1.4',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+                hyphens: 'auto',
+              }}
+            >
               &ldquo;{currentQuote.text}&rdquo;
             </p>
             
-            {/* Source */}
-            <p className="text-xs opacity-90 italic">
+            {/* Source - responsive sizing */}
+            <p 
+              className="opacity-90 italic break-words"
+              style={{
+                fontSize: 'clamp(11px, 3vw, 13px)',
+                lineHeight: '1.3',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+              }}
+            >
               &mdash; {currentQuote.source}
             </p>
             
