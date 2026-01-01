@@ -45,7 +45,9 @@ export default function AdminPage() {
     image: '',
     stock: '',
     onSale: false, // Whether product is on sale
-    dealLabel: '' // Optional: "Limited Time", "Hot Deal", etc.
+    dealLabel: '', // Optional: "Limited Time", "Hot Deal", etc.
+    featured: false, // Featured on homepage
+    tags: '' // Comma-separated tags for SEO
   });
 
   useEffect(() => {
