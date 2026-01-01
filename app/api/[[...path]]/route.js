@@ -1158,6 +1158,19 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    // Delete Collection
+    if (pathname.startsWith('collections/')) {
+      const collectionId = pathname.split('/')[1];
+      
+      const result = await db.collection('collections').deleteOne({ id: collectionId });
+      
+      if (result.deletedCount === 0) {
+        return NextResponse.json({ error: 'Collection not found' }, { status: 404 });
+      }
+      
+      return NextResponse.json({ success: true });
+    }
+
     // Delete Product
     if (pathname.startsWith('products/') && !pathname.includes('/reviews/')) {
       const productId = pathname.split('/')[1];
