@@ -491,11 +491,22 @@ export function PerfectCellLogo() {
               padding: 'clamp(12px, 3vw, 16px)',
             }}
           >
-            {/* Speech bubble arrow - positioned based on placement */}
+            {/* Speech bubble arrow - positioned based on placement and direction */}
             <div 
-              className="absolute left-1/2 transform -translate-x-1/2 w-0 h-0"
+              className="absolute w-0 h-0"
               style={{
+                // Vertical position (above/below)
                 [quotePosition.placement === 'above' ? 'bottom' : 'top']: '-10px',
+                // Horizontal position (direction-aware)
+                ...(quotePosition.isRTL ? {
+                  // RTL: Position arrow on the inline-start side (right side in RTL)
+                  right: '20px',
+                  left: 'auto',
+                } : {
+                  // LTR: Position arrow centered or on left
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                }),
                 borderLeft: '10px solid transparent',
                 borderRight: '10px solid transparent',
                 [quotePosition.placement === 'above' ? 'borderTop' : 'borderBottom']: '10px solid rgb(34 197 94)',
