@@ -592,80 +592,95 @@ export async function POST(request, { params }) {
     }
 
     if (pathname === 'auth/login') {
-      await ensureAuthIndexes(db);
-      await ensureAdminUserExists(db);
+      try {
+        await ensureAuthIndexes(db);
+        await ensureAdminUserExists(db);
 
-      const { email, password } = body;
+        const { email, password } = body;
 
-      const normalizedEmail = (email || '').trim();
-      const emailLower = normalizedEmail.toLowerCase();
+        const normalizedEmail = (email || '').trim();
+        const emailLower = normalizedEmail.toLowerCase();
 
-      if (!normalizedEmail || !password) {
-        return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
-      }
-
-      if (!isValidEmail(emailLower)) {
-        // Do not leak whether email exists
-        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-      }
-
-      const ip = getClientIp(request);
-      const rateKey = `login:${ip}:${emailLower}`;
-
-      const limiter = await getAuthRateLimit(db, rateKey);
-      if (limiter?.lockedUntil && Date.now() < limiter.lockedUntil) {
-        const retryAfterSeconds = Math.max(1, Math.ceil((limiter.lockedUntil - Date.now()) / 1000));
-        return NextResponse.json(
-          {
-            error: 'Too many login attempts. Please try again later.',
-            retryAfterSeconds,
-          },
-          {
-            status: 429,
-            headers: {
-              'Retry-After': String(retryAfterSeconds),
-            },
-          }
-        );
-      }
-
-      // Backward compatibility: some older users may not have emailLower
-      const user = await db.collection('users').findOne({
-        $or: [
-          { emailLower },
-          { email: { $regex: `^${escapeRegExp(emailLower)}$`, $options: 'i' } },
-        ],
-      });
-
-      if (!user) {
-        await recordAuthFailure(db, rateKey);
-        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-      }
-
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) {
-        await recordAuthFailure(db, rateKey);
-        return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-      }
-
-      await clearAuthFailures(db, rateKey);
-
-      // If user is legacy (missing emailLower), backfill it (best-effort)
-      if (!user.emailLower) {
-        try {
-          await db.collection('users').updateOne(
-            { id: user.id },
-            { $set: { emailLower } }
-          );
-        } catch (e) {
-          // ignore backfill errors to avoid breaking login
+        if (!normalizedEmail || !password) {
+          console.log('[Login] Missing credentials');
+          return NextResponse.json({ error: 'Missing credentials' }, { status: 400 });
         }
+
+        if (!isValidEmail(emailLower)) {
+          console.log('[Login] Invalid email format:', emailLower);
+          return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        }
+
+        const ip = getClientIp(request);
+        const rateKey = `login:${ip}:${emailLower}`;
+
+        const limiter = await getAuthRateLimit(db, rateKey);
+        if (limiter?.lockedUntil && Date.now() < limiter.lockedUntil) {
+          const retryAfterSeconds = Math.max(1, Math.ceil((limiter.lockedUntil - Date.now()) / 1000));
+          console.log('[Login] Rate limited:', emailLower);
+          return NextResponse.json(
+            {
+              error: 'Too many login attempts. Please try again later.',
+              retryAfterSeconds,
+            },
+            {
+              status: 429,
+              headers: {
+                'Retry-After': String(retryAfterSeconds),
+              },
+            }
+          );
+        }
+
+        // Backward compatibility: some older users may not have emailLower
+        const user = await db.collection('users').findOne({
+          $or: [
+            { emailLower },
+            { email: { $regex: `^${escapeRegExp(emailLower)}$`, $options: 'i' } },
+          ],
+        });
+
+        if (!user) {
+          console.log('[Login] User not found:', emailLower);
+          await recordAuthFailure(db, rateKey);
+          return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+          console.log('[Login] Invalid password for:', emailLower);
+          await recordAuthFailure(db, rateKey);
+          return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+        }
+
+        await clearAuthFailures(db, rateKey);
+
+        // If user is legacy (missing emailLower), backfill it (best-effort)
+        if (!user.emailLower) {
+          try {
+            await db.collection('users').updateOne(
+              { id: user.id },
+              { $set: { emailLower } }
+            );
+            console.log('[Login] Backfilled emailLower for:', emailLower);
+          } catch (e) {
+            console.error('[Login] Backfill error:', e.message);
+            // ignore backfill errors to avoid breaking login
+          }
+        }
+
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+
+        const { password: _, ...userWithoutPassword } = user;
+        console.log('[Login] Success:', emailLower, 'Role:', user.role);
+        return NextResponse.json({ token, user: userWithoutPassword });
+        
+      } catch (error) {
+        console.error('[Login] Internal error:', error);
+        return NextResponse.json({ 
+          error: 'Internal server error. Please try again or contact support.' 
+        }, { status: 500 });
       }
-
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
-
-      const { password: _, ...userWithoutPassword } = user;
-      return NextResponse.json({ token, user: userWithoutPassword });
     }
 
     // Products Routes
