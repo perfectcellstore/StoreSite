@@ -555,59 +555,94 @@ export async function POST(request, { params }) {
 
     // Auth Routes
     if (pathname === 'auth/register') {
-      await ensureAuthIndexes(db);
-
-      const { email, password, name } = body;
-
-      const normalizedEmail = (email || '').trim();
-      const emailLower = normalizedEmail.toLowerCase();
-      const normalizedName = (name || '').trim();
-
-      if (!normalizedEmail || !password || !normalizedName) {
-        return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-      }
-
-      if (!isValidEmail(emailLower)) {
-        return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
-      }
-
-      if (String(password).length < 8) {
-        return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
-      }
-
-      if (!isStrongPassword(password)) {
-        return NextResponse.json(
-          { error: 'Password must contain at least 1 letter and 1 number' },
-          { status: 400 }
-        );
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const userId = uuidv4();
-
-      const user = {
-        id: userId,
-        email: normalizedEmail,
-        emailLower,
-        password: hashedPassword,
-        name: normalizedName,
-        role: 'user',
-        createdAt: new Date().toISOString(),
-      };
-
       try {
-        await db.collection('users').insertOne(user);
-      } catch (e) {
-        // Duplicate key error for unique index
-        if (e?.code === 11000) {
-          return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+        console.log('[Register] Registration attempt for:', body?.email);
+        
+        // Ensure database indexes
+        try {
+          await ensureAuthIndexes(db);
+          console.log('[Register] Auth indexes verified');
+        } catch (dbError) {
+          console.error('[Register] ❌ Database index error:', dbError.message);
+          return NextResponse.json({ 
+            error: 'Database connection error. Please try again in a moment.',
+            errorCode: 'DB_INDEX_ERROR'
+          }, { status: 503 });
         }
-        throw e;
-      }
 
-      const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+        const { email, password, name } = body;
 
-      const { password: _, ...userWithoutPassword } = user;
+        const normalizedEmail = (email || '').trim();
+        const emailLower = normalizedEmail.toLowerCase();
+        const normalizedName = (name || '').trim();
+
+        if (!normalizedEmail || !password || !normalizedName) {
+          return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        if (!isValidEmail(emailLower)) {
+          return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+        }
+
+        if (String(password).length < 8) {
+          return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 });
+        }
+
+        if (!isStrongPassword(password)) {
+          return NextResponse.json(
+            { error: 'Password must contain at least 1 letter and 1 number' },
+            { status: 400 }
+          );
+        }
+
+        // Check if user already exists
+        try {
+          const existingUser = await db.collection('users').findOne({ emailLower });
+          if (existingUser) {
+            console.log('[Register] User already exists:', emailLower);
+            return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+          }
+        } catch (findError) {
+          console.error('[Register] ❌ Database query error:', findError.message);
+          return NextResponse.json({ 
+            error: 'Database error while checking user existence. Please try again.',
+            errorCode: 'DB_QUERY_ERROR'
+          }, { status: 503 });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userId = uuidv4();
+
+        const user = {
+          id: userId,
+          email: normalizedEmail,
+          emailLower,
+          password: hashedPassword,
+          name: normalizedName,
+          role: 'user',
+          createdAt: new Date().toISOString(),
+        };
+
+        try {
+          console.log('[Register] Creating new user:', emailLower);
+          await db.collection('users').insertOne(user);
+          console.log('[Register] ✅ User created successfully:', emailLower);
+        } catch (e) {
+          // Duplicate key error for unique index
+          if (e?.code === 11000) {
+            console.log('[Register] Duplicate key error for:', emailLower);
+            return NextResponse.json({ error: 'User already exists' }, { status: 400 });
+          }
+          console.error('[Register] ❌ Database insert error:', e.message);
+          return NextResponse.json({ 
+            error: 'Failed to create user account. Please try again.',
+            errorCode: 'DB_INSERT_ERROR'
+          }, { status: 500 });
+        }
+
+        const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
+
+        const { password: _, ...userWithoutPassword } = user;
       return NextResponse.json({ token, user: userWithoutPassword });
     }
 
