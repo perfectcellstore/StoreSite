@@ -111,10 +111,9 @@
 
   
   CONTINUATION REQUEST (Jan 2026):
-  - Sounds in the site are not working - fix it
-  - Remove all duplicate code
-  - Make it less expensive on GPU/CPU on mobile (no lag or freeze)
-  - Identify the most expensive operations and optimize them
+  - Robot (PerfectCellLogo) enhancement: Display quotes when clicked ✅
+  - Add promo code "Ayajonkler" with 95% discount ✅
+  - Fix admin login "Internal Server Error" permanently ✅
 
 
 user_problem_statement: |
