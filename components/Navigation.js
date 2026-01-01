@@ -148,8 +148,8 @@ export function Navigation() {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-64 bg-card border-border">
-              <div className="flex flex-col gap-4 mt-8">
+            <SheetContent side="right" className="w-64 bg-card border-border flex flex-col">
+              <div className="flex flex-col gap-4 mt-8 flex-1">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -202,6 +202,11 @@ export function Navigation() {
                     {t('secret')}
                   </Button>
                 </div>
+              </div>
+
+              {/* Dark Souls Bonfire Easter Egg - Bottom Right Corner */}
+              <div className="mt-auto pb-4 pr-4 flex justify-end">
+                <DarkSoulsBonfire />
               </div>
             </SheetContent>
           </Sheet>
