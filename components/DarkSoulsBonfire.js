@@ -3,15 +3,13 @@
 import React, { useState } from 'react';
 
 /**
- * Dark Souls Bonfire Easter Egg - FULLY FIXED VERSION
+ * Dark Souls Bonfire Easter Egg - ENHANCED SWORD & ROCKS
  * 
- * Fixes:
- * - Dedicated container with proper overflow handling
- * - Correct sizing without cropping
- * - Sword clearly visible and properly centered
- * - Text positioned above bonfire with no overlap
- * - Proper layering and z-index
- * - Mobile-responsive and lightweight
+ * Improvements:
+ * - Sword now has proper pointed tip and blade shape
+ * - Better crossguard design
+ * - More realistic rock/coal formation
+ * - Improved overall Dark Souls aesthetic
  */
 export function DarkSoulsBonfire() {
   const [isLit, setIsLit] = useState(false);
@@ -29,10 +27,9 @@ export function DarkSoulsBonfire() {
   };
 
   return (
-    // Dedicated container - prevents menu cropping
     <div className="relative w-full flex flex-col items-center py-4" style={{ minHeight: '140px' }}>
       
-      {/* Text Container - Above bonfire, no overlap */}
+      {/* Text Container - Above bonfire */}
       <div className="w-full flex justify-center mb-2" style={{ minHeight: '40px' }}>
         {showMessage && (
           <div 
@@ -54,10 +51,9 @@ export function DarkSoulsBonfire() {
         )}
       </div>
 
-      {/* Bonfire Container - Properly sized, centered */}
+      {/* Bonfire Container */}
       <div className="relative" style={{ width: '90px', height: '90px' }}>
         
-        {/* Click target */}
         <button
           onClick={handleClick}
           disabled={isLit}
@@ -66,7 +62,7 @@ export function DarkSoulsBonfire() {
           }`}
           style={{ zIndex: 1 }}
         >
-          {/* Glow effect - behind everything */}
+          {/* Glow effect */}
           {isLit && (
             <div 
               className="absolute inset-0 -z-10"
@@ -78,131 +74,224 @@ export function DarkSoulsBonfire() {
             />
           )}
 
-          {/* Coals Base - Layer 1 */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-8">
-            {/* Left coal */}
+          {/* IMPROVED ROCK/COAL FORMATION - More realistic circular arrangement */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-24 h-10">
+            {/* Back left rock */}
             <div 
-              className={`absolute bottom-0 left-1 w-5 h-4 rounded-sm transition-all duration-700 ${
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-red-700 via-red-800 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+              }`}
+              style={{
+                bottom: '4px',
+                left: '8px',
+                width: '14px',
+                height: '10px',
+                clipPath: 'polygon(20% 0%, 80% 5%, 90% 30%, 85% 70%, 70% 95%, 30% 100%, 10% 80%, 5% 40%)',
+                boxShadow: isLit 
+                  ? '0 0 12px rgba(185, 28, 28, 0.7), inset -2px -3px 6px rgba(0,0,0,0.6)' 
+                  : 'inset -2px -3px 6px rgba(0,0,0,0.8)',
+              }}
+            />
+            
+            {/* Back right rock */}
+            <div 
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-orange-600 via-red-700 to-gray-900' 
+                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+              }`}
+              style={{
+                bottom: '3px',
+                right: '10px',
+                width: '13px',
+                height: '9px',
+                clipPath: 'polygon(15% 10%, 75% 0%, 95% 25%, 90% 65%, 80% 90%, 35% 100%, 10% 75%, 8% 35%)',
+                boxShadow: isLit 
+                  ? '0 0 12px rgba(234, 88, 12, 0.7), inset -2px -3px 6px rgba(0,0,0,0.6)' 
+                  : 'inset -2px -3px 6px rgba(0,0,0,0.8)',
+              }}
+            />
+
+            {/* Front left rock - larger */}
+            <div 
+              className={`absolute transition-all duration-700 ${
                 isLit 
                   ? 'bg-gradient-to-br from-orange-500 via-red-600 to-red-900' 
-                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+                  : 'bg-gradient-to-br from-gray-600 via-gray-800 to-gray-900'
               }`}
               style={{
+                bottom: '0px',
+                left: '12px',
+                width: '16px',
+                height: '13px',
+                clipPath: 'polygon(25% 0%, 85% 8%, 95% 35%, 92% 75%, 75% 98%, 25% 100%, 8% 80%, 5% 30%)',
                 boxShadow: isLit 
-                  ? '0 0 15px rgba(234, 88, 12, 0.8), inset 0 -2px 6px rgba(0,0,0,0.5)' 
-                  : 'inset 0 -2px 6px rgba(0,0,0,0.8)',
+                  ? '0 0 16px rgba(234, 88, 12, 0.9), inset -3px -4px 8px rgba(0,0,0,0.5)' 
+                  : 'inset -3px -4px 8px rgba(0,0,0,0.8)',
               }}
             />
             
-            {/* Right coal */}
+            {/* Front right rock - larger */}
             <div 
-              className={`absolute bottom-0 right-1 w-6 h-4 rounded-sm transition-all duration-700 ${
-                isLit 
-                  ? 'bg-gradient-to-br from-orange-600 via-red-600 to-red-900' 
-                  : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
-              }`}
-              style={{
-                boxShadow: isLit 
-                  ? '0 0 15px rgba(234, 88, 12, 0.8), inset 0 -2px 6px rgba(0,0,0,0.5)' 
-                  : 'inset 0 -2px 6px rgba(0,0,0,0.8)',
-              }}
-            />
-            
-            {/* Center coal (front) */}
-            <div 
-              className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-7 h-5 rounded-sm transition-all duration-700 ${
+              className={`absolute transition-all duration-700 ${
                 isLit 
                   ? 'bg-gradient-to-br from-orange-400 via-orange-600 to-red-800' 
                   : 'bg-gradient-to-br from-gray-600 via-gray-800 to-gray-900'
               }`}
               style={{
+                bottom: '0px',
+                right: '14px',
+                width: '18px',
+                height: '14px',
+                clipPath: 'polygon(20% 5%, 80% 0%, 98% 30%, 95% 70%, 85% 95%, 30% 100%, 5% 85%, 3% 40%)',
                 boxShadow: isLit 
-                  ? '0 0 18px rgba(234, 88, 12, 0.9), inset 0 -2px 6px rgba(0,0,0,0.5)' 
-                  : 'inset 0 -2px 6px rgba(0,0,0,0.8)',
+                  ? '0 0 16px rgba(251, 146, 60, 0.9), inset -3px -4px 8px rgba(0,0,0,0.5)' 
+                  : 'inset -3px -4px 8px rgba(0,0,0,0.8)',
+              }}
+            />
+
+            {/* Center front rock - biggest, most lit */}
+            <div 
+              className={`absolute transition-all duration-700 ${
+                isLit 
+                  ? 'bg-gradient-to-br from-orange-300 via-orange-500 to-red-700' 
+                  : 'bg-gradient-to-br from-gray-600 via-gray-700 to-gray-900'
+              }`}
+              style={{
+                bottom: '1px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '20px',
+                height: '16px',
+                clipPath: 'polygon(30% 2%, 70% 0%, 95% 25%, 98% 65%, 88% 92%, 50% 100%, 12% 92%, 2% 65%, 5% 25%)',
+                boxShadow: isLit 
+                  ? '0 0 20px rgba(251, 146, 60, 1), inset -3px -5px 10px rgba(0,0,0,0.4)' 
+                  : 'inset -3px -5px 10px rgba(0,0,0,0.8)',
               }}
             />
           </div>
 
-          {/* SWORD - Layer 2 - Properly visible and centered */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-6" style={{ zIndex: 2 }}>
-            {/* Blade */}
+          {/* IMPROVED SWORD - More realistic blade shape */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-8" style={{ zIndex: 2 }}>
+            {/* Blade - Improved with taper and point */}
             <div 
               className="absolute left-1/2 -translate-x-1/2 bottom-0 transition-all duration-700"
               style={{
-                width: '7px',
-                height: '55px',
+                width: '8px',
+                height: '52px',
                 background: isLit
-                  ? 'linear-gradient(to bottom, rgba(251, 191, 36, 0.95) 0%, rgba(229, 231, 235, 1) 15%, rgba(209, 213, 219, 1) 50%, rgba(156, 163, 175, 1) 85%, rgba(107, 114, 128, 1) 100%)'
-                  : 'linear-gradient(to bottom, rgba(229, 231, 235, 0.9) 0%, rgba(209, 213, 219, 1) 30%, rgba(156, 163, 175, 1) 70%, rgba(107, 114, 128, 1) 100%)',
-                clipPath: 'polygon(48% 0%, 52% 0%, 51% 96%, 49% 96%)',
-                transform: 'translateX(-50%) rotate(-10deg)',
+                  ? 'linear-gradient(to bottom, rgba(251, 191, 36, 0.95) 0%, rgba(241, 245, 249, 1) 8%, rgba(226, 232, 240, 1) 25%, rgba(203, 213, 225, 1) 50%, rgba(148, 163, 184, 1) 75%, rgba(100, 116, 139, 1) 100%)'
+                  : 'linear-gradient(to bottom, rgba(226, 232, 240, 0.9) 0%, rgba(203, 213, 225, 1) 25%, rgba(148, 163, 184, 1) 65%, rgba(100, 116, 139, 1) 100%)',
+                clipPath: 'polygon(50% 0%, 48% 2%, 46% 8%, 45% 15%, 44% 30%, 43% 50%, 42% 75%, 40% 95%, 38% 100%, 62% 100%, 60% 95%, 58% 75%, 57% 50%, 56% 30%, 55% 15%, 54% 8%, 52% 2%)',
+                transform: 'translateX(-50%) rotate(-12deg)',
                 boxShadow: isLit
-                  ? '0 0 25px rgba(251, 191, 36, 0.7), inset -1px 0 4px rgba(255,255,255,0.4)'
-                  : 'inset -1px 0 3px rgba(255,255,255,0.3)',
+                  ? '0 0 25px rgba(251, 191, 36, 0.7), inset -1.5px 0 5px rgba(255,255,255,0.5), inset 1.5px 0 3px rgba(0,0,0,0.3)'
+                  : 'inset -1.5px 0 4px rgba(255,255,255,0.4), inset 1.5px 0 3px rgba(0,0,0,0.4)',
               }}
             />
 
-            {/* Crossguard */}
+            {/* Fuller (groove in blade) - adds realism */}
             <div 
               className="absolute left-1/2 -translate-x-1/2 transition-all duration-700"
               style={{
-                bottom: '36px',
-                width: '28px',
-                height: '5px',
+                bottom: '8px',
+                width: '2px',
+                height: '38px',
                 background: isLit
-                  ? 'linear-gradient(to right, rgba(146, 64, 14, 1) 0%, rgba(194, 120, 3, 1) 50%, rgba(146, 64, 14, 1) 100%)'
-                  : 'linear-gradient(to right, rgba(75, 85, 99, 1) 0%, rgba(107, 114, 128, 1) 50%, rgba(75, 85, 99, 1) 100%)',
-                transform: 'translateX(-50%) rotate(-10deg)',
-                borderRadius: '2px',
+                  ? 'linear-gradient(to bottom, transparent 0%, rgba(100, 116, 139, 0.4) 20%, rgba(71, 85, 105, 0.5) 80%, transparent 100%)'
+                  : 'linear-gradient(to bottom, transparent 0%, rgba(71, 85, 105, 0.3) 20%, rgba(51, 65, 85, 0.4) 80%, transparent 100%)',
+                transform: 'translateX(-50%) rotate(-12deg)',
+                opacity: 0.6,
+              }}
+            />
+
+            {/* Crossguard - Improved medieval style */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 transition-all duration-700"
+              style={{
+                bottom: '34px',
+                width: '30px',
+                height: '6px',
+                background: isLit
+                  ? 'linear-gradient(to right, rgba(120, 53, 15, 1) 0%, rgba(146, 64, 14, 1) 15%, rgba(180, 83, 9, 1) 35%, rgba(194, 120, 3, 1) 50%, rgba(180, 83, 9, 1) 65%, rgba(146, 64, 14, 1) 85%, rgba(120, 53, 15, 1) 100%)'
+                  : 'linear-gradient(to right, rgba(55, 65, 81, 1) 0%, rgba(75, 85, 99, 1) 15%, rgba(107, 114, 128, 1) 50%, rgba(75, 85, 99, 1) 85%, rgba(55, 65, 81, 1) 100%)',
+                transform: 'translateX(-50%) rotate(-12deg)',
+                borderRadius: '3px',
+                clipPath: 'polygon(0% 20%, 5% 0%, 15% 0%, 20% 20%, 80% 20%, 85% 0%, 95% 0%, 100% 20%, 100% 80%, 95% 100%, 85% 100%, 80% 80%, 20% 80%, 15% 100%, 5% 100%, 0% 80%)',
                 boxShadow: isLit
-                  ? '0 0 12px rgba(194, 120, 3, 0.6), inset 0 1px 2px rgba(255,255,255,0.2)'
-                  : 'inset 0 1px 2px rgba(0,0,0,0.3)',
+                  ? '0 0 15px rgba(194, 120, 3, 0.7), inset 0 2px 3px rgba(255,255,255,0.3), inset 0 -2px 3px rgba(0,0,0,0.4)'
+                  : 'inset 0 2px 2px rgba(255,255,255,0.2), inset 0 -2px 3px rgba(0,0,0,0.5)',
               }}
             />
 
-            {/* Handle */}
+            {/* Handle - Leather wrapped */}
             <div 
               className="absolute left-1/2 -translate-x-1/2 transition-all duration-700"
               style={{
-                bottom: '22px',
+                bottom: '19px',
                 width: '7px',
-                height: '16px',
+                height: '17px',
                 background: isLit
-                  ? 'linear-gradient(to bottom, rgba(120, 53, 15, 1) 0%, rgba(92, 38, 11, 1) 100%)'
-                  : 'linear-gradient(to bottom, rgba(55, 65, 81, 1) 0%, rgba(31, 41, 55, 1) 100%)',
-                transform: 'translateX(-50%) rotate(-10deg)',
+                  ? 'linear-gradient(to bottom, rgba(120, 53, 15, 1) 0%, rgba(92, 38, 11, 1) 50%, rgba(120, 53, 15, 1) 100%)'
+                  : 'linear-gradient(to bottom, rgba(55, 65, 81, 1) 0%, rgba(31, 41, 55, 1) 50%, rgba(55, 65, 81, 1) 100%)',
+                transform: 'translateX(-50%) rotate(-12deg)',
                 borderRadius: '2px',
+                boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.5)',
               }}
             />
 
-            {/* Pommel */}
+            {/* Handle wrapping lines - leather texture */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 opacity-40"
+              style={{
+                bottom: '29px',
+                width: '7px',
+                height: '2px',
+                background: 'rgba(0,0,0,0.5)',
+                transform: 'translateX(-50%) rotate(-12deg)',
+              }}
+            />
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 opacity-40"
+              style={{
+                bottom: '24px',
+                width: '7px',
+                height: '2px',
+                background: 'rgba(0,0,0,0.5)',
+                transform: 'translateX(-50%) rotate(-12deg)',
+              }}
+            />
+
+            {/* Pommel - Round medieval style */}
             <div 
               className="absolute left-1/2 -translate-x-1/2 transition-all duration-700"
               style={{
-                bottom: '18px',
-                width: '11px',
-                height: '11px',
+                bottom: '15px',
+                width: '12px',
+                height: '12px',
                 background: isLit
-                  ? 'radial-gradient(circle, rgba(180, 83, 9, 1) 0%, rgba(146, 64, 14, 1) 100%)'
-                  : 'radial-gradient(circle, rgba(75, 85, 99, 1) 0%, rgba(55, 65, 81, 1) 100%)',
-                transform: 'translateX(-50%) rotate(-10deg)',
+                  ? 'radial-gradient(circle at 35% 35%, rgba(194, 120, 3, 1) 0%, rgba(180, 83, 9, 1) 40%, rgba(146, 64, 14, 1) 80%, rgba(120, 53, 15, 1) 100%)'
+                  : 'radial-gradient(circle at 35% 35%, rgba(107, 114, 128, 1) 0%, rgba(75, 85, 99, 1) 50%, rgba(55, 65, 81, 1) 100%)',
+                transform: 'translateX(-50%) rotate(-12deg)',
                 borderRadius: '50%',
                 boxShadow: isLit
-                  ? '0 0 10px rgba(180, 83, 9, 0.6)'
-                  : 'none',
+                  ? '0 0 12px rgba(180, 83, 9, 0.7), inset 2px 2px 4px rgba(255,255,255,0.3), inset -2px -2px 4px rgba(0,0,0,0.5)'
+                  : 'inset 2px 2px 3px rgba(255,255,255,0.2), inset -2px -2px 4px rgba(0,0,0,0.6)',
               }}
             />
           </div>
 
-          {/* FLAMES - Layer 3 - Only when lit */}
+          {/* FLAMES - When lit */}
           {isLit && (
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-8 pointer-events-none" style={{ zIndex: 3 }}>
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-10 pointer-events-none" style={{ zIndex: 3 }}>
               {/* Main flame */}
               <div 
                 className="absolute left-1/2 -translate-x-1/2 bottom-0"
                 style={{
-                  width: '24px',
-                  height: '40px',
+                  width: '26px',
+                  height: '42px',
                   animation: 'flame-dance 1.5s ease-in-out infinite',
                 }}
               >
@@ -220,9 +309,9 @@ export function DarkSoulsBonfire() {
               <div 
                 className="absolute bottom-0"
                 style={{
-                  left: '-10px',
-                  width: '16px',
-                  height: '26px',
+                  left: '-12px',
+                  width: '18px',
+                  height: '28px',
                   animation: 'flame-dance 1.2s ease-in-out infinite 0.3s',
                 }}
               >
@@ -240,9 +329,9 @@ export function DarkSoulsBonfire() {
               <div 
                 className="absolute bottom-0"
                 style={{
-                  right: '-10px',
-                  width: '16px',
-                  height: '26px',
+                  right: '-12px',
+                  width: '18px',
+                  height: '28px',
                   animation: 'flame-dance 1.3s ease-in-out infinite 0.6s',
                 }}
               >
