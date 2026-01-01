@@ -457,15 +457,15 @@ export function PerfectCellLogo() {
         @keyframes quote-pop-in {
           0% {
             opacity: 0;
-            transform: translateX(-50%) scale(0.5) translateY(-20px);
+            transform: scale(0.5) translateY(-20px);
           }
           60% {
             opacity: 1;
-            transform: translateX(-50%) scale(1.05) translateY(0);
+            transform: scale(1.05) translateY(0);
           }
           100% {
             opacity: 1;
-            transform: translateX(-50%) scale(1) translateY(0);
+            transform: scale(1) translateY(0);
           }
         }
       `}</style>
