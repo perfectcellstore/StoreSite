@@ -166,6 +166,23 @@ export function PerfectCellLogo() {
     e.preventDefault();
     e.stopPropagation();
 
+    // Prevent rapid clicks - only allow one click per cooldown period
+    if (isClickCooldown) {
+      console.log('[Robot] Click ignored - cooldown active');
+      return;
+    }
+
+    // Set cooldown to prevent rapid clicks
+    setIsClickCooldown(true);
+    
+    // Clear cooldown after 600ms (allows visual effects to play)
+    if (cooldownTimeoutRef.current) {
+      clearTimeout(cooldownTimeoutRef.current);
+    }
+    cooldownTimeoutRef.current = setTimeout(() => {
+      setIsClickCooldown(false);
+    }, 600);
+
     // Trigger jump
     setIsJumping(true);
     setTimeout(() => setIsJumping(false), 800);
@@ -186,15 +203,34 @@ export function PerfectCellLogo() {
       setHearts([]);
     }, 2000);
 
+    // QUOTE MANAGEMENT WITH PROPER TIMEOUT HANDLING
+    
+    // Clear any existing quote timeout to prevent premature hiding
+    if (quoteTimeoutRef.current) {
+      clearTimeout(quoteTimeoutRef.current);
+      console.log('[Robot] Cleared previous quote timeout');
+    }
+
     // Pick random quote
     const randomQuote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
     setCurrentQuote(randomQuote);
-    setShowQuote(true);
+    
+    // If quote is already showing, restart animation by changing key
+    if (showQuote) {
+      setQuoteKey(prev => prev + 1);
+      console.log('[Robot] Quote already visible - restarting animation');
+    } else {
+      setShowQuote(true);
+      console.log('[Robot] Showing new quote');
+    }
 
-    // Hide quote after 4 seconds
-    setTimeout(() => {
+    // Set NEW timeout to hide quote after FULL 5 seconds
+    // This ensures each quote stays visible for the complete duration
+    quoteTimeoutRef.current = setTimeout(() => {
       setShowQuote(false);
-    }, 4000);
+      console.log('[Robot] Quote hidden after full duration');
+      quoteTimeoutRef.current = null;
+    }, 5000); // 5 seconds for better readability
 
     // Play robot sound (shared audio manager)
     playRobot();
