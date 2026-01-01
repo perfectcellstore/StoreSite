@@ -199,6 +199,99 @@ export default function AdminPage() {
     }
   };
 
+  // Collection Management Functions
+  const handleCollectionSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const token = localStorage.getItem('token');
+      const url = editingCollection ? `/api/collections/${editingCollection.id}` : '/api/collections';
+      const method = editingCollection ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(collectionForm)
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: `Collection ${editingCollection ? 'updated' : 'created'} successfully`
+        });
+        setShowCollectionDialog(false);
+        setEditingCollection(null);
+        resetCollectionForm();
+        fetchData();
+      } else {
+        throw new Error('Failed to save collection');
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const resetCollectionForm = () => {
+    setCollectionForm({
+      name: '',
+      nameAr: '',
+      description: '',
+      descriptionAr: '',
+      image: '',
+      icon: '📦',
+      showOnHome: true
+    });
+  };
+
+  const handleEditCollection = (collection) => {
+    setEditingCollection(collection);
+    setCollectionForm({
+      name: collection.name,
+      nameAr: collection.nameAr || '',
+      description: collection.description || '',
+      descriptionAr: collection.descriptionAr || '',
+      image: collection.image || '',
+      icon: collection.icon || '📦',
+      showOnHome: collection.showOnHome !== false
+    });
+    setShowCollectionDialog(true);
+  };
+
+  const handleDeleteCollection = async (collectionId) => {
+    if (!confirm('Are you sure you want to delete this collection?')) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/collections/${collectionId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        toast({
+          title: 'Success',
+          description: 'Collection deleted successfully'
+        });
+        fetchData();
+      } else {
+        throw new Error('Failed to delete collection');
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive'
+      });
+    }
+  };
+
   const handleUpdateOrderStatus = async (orderId, status) => {
     try {
       const token = localStorage.getItem('token');
