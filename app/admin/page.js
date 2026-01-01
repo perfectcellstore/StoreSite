@@ -427,6 +427,10 @@ export default function AdminPage() {
         <Tabs defaultValue="products" className="space-y-6">
           <TabsList className="bg-muted">
             <TabsTrigger value="products">Products</TabsTrigger>
+            <TabsTrigger value="collections">
+              <Package className="h-4 w-4 mr-2" />
+              Collections
+            </TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
             <TabsTrigger value="customization">
               <Palette className="h-4 w-4 mr-2" />
