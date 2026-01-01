@@ -52,8 +52,25 @@ export function PerfectCellLogo() {
   const [currentQuote, setCurrentQuote] = useState(null);
   const [showQuote, setShowQuote] = useState(false);
   const [quotePosition, setQuotePosition] = useState({ placement: 'below', style: {} });
+  const [isClickCooldown, setIsClickCooldown] = useState(false);
+  const [quoteKey, setQuoteKey] = useState(0); // For animation restart
+  
   const logoRef = useRef(null);
   const quoteRef = useRef(null);
+  const quoteTimeoutRef = useRef(null);
+  const cooldownTimeoutRef = useRef(null);
+
+  // Cleanup all timeouts on unmount
+  useEffect(() => {
+    return () => {
+      if (quoteTimeoutRef.current) {
+        clearTimeout(quoteTimeoutRef.current);
+      }
+      if (cooldownTimeoutRef.current) {
+        clearTimeout(cooldownTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Update logo position for fixed effects
   useEffect(() => {
