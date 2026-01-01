@@ -93,19 +93,22 @@ export default function AdminPage() {
 
       const searchValue = typeof searchOverride === 'string' ? searchOverride : orderSearch;
 
-      const [statsRes, productsRes, ordersRes] = await Promise.all([
+      const [statsRes, productsRes, ordersRes, collectionsRes] = await Promise.all([
         fetch('/api/admin/stats', { headers }),
         fetch('/api/products'),
-        fetch(`/api/orders?search=${encodeURIComponent(searchValue || '')}`, { headers })
+        fetch(`/api/orders?search=${encodeURIComponent(searchValue || '')}`, { headers }),
+        fetch('/api/collections')
       ]);
 
       const statsData = await statsRes.json();
       const productsData = await productsRes.json();
       const ordersData = await ordersRes.json();
+      const collectionsData = await collectionsRes.json();
 
       setStats(statsData.stats);
       setProducts(productsData.products || []);
       setOrders(ordersData.orders || []);
+      setCollections(collectionsData.collections || []);
     } catch (error) {
       console.error('Failed to fetch data:', error);
     } finally {
