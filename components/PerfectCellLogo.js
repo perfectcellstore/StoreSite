@@ -628,7 +628,7 @@ export function PerfectCellLogo() {
               &ldquo;{language === 'ar' && currentQuote.ar ? currentQuote.ar : currentQuote.text}&rdquo;
             </p>
             
-            {/* Source - responsive sizing */}
+            {/* Source - responsive sizing with translated source */}
             <p 
               className="opacity-90 italic break-words"
               style={{
@@ -639,7 +639,7 @@ export function PerfectCellLogo() {
                 direction: language === 'ar' ? 'rtl' : 'ltr',
               }}
             >
-              &mdash; {currentQuote.source}
+              &mdash; {language === 'ar' && currentQuote.arSource ? currentQuote.arSource : currentQuote.source}
             </p>
             
             {/* Glow effect */}
