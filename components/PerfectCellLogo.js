@@ -306,6 +306,7 @@ export function PerfectCellLogo() {
       {/* Quote Bubble - appears after click (RESPONSIVE) */}
       {showQuote && currentQuote && (
         <div
+          key={quoteKey} // Forces animation restart on new quote
           ref={quoteRef}
           className="fixed z-[10000] pointer-events-none"
           style={{
