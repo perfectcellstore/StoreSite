@@ -102,6 +102,21 @@ export function Navigation() {
             {currency}
           </Button>
 
+          {/* Music Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleMusicToggle}
+            className="hidden sm:flex items-center gap-2 hover:bg-bio-green-500/10 hover:text-bio-green-500"
+            title={musicEnabled ? 'Disable background music' : 'Enable background music'}
+          >
+            {musicEnabled ? (
+              <Music className="h-4 w-4 text-bio-green-500" />
+            ) : (
+              <MusicOff className="h-4 w-4" />
+            )}
+          </Button>
+
           {/* Notification Bell - Only show when logged in */}
           {user && <NotificationBell />}
 
