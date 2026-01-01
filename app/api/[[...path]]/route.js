@@ -794,6 +794,28 @@ export async function POST(request, { params }) {
       return NextResponse.json({ message: 'Subscribed successfully!' });
     }
 
+    // Collections Management (Admin Only)
+    if (pathname === 'collections') {
+      const decoded = verifyToken(request);
+      if (!decoded) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      
+      const user = await db.collection('users').findOne({ id: decoded.userId });
+      if (user?.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+
+      const collection = {
+        id: uuidv4(),
+        ...body,
+        createdAt: new Date().toISOString()
+      };
+
+      await db.collection('collections').insertOne(collection);
+      return NextResponse.json({ collection });
+    }
+
     // Save Store Customization (Admin Only)
     if (pathname === 'customization') {
       const decoded = verifyToken(request);
