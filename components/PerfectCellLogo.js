@@ -332,7 +332,7 @@ export function PerfectCellLogo() {
     }
   }, [showQuote, currentQuote]);
 
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -402,8 +402,17 @@ export function PerfectCellLogo() {
       quoteTimeoutRef.current = null;
     }, 5000); // 5 seconds for better readability
 
-    // Play robot sound (shared audio manager)
-    playRobot();
+    // Play robot sound - MUST await to ensure unlock completes
+    try {
+      const played = await playRobot();
+      if (played) {
+        console.log('[Robot] ✅ Sound played successfully');
+      } else {
+        console.warn('[Robot] ⚠️ Sound failed to play');
+      }
+    } catch (err) {
+      console.error('[Robot] ❌ Sound error:', err);
+    }
   };
 
   return (
