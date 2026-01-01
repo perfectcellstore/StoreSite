@@ -794,6 +794,240 @@ export default function AdminPage() {
             </div>
           </TabsContent>
 
+          {/* Collections Tab */}
+          <TabsContent value="collections" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Collections Management</h2>
+              <Dialog open={showCollectionDialog} onOpenChange={(open) => {
+                setShowCollectionDialog(open);
+                if (!open) {
+                  setEditingCollection(null);
+                  resetCollectionForm();
+                }
+              }}>
+                <DialogTrigger asChild>
+                  <Button className="bg-bio-green-500 hover:bg-bio-green-600 btn-glow">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Collection
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-card border-border">
+                  <DialogHeader>
+                    <DialogTitle>{editingCollection ? 'Edit Collection' : 'Add New Collection'}</DialogTitle>
+                  </DialogHeader>
+                  
+                  <form onSubmit={handleCollectionSubmit} className="space-y-4">
+                    {/* Name Fields */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Collection Name (English) *</Label>
+                        <Input
+                          value={collectionForm.name}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, name: e.target.value })}
+                          required
+                          className="bg-background border-border"
+                          placeholder="Rare Collectibles"
+                        />
+                      </div>
+                      <div>
+                        <Label>Collection Name (Arabic)</Label>
+                        <Input
+                          value={collectionForm.nameAr}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, nameAr: e.target.value })}
+                          className="bg-background border-border"
+                          placeholder="المقتنيات النادرة"
+                          dir="rtl"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Description Fields */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Description (English)</Label>
+                        <Textarea
+                          value={collectionForm.description}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, description: e.target.value })}
+                          className="bg-background border-border"
+                          placeholder="Exclusive and rare items..."
+                          rows={3}
+                        />
+                      </div>
+                      <div>
+                        <Label>Description (Arabic)</Label>
+                        <Textarea
+                          value={collectionForm.descriptionAr}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, descriptionAr: e.target.value })}
+                          className="bg-background border-border"
+                          placeholder="عناصر حصرية ونادرة..."
+                          dir="rtl"
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Image URL */}
+                    <div>
+                      <Label>Collection Image URL *</Label>
+                      <Input
+                        type="url"
+                        value={collectionForm.image}
+                        onChange={(e) => setCollectionForm({ ...collectionForm, image: e.target.value })}
+                        required
+                        className="bg-background border-border"
+                        placeholder="https://images.unsplash.com/photo-..."
+                      />
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Collection banner image (recommended: 1200x400px)
+                      </p>
+                    </div>
+
+                    {/* Icon & Show on Home */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label>Icon Emoji</Label>
+                        <Input
+                          value={collectionForm.icon}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, icon: e.target.value })}
+                          className="bg-background border-border text-2xl"
+                          placeholder="📦"
+                          maxLength={2}
+                        />
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Single emoji for collection icon
+                        </p>
+                      </div>
+                      <div className="flex items-center space-x-2 border border-border rounded-lg p-4 bg-background/50">
+                        <input
+                          type="checkbox"
+                          id="showOnHome"
+                          checked={collectionForm.showOnHome}
+                          onChange={(e) => setCollectionForm({ ...collectionForm, showOnHome: e.target.checked })}
+                          className="w-4 h-4 text-bio-green-500 border-gray-300 rounded focus:ring-bio-green-500"
+                        />
+                        <div className="flex-1">
+                          <Label htmlFor="showOnHome" className="cursor-pointer font-semibold">
+                            🏠 Show on Homepage
+                          </Label>
+                          <p className="text-xs text-muted-foreground">Display in home carousel</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Image Preview */}
+                    {collectionForm.image && (
+                      <div className="border border-border rounded-lg p-2">
+                        <Label className="mb-2 block">Preview:</Label>
+                        <div className="relative w-full h-32 rounded overflow-hidden">
+                          <Image
+                            src={collectionForm.image}
+                            alt="Collection preview"
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2 pt-4">
+                      <Button type="submit" className="flex-1 bg-bio-green-500 hover:bg-bio-green-600">
+                        {editingCollection ? 'Update Collection' : 'Create Collection'}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowCollectionDialog(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Collections Grid */}
+            <div className="grid gap-4">
+              {collections.map((collection) => (
+                <Card key={collection.id} className="bg-card/50 border-border/40 overflow-hidden">
+                  <div className="flex items-center gap-4 p-4">
+                    {/* Collection Image */}
+                    <div className="relative w-32 h-32 flex-shrink-0 rounded overflow-hidden">
+                      <Image
+                        src={collection.image}
+                        alt={collection.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    
+                    {/* Collection Info */}
+                    <div className="flex-grow">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-2xl">{collection.icon}</span>
+                        <h3 className="font-semibold text-lg">{collection.name}</h3>
+                        {collection.showOnHome && (
+                          <span className="bg-bio-green-500/20 text-bio-green-500 text-xs font-semibold px-2 py-1 rounded border border-bio-green-500/30">
+                            🏠 Homepage
+                          </span>
+                        )}
+                      </div>
+                      {collection.nameAr && (
+                        <p className="text-sm text-muted-foreground mb-1" dir="rtl">{collection.nameAr}</p>
+                      )}
+                      {collection.description && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">{collection.description}</p>
+                      )}
+                      <div className="flex gap-2 mt-3">
+                        <span className="text-xs text-muted-foreground">
+                          Created: {new Date(collection.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditCollection(collection)}
+                        className="border-border"
+                      >
+                        <Edit className="h-4 w-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDeleteCollection(collection.id)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-1" />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+
+              {collections.length === 0 && (
+                <Card className="bg-card/50 border-border/40 p-8 text-center">
+                  <Package className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <h3 className="text-lg font-semibold mb-2">No Collections Yet</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Create your first collection to organize products
+                  </p>
+                  <Button
+                    onClick={() => setShowCollectionDialog(true)}
+                    className="bg-bio-green-500 hover:bg-bio-green-600"
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add First Collection
+                  </Button>
+                </Card>
+              )}
+            </div>
+          </TabsContent>
+
           {/* Store Customization Tab - NEW ADDITIVE FEATURE */}
           <TabsContent value="customization">
             <StoreCustomization />
