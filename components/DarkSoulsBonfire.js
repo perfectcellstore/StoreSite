@@ -1,17 +1,21 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Flame } from 'lucide-react';
 
 /**
- * Dark Souls Bonfire Easter Egg
+ * Dark Souls Bonfire Easter Egg - FIXED VERSION
  * Appears in the bottom right corner of the mobile menu
  * When clicked, shows "Bonfire Restored" message with Dark Souls styling
+ * 
+ * Fixed issues:
+ * - Sword now clearly visible and properly centered
+ * - Proper color blending and layering
+ * - Text moved above bonfire
+ * - Subtle animations, performance optimized
  */
 export function DarkSoulsBonfire() {
   const [isLit, setIsLit] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const [flames, setFlames] = useState([]);
 
   const handleClick = () => {
     if (isLit) return; // Only allow one restoration
@@ -19,245 +23,277 @@ export function DarkSoulsBonfire() {
     setIsLit(true);
     setShowMessage(true);
 
-    // Create flame particles
-    const newFlames = Array.from({ length: 12 }, (_, i) => ({
-      id: Date.now() + i,
-      angle: (i * 30) + Math.random() * 15,
-      delay: i * 0.05,
-    }));
-    setFlames(newFlames);
-
     // Hide message after 3 seconds
     setTimeout(() => {
       setShowMessage(false);
     }, 3000);
-
-    // Clear flames after animation
-    setTimeout(() => {
-      setFlames([]);
-    }, 1500);
   };
 
   return (
-    <div className="relative">
-      {/* Bonfire Message */}
+    <div className="relative" style={{ width: '80px', height: '100px' }}>
+      {/* Bonfire Message - MOVED ABOVE */}
       {showMessage && (
         <div 
-          className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 whitespace-nowrap"
+          className="absolute bottom-full mb-6 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none"
           style={{
             animation: 'bonfire-message 3s ease-out forwards',
           }}
         >
-          <div className="bg-gray-900/95 border-2 border-yellow-600/80 px-4 py-2 rounded shadow-2xl">
-            <p className="text-yellow-400 font-bold text-sm tracking-wider" style={{ fontFamily: 'serif' }}>
+          <div className="bg-black/90 border-2 border-amber-600 px-6 py-3 rounded-sm shadow-2xl">
+            <p className="text-amber-400 font-bold text-base tracking-widest" style={{ 
+              fontFamily: 'serif',
+              textShadow: '0 0 10px rgba(251, 191, 36, 0.5)'
+            }}>
               BONFIRE RESTORED
             </p>
           </div>
         </div>
       )}
 
-      {/* Flame Particles */}
-      {flames.map((flame) => (
-        <div
-          key={flame.id}
-          className="absolute left-1/2 bottom-1/2 -translate-x-1/2"
-          style={{
-            animation: `flame-rise 1.2s ease-out forwards`,
-            animationDelay: `${flame.delay}s`,
-            transform: `rotate(${flame.angle}deg) translateY(0)`,
-          }}
-        >
-          <Flame className="h-3 w-3 text-orange-500" fill="currentColor" />
-        </div>
-      ))}
-
-      {/* Bonfire Container */}
+      {/* Main Bonfire Container */}
       <button
         onClick={handleClick}
         disabled={isLit}
-        className={`relative group cursor-pointer transition-all duration-300 ${
-          isLit ? 'scale-110' : 'hover:scale-105'
+        className={`relative group cursor-pointer transition-all duration-500 w-full h-full ${
+          isLit ? '' : 'hover:scale-105'
         }`}
-        style={{ width: '60px', height: '80px' }}
       >
-        {/* Glow Effect */}
+        {/* Glow Effect Background - Behind everything */}
         {isLit && (
-          <div className="absolute inset-0 blur-xl opacity-60 animate-pulse">
-            <div className="w-full h-full bg-gradient-radial from-orange-500 via-yellow-500 to-transparent rounded-full" />
+          <div className="absolute inset-0 -z-10">
+            <div 
+              className="w-full h-full bg-gradient-radial from-orange-500/40 via-yellow-500/20 to-transparent rounded-full blur-2xl"
+              style={{ animation: 'glow-pulse 2s ease-in-out infinite' }}
+            />
           </div>
         )}
 
-        {/* Sword in Ground */}
-        <div className="relative z-10">
-          {/* Sword Blade */}
+        {/* Bonfire Base (Coals/Rocks) - Layer 1 (Bottom) */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-6 z-10">
+          {/* Coal arrangement - more visible */}
+          <div className={`absolute bottom-0 left-1 w-4 h-3 rounded-sm transition-all duration-700 ${
+            isLit 
+              ? 'bg-gradient-to-br from-orange-500 via-red-600 to-red-800' 
+              : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+          }`} 
+          style={{ 
+            boxShadow: isLit ? '0 0 12px rgba(234, 88, 12, 0.8), inset 0 -2px 4px rgba(0,0,0,0.5)' : 'inset 0 -2px 4px rgba(0,0,0,0.8)'
+          }} />
+          
+          <div className={`absolute bottom-0 right-1 w-5 h-3 rounded-sm transition-all duration-700 ${
+            isLit 
+              ? 'bg-gradient-to-br from-orange-600 via-red-600 to-red-900' 
+              : 'bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900'
+          }`}
+          style={{ 
+            boxShadow: isLit ? '0 0 12px rgba(234, 88, 12, 0.8), inset 0 -2px 4px rgba(0,0,0,0.5)' : 'inset 0 -2px 4px rgba(0,0,0,0.8)'
+          }} />
+          
+          <div className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-4 rounded-sm transition-all duration-700 ${
+            isLit 
+              ? 'bg-gradient-to-br from-orange-400 via-orange-600 to-red-700' 
+              : 'bg-gradient-to-br from-gray-600 via-gray-800 to-gray-900'
+          }`}
+          style={{ 
+            boxShadow: isLit ? '0 0 15px rgba(234, 88, 12, 0.9), inset 0 -2px 4px rgba(0,0,0,0.5)' : 'inset 0 -2px 4px rgba(0,0,0,0.8)'
+          }} />
+        </div>
+
+        {/* SWORD - Layer 2 (Middle) - FIXED VISIBILITY */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-4 z-20">
+          {/* Sword Blade - Much more visible now */}
           <div 
-            className={`absolute left-1/2 -translate-x-1/2 bottom-6 w-1.5 h-16 bg-gradient-to-b transition-all duration-500 ${
-              isLit 
-                ? 'from-orange-300 via-gray-300 to-gray-400 shadow-[0_0_20px_rgba(251,146,60,0.8)]' 
-                : 'from-gray-400 via-gray-500 to-gray-600'
-            }`}
+            className={`absolute left-1/2 -translate-x-1/2 bottom-0 transition-all duration-700`}
             style={{
-              transform: 'rotate(-5deg)',
+              width: '6px',
+              height: '50px',
+              background: isLit 
+                ? 'linear-gradient(to bottom, rgba(251, 191, 36, 0.9) 0%, rgba(209, 213, 219, 0.95) 20%, rgba(156, 163, 175, 1) 80%, rgba(107, 114, 128, 1) 100%)'
+                : 'linear-gradient(to bottom, rgba(209, 213, 219, 0.8) 0%, rgba(156, 163, 175, 0.9) 50%, rgba(107, 114, 128, 1) 100%)',
               clipPath: 'polygon(45% 0%, 55% 0%, 52% 95%, 48% 95%)',
+              transform: 'translateX(-50%) rotate(-8deg)',
+              boxShadow: isLit 
+                ? '0 0 20px rgba(251, 191, 36, 0.6), inset -1px 0 3px rgba(255,255,255,0.3)'
+                : 'inset -1px 0 3px rgba(255,255,255,0.2)',
             }}
           />
 
-          {/* Sword Crossguard */}
+          {/* Sword Crossguard - More prominent */}
           <div 
-            className={`absolute left-1/2 -translate-x-1/2 bottom-[52px] w-8 h-1.5 transition-all duration-500 ${
-              isLit 
-                ? 'bg-gradient-to-r from-orange-400 via-yellow-300 to-orange-400 shadow-[0_0_15px_rgba(251,146,60,0.6)]' 
-                : 'bg-gradient-to-r from-gray-500 via-gray-400 to-gray-500'
-            }`}
-            style={{ transform: 'rotate(-5deg)' }}
+            className={`absolute left-1/2 -translate-x-1/2 transition-all duration-700`}
+            style={{
+              bottom: '32px',
+              width: '24px',
+              height: '4px',
+              background: isLit 
+                ? 'linear-gradient(to right, rgba(180, 83, 9, 1) 0%, rgba(217, 119, 6, 1) 50%, rgba(180, 83, 9, 1) 100%)'
+                : 'linear-gradient(to right, rgba(75, 85, 99, 1) 0%, rgba(107, 114, 128, 1) 50%, rgba(75, 85, 99, 1) 100%)',
+              transform: 'translateX(-50%) rotate(-8deg)',
+              borderRadius: '2px',
+              boxShadow: isLit 
+                ? '0 0 10px rgba(217, 119, 6, 0.5)'
+                : 'none',
+            }}
           />
 
           {/* Sword Handle */}
           <div 
-            className={`absolute left-1/2 -translate-x-1/2 bottom-[44px] w-2 h-8 transition-all duration-500 ${
-              isLit 
-                ? 'bg-gradient-to-b from-yellow-700 to-yellow-900' 
-                : 'bg-gradient-to-b from-gray-700 to-gray-900'
-            }`}
+            className={`absolute left-1/2 -translate-x-1/2 transition-all duration-700`}
             style={{
-              transform: 'rotate(-5deg)',
+              bottom: '20px',
+              width: '6px',
+              height: '14px',
+              background: isLit 
+                ? 'linear-gradient(to bottom, rgba(120, 53, 15, 1) 0%, rgba(92, 38, 11, 1) 100%)'
+                : 'linear-gradient(to bottom, rgba(55, 65, 81, 1) 0%, rgba(31, 41, 55, 1) 100%)',
+              transform: 'translateX(-50%) rotate(-8deg)',
               borderRadius: '2px',
             }}
           />
 
           {/* Sword Pommel */}
           <div 
-            className={`absolute left-1/2 -translate-x-1/2 bottom-[40px] w-3 h-3 rounded-full transition-all duration-500 ${
-              isLit 
-                ? 'bg-gradient-radial from-yellow-500 to-yellow-700 shadow-[0_0_10px_rgba(234,179,8,0.5)]' 
-                : 'bg-gradient-radial from-gray-600 to-gray-800'
-            }`}
-            style={{ transform: 'rotate(-5deg)' }}
+            className={`absolute left-1/2 -translate-x-1/2 transition-all duration-700`}
+            style={{
+              bottom: '17px',
+              width: '10px',
+              height: '10px',
+              background: isLit 
+                ? 'radial-gradient(circle, rgba(180, 83, 9, 1) 0%, rgba(146, 64, 14, 1) 100%)'
+                : 'radial-gradient(circle, rgba(75, 85, 99, 1) 0%, rgba(55, 65, 81, 1) 100%)',
+              transform: 'translateX(-50%) rotate(-8deg)',
+              borderRadius: '50%',
+              boxShadow: isLit 
+                ? '0 0 8px rgba(180, 83, 9, 0.5)'
+                : 'none',
+            }}
           />
+        </div>
 
-          {/* Fire/Coals Base */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-10 h-6">
-            {/* Rocks/Coals */}
-            <div className={`absolute inset-0 transition-all duration-500 ${
-              isLit ? 'opacity-100' : 'opacity-60'
-            }`}>
-              {/* Coal arrangement */}
-              <div className={`absolute bottom-0 left-2 w-2.5 h-2.5 rounded-sm transition-all duration-500 ${
-                isLit 
-                  ? 'bg-gradient-to-br from-orange-600 to-red-700 shadow-[0_0_8px_rgba(234,88,12,0.8)]' 
-                  : 'bg-gradient-to-br from-gray-700 to-gray-900'
-              }`} />
-              <div className={`absolute bottom-0 right-2 w-3 h-2 rounded-sm transition-all duration-500 ${
-                isLit 
-                  ? 'bg-gradient-to-br from-orange-500 to-red-600 shadow-[0_0_8px_rgba(234,88,12,0.8)]' 
-                  : 'bg-gradient-to-br from-gray-700 to-gray-900'
-              }`} />
-              <div className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-3.5 h-2.5 rounded-sm transition-all duration-500 ${
-                isLit 
-                  ? 'bg-gradient-to-br from-orange-600 to-red-700 shadow-[0_0_10px_rgba(234,88,12,0.9)]' 
-                  : 'bg-gradient-to-br from-gray-700 to-gray-900'
-              }`} />
+        {/* Flames - Layer 3 (Front) - Only when lit */}
+        {isLit && (
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-4 z-30 pointer-events-none">
+            {/* Main central flame */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 bottom-0"
+              style={{ 
+                width: '20px',
+                height: '35px',
+                animation: 'flame-dance 1.5s ease-in-out infinite'
+              }}
+            >
+              <div 
+                className="w-full h-full opacity-90"
+                style={{
+                  background: 'linear-gradient(to top, rgba(234, 88, 12, 0.9) 0%, rgba(249, 115, 22, 0.8) 30%, rgba(251, 191, 36, 0.7) 60%, rgba(252, 211, 77, 0.4) 100%)',
+                  clipPath: 'polygon(50% 0%, 35% 15%, 25% 35%, 20% 55%, 15% 75%, 10% 90%, 20% 100%, 40% 95%, 50% 85%, 60% 95%, 80% 100%, 90% 90%, 85% 75%, 80% 55%, 75% 35%, 65% 15%)',
+                  filter: 'blur(1px)',
+                }}
+              />
             </div>
 
-            {/* Animated Flames */}
-            {isLit && (
-              <>
-                {/* Main flame */}
-                <div 
-                  className="absolute left-1/2 -translate-x-1/2 bottom-3 w-4 h-8"
-                  style={{ animation: 'flame-flicker 0.8s ease-in-out infinite' }}
-                >
-                  <div className="w-full h-full bg-gradient-to-t from-orange-600 via-yellow-500 to-yellow-300 opacity-80 blur-[2px]"
-                    style={{
-                      clipPath: 'polygon(50% 0%, 20% 40%, 30% 70%, 10% 100%, 50% 85%, 90% 100%, 70% 70%, 80% 40%)',
-                    }}
-                  />
-                </div>
+            {/* Left side flame */}
+            <div 
+              className="absolute bottom-0"
+              style={{ 
+                left: '-8px',
+                width: '14px',
+                height: '22px',
+                animation: 'flame-dance 1.2s ease-in-out infinite 0.3s'
+              }}
+            >
+              <div 
+                className="w-full h-full opacity-80"
+                style={{
+                  background: 'linear-gradient(to top, rgba(234, 88, 12, 0.8) 0%, rgba(249, 115, 22, 0.7) 40%, rgba(251, 191, 36, 0.4) 100%)',
+                  clipPath: 'polygon(50% 0%, 25% 40%, 20% 70%, 15% 100%, 50% 90%, 85% 100%, 80% 70%, 75% 40%)',
+                  filter: 'blur(0.5px)',
+                }}
+              />
+            </div>
 
-                {/* Side flames */}
-                <div 
-                  className="absolute left-1 bottom-2 w-3 h-5"
-                  style={{ animation: 'flame-flicker 0.6s ease-in-out infinite 0.2s' }}
-                >
-                  <div className="w-full h-full bg-gradient-to-t from-orange-600 to-yellow-400 opacity-70 blur-[1px]"
-                    style={{
-                      clipPath: 'polygon(50% 0%, 20% 60%, 30% 100%, 70% 100%, 80% 60%)',
-                    }}
-                  />
-                </div>
-                <div 
-                  className="absolute right-1 bottom-2 w-3 h-5"
-                  style={{ animation: 'flame-flicker 0.7s ease-in-out infinite 0.4s' }}
-                >
-                  <div className="w-full h-full bg-gradient-to-t from-orange-600 to-yellow-400 opacity-70 blur-[1px]"
-                    style={{
-                      clipPath: 'polygon(50% 0%, 20% 60%, 30% 100%, 70% 100%, 80% 60%)',
-                    }}
-                  />
-                </div>
-              </>
-            )}
+            {/* Right side flame */}
+            <div 
+              className="absolute bottom-0"
+              style={{ 
+                right: '-8px',
+                width: '14px',
+                height: '22px',
+                animation: 'flame-dance 1.3s ease-in-out infinite 0.6s'
+              }}
+            >
+              <div 
+                className="w-full h-full opacity-80"
+                style={{
+                  background: 'linear-gradient(to top, rgba(234, 88, 12, 0.8) 0%, rgba(249, 115, 22, 0.7) 40%, rgba(251, 191, 36, 0.4) 100%)',
+                  clipPath: 'polygon(50% 0%, 25% 40%, 20% 70%, 15% 100%, 50% 90%, 85% 100%, 80% 70%, 75% 40%)',
+                  filter: 'blur(0.5px)',
+                }}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Hover hint when not lit */}
         {!isLit && (
-          <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <div className="bg-gray-900/90 border border-yellow-600/50 px-2 py-1 rounded text-xs text-yellow-400 whitespace-nowrap">
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div className="bg-black/90 border border-amber-600/70 px-3 py-1.5 rounded-sm text-xs text-amber-400 whitespace-nowrap"
+              style={{ fontFamily: 'serif' }}
+            >
               Rest at Bonfire
             </div>
           </div>
         )}
       </button>
 
-      {/* Animations */}
+      {/* Animations - Optimized */}
       <style jsx>{`
-        @keyframes flame-flicker {
+        @keyframes flame-dance {
           0%, 100% {
-            transform: scaleY(1) scaleX(1);
+            transform: translateY(0) scaleY(1) scaleX(1);
             opacity: 0.9;
           }
           25% {
-            transform: scaleY(1.1) scaleX(0.95);
+            transform: translateY(-3px) scaleY(1.08) scaleX(0.96);
             opacity: 1;
           }
           50% {
-            transform: scaleY(0.95) scaleX(1.05);
+            transform: translateY(-1px) scaleY(0.96) scaleX(1.04);
             opacity: 0.85;
           }
           75% {
-            transform: scaleY(1.05) scaleX(0.98);
+            transform: translateY(-2px) scaleY(1.04) scaleX(0.98);
             opacity: 0.95;
           }
         }
 
-        @keyframes flame-rise {
-          0% {
-            transform: translateY(0) translateX(-50%) scale(1);
-            opacity: 1;
+        @keyframes glow-pulse {
+          0%, 100% {
+            opacity: 0.4;
+            transform: scale(1);
           }
-          100% {
-            transform: translateY(-40px) translateX(-50%) scale(0.3);
-            opacity: 0;
+          50% {
+            opacity: 0.6;
+            transform: scale(1.1);
           }
         }
 
         @keyframes bonfire-message {
           0% {
             opacity: 0;
-            transform: translateX(-50%) translateY(10px);
+            transform: translateX(-50%) translateY(15px) scale(0.9);
           }
-          10% {
+          15% {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0) scale(1);
           }
-          90% {
+          85% {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0) scale(1);
           }
           100% {
             opacity: 0;
-            transform: translateX(-50%) translateY(-10px);
+            transform: translateX(-50%) translateY(-15px) scale(0.95);
           }
         }
       `}</style>
