@@ -6,6 +6,7 @@ import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Instagram, MessageCircle } from 'lucide-react';
+import { AssassinsCreedEasterEgg } from '@/components/AssassinsCreedEasterEgg';
 
 export function Footer() {
   const { t } = useLanguage();
