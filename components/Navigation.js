@@ -26,7 +26,7 @@ export function Navigation() {
   const { effectsEnabled, toggleEffects } = useEffects();
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [musicEnabled, setMusicEnabled] = useState(false);
+  const [musicEnabled, setMusicEnabled] = useState(true);  // Default to ON
   const cartCount = getCartCount();
 
   // Initialize music state from localStorage
