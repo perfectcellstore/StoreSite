@@ -118,30 +118,17 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © {year || '2026'} Perfect Sell. All rights reserved.
           </p>
-          
-          {/* Center: Terms & Policies with Easter Egg */}
-          <div className="flex items-center gap-6">
-            <div className="flex gap-6 text-sm">
-              <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
-                {t('privacyPolicy')}
-              </Link>
-              <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
-                {t('termsOfService')}
-              </Link>
-              <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
-                {t('returnPolicy')}
-              </Link>
-            </div>
-            
-            {/* Hidden Easter Egg - subtle divider then symbol */}
-            <div className="hidden md:flex items-center gap-4">
-              <div className="h-4 w-px bg-border/40" />
-              <AssassinsCreedEasterEgg />
-            </div>
+          <div className="flex gap-6 text-sm">
+            <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
+              {t('privacyPolicy')}
+            </Link>
+            <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
+              {t('termsOfService')}
+            </Link>
+            <Link href="/policies" className="text-muted-foreground hover:text-bio-green-500 transition-colors">
+              {t('returnPolicy')}
+            </Link>
           </div>
-          
-          {/* Spacer for mobile to keep easter egg centered on desktop */}
-          <div className="hidden md:block w-24" />
         </div>
       </div>
     </footer>
