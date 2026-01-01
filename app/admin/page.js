@@ -244,15 +244,6 @@ export default function AdminPage() {
     });
     setShowProductDialog(true);
   };
-      description: product.description,
-      descriptionAr: product.descriptionAr || '',
-      price: product.price.toString(),
-      category: product.category,
-      image: product.image,
-      stock: product.stock.toString()
-    });
-    setShowProductDialog(true);
-  };
 
   if (authLoading || loading) {
     return (
