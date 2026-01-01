@@ -26,9 +26,8 @@ const PROMO_CODES = {
   'WELCOME': { discount: 0.05, description: '5% off for new customers' },
   '2026': { discount: 0.20, description: '20% off - New Year Special!' },
   'Nona1603': { discount: 0.99, description: '99% off - Special Discount!' },
-  'Ayajonkler': { discount: 0.25, description: '25% off - Special Code!' },
-  // Secret code (Base64 decoded): atob('UGVyZmVjdENlbGxTZWNyZXQyMDI2')
-  [atob('UGVyZmVjdENlbGxTZWNyZXQyMDI2')]: { discount: 0.50, description: '50% off - Secret Unlocked! 🔥' }
+  // Secret code (Base64 decoded): atob('QXlham9ua2xlcg==')
+  [atob('QXlham9ua2xlcg==')]: { discount: 0.25, description: '25% off - Secret Code! 🎉' }
 };
 
 export default function CheckoutPage() {
