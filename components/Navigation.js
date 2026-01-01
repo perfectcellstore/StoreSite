@@ -27,7 +27,19 @@ export function Navigation() {
   const { effectsEnabled, toggleEffects } = useEffects();
   const [showEasterEgg, setShowEasterEgg] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [musicEnabled, setMusicEnabled] = useState(false);
   const cartCount = getCartCount();
+
+  // Initialize music state from localStorage
+  useEffect(() => {
+    setMusicEnabled(getMusicEnabled());
+  }, []);
+
+  const handleMusicToggle = () => {
+    const newState = !musicEnabled;
+    setMusicEnabled(newState);
+    toggleBackgroundMusic(newState);
+  };
 
   const navLinks = [
     { href: '/', label: t('home') },
