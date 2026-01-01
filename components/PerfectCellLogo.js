@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { playRobot } from '@/lib/audioManager';
+import { useLanguage } from '@/lib/contexts/LanguageContext';
 
 // Diverse quotes from video games, movies, shows, and historical figures
 // Each quote has English text and Arabic translation (ar)
