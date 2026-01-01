@@ -166,6 +166,48 @@ export function PerfectCellLogo() {
         </div>
       )}
 
+      {/* Quote Bubble - appears after click */}
+      {showQuote && currentQuote && (
+        <div
+          className="fixed z-[10000] pointer-events-none"
+          style={{
+            left: `${logoPosition.x}px`,
+            top: `${logoPosition.y + 60}px`,
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <div 
+            className="relative bg-gradient-to-br from-bio-green-500/95 to-emerald-600/95 text-white px-4 py-3 rounded-2xl shadow-2xl border-2 border-bio-green-400 max-w-xs sm:max-w-sm"
+            style={{
+              animation: 'quote-pop-in 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards'
+            }}
+          >
+            {/* Speech bubble arrow */}
+            <div 
+              className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-0 h-0"
+              style={{
+                borderLeft: '12px solid transparent',
+                borderRight: '12px solid transparent',
+                borderBottom: '12px solid rgb(34 197 94)',
+              }}
+            />
+            
+            {/* Quote text */}
+            <p className="text-sm font-semibold mb-1 leading-tight">
+              &ldquo;{currentQuote.text}&rdquo;
+            </p>
+            
+            {/* Source */}
+            <p className="text-xs opacity-90 italic">
+              &mdash; {currentQuote.source}
+            </p>
+            
+            {/* Glow effect */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-bio-green-400 to-emerald-400 opacity-30 blur-xl -z-10 animate-pulse" />
+          </div>
+        </div>
+      )}
+
       <div 
         ref={logoRef}
         className={`relative w-10 h-10 pixel-art cursor-pointer ${isJumping ? '' : 'animate-float'}`}
