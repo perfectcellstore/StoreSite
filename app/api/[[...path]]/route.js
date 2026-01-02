@@ -653,6 +653,63 @@ export async function POST(request, { params }) {
   
   try {
     const { db } = await connectToDatabase();
+    
+    // File Upload Route
+    if (pathname === 'upload') {
+      try {
+        const formData = await request.formData();
+        const file = formData.get('file');
+        
+        if (!file) {
+          return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+        }
+        
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+          return NextResponse.json({ error: 'Invalid file type. Only images are allowed.' }, { status: 400 });
+        }
+        
+        // Validate file size (5MB max)
+        const maxSize = 5 * 1024 * 1024;
+        if (file.size > maxSize) {
+          return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 });
+        }
+        
+        // Generate unique filename
+        const timestamp = Date.now();
+        const randomStr = Math.random().toString(36).substring(2, 15);
+        const extension = file.name.split('.').pop();
+        const filename = `${timestamp}-${randomStr}.${extension}`;
+        
+        // Convert file to buffer
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        
+        // Save to public/uploads directory
+        const fs = require('fs').promises;
+        const path = require('path');
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        const filePath = path.join(uploadDir, filename);
+        
+        // Ensure directory exists
+        await fs.mkdir(uploadDir, { recursive: true });
+        
+        // Write file
+        await fs.writeFile(filePath, buffer);
+        
+        // Return public URL
+        const url = `/uploads/${filename}`;
+        
+        console.log('[Upload] File uploaded successfully:', url);
+        return NextResponse.json({ url, filename });
+        
+      } catch (error) {
+        console.error('[Upload] Error:', error);
+        return NextResponse.json({ error: 'Failed to upload file' }, { status: 500 });
+      }
+    }
+    
     const body = await request.json();
 
     // Auth Routes
