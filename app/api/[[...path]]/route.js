@@ -925,7 +925,6 @@ export async function POST(request, { params }) {
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
         // Log successful login
-        const ip = getClientIp(request);
         const userAgent = request.headers.get('user-agent') || 'Unknown';
         await logLoginAttempt(db, {
           email: normalizedEmail,
