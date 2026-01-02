@@ -917,21 +917,6 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* Image Preview */}
-                    {collectionForm.image && (
-                      <div className="border border-border rounded-lg p-2">
-                        <Label className="mb-2 block">Preview:</Label>
-                        <div className="relative w-full h-32 rounded overflow-hidden">
-                          <Image
-                            src={collectionForm.image}
-                            alt="Collection preview"
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-                    )}
-
                     <div className="flex gap-2 pt-4">
                       <Button type="submit" className="flex-1 bg-bio-green-500 hover:bg-bio-green-600">
                         {editingCollection ? 'Update Collection' : 'Create Collection'}
