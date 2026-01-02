@@ -11,7 +11,7 @@ import uuid
 from typing import Dict, Any, Optional
 
 # Configuration
-BASE_URL = "https://serene-soundtrack.preview.emergentagent.com"
+BASE_URL = "https://edit-delete-align.preview.emergentagent.com"
 API_BASE = f"{BASE_URL}/api"
 
 # Test credentials

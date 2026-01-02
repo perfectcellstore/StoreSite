@@ -5,7 +5,7 @@
 ### Admin Credentials
 - **Email**: perfectcellstore@gmail.com
 - **Password**: admin123456
-- **Admin Dashboard**: https://serene-soundtrack.preview.emergentagent.com/admin
+- **Admin Dashboard**: https://edit-delete-align.preview.emergentagent.com/admin
 
 ---
 
