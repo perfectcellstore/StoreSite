@@ -1122,7 +1122,7 @@ export async function POST(request, { params }) {
       await db.collection('orders').insertOne(order);
       
       // Create notification for admin about new order
-      const adminUser = await db.collection('users').findOne({ email: 'perfectcellstore@gmail.com' });
+      const adminUser = await db.collection('users').findOne({ email: ADMIN_EMAIL });
       if (adminUser) {
         await createNotification(db, {
           userId: adminUser.id,
