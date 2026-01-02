@@ -443,6 +443,50 @@ export async function GET(request, { params }) {
       });
     }
 
+    // Admin Login Logs Route
+    if (pathname === 'admin/login-logs') {
+      const decoded = verifyToken(request);
+      if (!decoded) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      
+      const user = await db.collection('users').findOne({ id: decoded.userId });
+      if (user?.role !== 'admin') {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
+      
+      // Get query parameters for pagination and filtering
+      const url = new URL(request.url);
+      const limit = parseInt(url.searchParams.get('limit') || '50');
+      const skip = parseInt(url.searchParams.get('skip') || '0');
+      const successFilter = url.searchParams.get('success'); // 'true', 'false', or null for all
+      
+      // Build query
+      const query = {};
+      if (successFilter === 'true') query.success = true;
+      if (successFilter === 'false') query.success = false;
+      
+      // Get login logs
+      const loginLogs = await db.collection('login_logs')
+        .find(query)
+        .sort({ timestamp: -1 })
+        .limit(Math.min(limit, 500)) // Max 500 at a time
+        .skip(skip)
+        .toArray();
+      
+      const totalCount = await db.collection('login_logs').countDocuments(query);
+      
+      return NextResponse.json({
+        loginLogs,
+        pagination: {
+          total: totalCount,
+          limit,
+          skip,
+          hasMore: skip + loginLogs.length < totalCount
+        }
+      });
+    }
+
     // Notifications Routes
     if (pathname === 'notifications') {
       const decoded = verifyToken(request);
