@@ -882,6 +882,18 @@ export async function POST(request, { params }) {
         // Generate JWT token
         const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
+        // Log successful login
+        const ip = getClientIp(request);
+        const userAgent = request.headers.get('user-agent') || 'Unknown';
+        await logLoginAttempt(db, {
+          email: normalizedEmail,
+          userId: user.id,
+          success: true,
+          ip,
+          userAgent,
+          errorReason: null
+        });
+
         const { password: _, ...userWithoutPassword } = user;
         console.log('[Login] ✅ Success:', emailLower, 'Role:', user.role);
         return NextResponse.json({ token, user: userWithoutPassword });
