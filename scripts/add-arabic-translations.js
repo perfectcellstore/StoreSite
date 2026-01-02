@@ -4,7 +4,7 @@
 
 const { MongoClient } = require('mongodb');
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/perfectcell';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/perfect_sell';
 
 // Arabic translations for products
 const ARABIC_TRANSLATIONS = {
