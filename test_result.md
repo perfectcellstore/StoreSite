@@ -291,6 +291,61 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: |
+      BACKGROUND MUSIC REPLACED WITH CALMER TRACK (Jan 2, 2026)
+      
+      USER REQUEST:
+      - Change background music to something calmer
+      - Take inspiration from royalty-free sources: Pixabay Music, Mixkit, YouTube Audio Library, OpenGameArt
+      - Remove current music and implement new calmer music
+      
+      IMPLEMENTATION:
+      1. Music Selection:
+         - Source: AShamaluevMusic (https://www.ashamaluevmusic.com/ambient-music)
+         - Track: "Silence" by AShamaluevMusic
+         - Duration: 5:06 minutes
+         - Style: Calm ambient meditation music
+         - License: Royalty-free for commercial use
+         - Quality: 320 kbps MP3 (11.6 MB)
+      
+      2. Files Changed:
+         - Removed: /public/music/calm_lofi_v2.mp3 (old track)
+         - Added: /public/music/calm_ambient_silence.mp3 (new track)
+         - Updated: /lib/audioManager.js (changed MUSIC_FILE_PATH to new file)
+         - Updated: /public/music/README.md (documented new track and sources)
+      
+      3. Technical Details:
+         - Music loads automatically on first user interaction
+         - Loops seamlessly and continuously
+         - Plays at 20% volume (0.20)
+         - Can be toggled on/off via music button in navigation
+         - User preference saved to localStorage
+         - Default: Music ON by default
+      
+      4. Music Characteristics:
+         - Very calm and peaceful ambient soundscape
+         - Meditative and soothing
+         - Instrumental only (no vocals)
+         - Non-distracting background atmosphere
+         - Perfect for browsing without overwhelming users
+      
+      5. Alternative Sources Documented:
+         - AShamaluevMusic (current source - highly recommended)
+         - Mixkit (free peaceful/soothing tracks)
+         - Pixabay Music (meditation category)
+         - YouTube Audio Library (ambient genre)
+      
+      TESTING:
+      ✅ New music file downloaded successfully (11.6 MB)
+      ✅ Old music file removed
+      ✅ audioManager.js updated with new file path
+      ✅ README.md updated with track info and sources
+      ✅ Server restarted successfully
+      ✅ File exists at correct location
+      
+      The background music is now significantly calmer and more meditative, perfect for a peaceful shopping experience.
+      
+  - agent: "main"
+    message: |
       PERFORMANCE OPTIMIZATION STRATEGY IMPLEMENTED (Jan 2026)
       - Added PerfProvider (High/Mid/Low tiers) to automatically scale down heavy FX on low-end mobile
       - Lazy-loaded global FX layers (AnimatedBackground + GlobalClickEffects) with next/dynamic for faster initial render
