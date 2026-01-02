@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Test</title>
+</head>
+<body>
+    <h1>Background Music Test</h1>
+    <button id="testBtn">Click to Test Audio</button>
+    <p id="status">Click the button to test</p>
+    <audio id="audio" controls>
+        <source src="/music/calm_ambient_silence.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        const audio = document.getElementById('audio');
+        const btn = document.getElementById('testBtn');
+        const status = document.getElementById('status');
+        
+        btn.onclick = async () => {
+            status.textContent = 'Testing...';
+            try {
+                await audio.play();
+                status.textContent = 'Audio is playing! ✅';
+            } catch (err) {
+                status.textContent = 'Error: ' + err.message + ' ❌';
+                console.error('Audio error:', err);
+            }
+        };
+        
+        audio.onloadeddata = () => {
+            console.log('Audio loaded successfully');
+            status.textContent = 'Audio file loaded. Duration: ' + audio.duration + 's';
+        };
+        
+        audio.onerror = (e) => {
+            console.error('Audio load error:', e);
+            status.textContent = 'Failed to load audio file ❌';
+        };
+    </script>
+</body>
+</html>
