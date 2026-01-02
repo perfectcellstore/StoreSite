@@ -8,15 +8,16 @@ import requests
 import json
 import time
 import uuid
+import os
 from typing import Dict, Any, Optional
 
-# Configuration
-BASE_URL = "https://edit-delete-align.preview.emergentagent.com"
+# Configuration - reads from environment or defaults to localhost
+BASE_URL = os.environ.get('APP_URL', 'http://localhost:3000')
 API_BASE = f"{BASE_URL}/api"
 
-# Test credentials
-ADMIN_EMAIL = "perfectcellstore@gmail.com"
-ADMIN_PASSWORD = "admin123456"
+# Test credentials - read from environment
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'perfectcellstore@gmail.com')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'admin123456')
 
 class BackendTester:
     def __init__(self):
