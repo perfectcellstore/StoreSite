@@ -23,21 +23,37 @@ export default function ShopPage() {
   const { addToCart } = useCart();
   
   const [products, setProducts] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState(searchParams.get('category') || 'all');
   const [sort, setSort] = useState('price-asc');
 
+  // Fetch collections for the category filter
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch('/api/collections');
+        const data = await response.json();
+        if (data.collections) {
+          setCollections(data.collections);
+        }
+      } catch (error) {
+        console.error('Failed to fetch collections:', error);
+      }
+    };
+    
+    fetchCollections();
+  }, []);
+
+  // Build categories list from collections
   const categories = [
     { id: 'all', name: 'All Categories', nameAr: 'جميع الفئات' },
-    { id: 'collectibles', name: 'Collectibles', nameAr: 'المقتنيات' },
-    { id: 'historical', name: 'Historical Items', nameAr: 'القطع التاريخية' },
-    { id: 'cosplay', name: 'Cosplay & Gear', nameAr: 'الأزياء والمعدات' },
-    { id: 'weapons', name: 'Weapon Replicas', nameAr: 'نسخ الأسلحة' },
-    { id: 'figures', name: 'Figures & Statues', nameAr: 'التماثيل والمجسمات' },
-    { id: 'masks', name: 'Masks', nameAr: 'الأقنعة' },
-    { id: 'toys', name: 'Toys', nameAr: 'الألعاب' },
-    { id: 'rare', name: 'Rare Items', nameAr: 'القطع النادرة' }
+    ...collections.map(col => ({
+      id: col.name,
+      name: col.name,
+      nameAr: col.nameAr
+    }))
   ];
 
   useEffect(() => {
