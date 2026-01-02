@@ -304,13 +304,27 @@ export async function GET(request, { params }) {
     // Get Product Reviews (must come before general product routes)
     if (pathname.match(/^products\/[\w-]+\/reviews$/)) {
       const productId = pathname.split('/')[1];
+      const page = parseInt(searchParams.get('page') || '1');
+      const limit = parseInt(searchParams.get('limit') || '100');
+      const skip = (page - 1) * limit;
       
+      const totalCount = await db.collection('reviews').countDocuments({ productId });
       const reviews = await db.collection('reviews')
         .find({ productId })
         .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
         .toArray();
       
-      return NextResponse.json({ reviews });
+      return NextResponse.json({ 
+        reviews,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      });
     }
 
     // Products Routes
