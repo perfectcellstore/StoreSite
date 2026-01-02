@@ -45,6 +45,27 @@ export default function HomePage() {
   const { t, language } = useLanguage();
   const perf = usePerf();
   const isLow = perf?.tier === 'low';
+  const [collections, setCollections] = useState([]);
+  
+  // Fetch collections from API
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch('/api/collections');
+        const data = await response.json();
+        if (data.collections) {
+          // Filter to show only collections with showOnHome = true
+          const homeCollections = data.collections.filter(c => c.showOnHome);
+          setCollections(homeCollections);
+        }
+      } catch (error) {
+        console.error('Failed to fetch collections:', error);
+      }
+    };
+    
+    fetchCollections();
+  }, []);
+  
   // NOTE: Avoid mount-gating the entire page; it causes extra renders and hurts performance.
   // This page only uses client-side hooks that are safe to render directly.
 
