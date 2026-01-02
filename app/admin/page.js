@@ -617,14 +617,11 @@ export default function AdminPage() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-card border-border">
-                            <SelectItem value="collectibles">Collectibles</SelectItem>
-                            <SelectItem value="historical">Historical</SelectItem>
-                            <SelectItem value="cosplay">Cosplay</SelectItem>
-                            <SelectItem value="weapons">Weapons</SelectItem>
-                            <SelectItem value="figures">Figures</SelectItem>
-                            <SelectItem value="masks">Masks</SelectItem>
-                            <SelectItem value="toys">Toys</SelectItem>
-                            <SelectItem value="rare">Rare</SelectItem>
+                            {collections.map((collection) => (
+                              <SelectItem key={collection.id} value={collection.name}>
+                                {collection.icon} {collection.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                       </div>
