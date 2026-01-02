@@ -634,14 +634,8 @@ export default function AdminPage() {
                         onChange={(url) => setProductForm({ ...productForm, image: url })}
                       />
                       <p className="text-xs text-muted-foreground mt-2">
-                        Upload an image or enter a URL manually below
+                        Click to upload an image from your computer (max 5MB)
                       </p>
-                      <Input
-                        value={productForm.image}
-                        onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                        className="bg-background border-border mt-2"
-                        placeholder="Or paste image URL here"
-                      />
                     </div>
 
                     <div className="flex gap-3 pt-4">
