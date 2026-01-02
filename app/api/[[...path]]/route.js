@@ -477,8 +477,17 @@ export async function GET(request, { params }) {
       const ordersCount = await db.collection('orders').countDocuments();
       const usersCount = await db.collection('users').countDocuments();
       
-      const orders = await db.collection('orders').find({}).toArray();
-      const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+      // Use aggregation to calculate total revenue efficiently
+      const revenueResult = await db.collection('orders').aggregate([
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: '$total' }
+          }
+        }
+      ]).toArray();
+      
+      const totalRevenue = revenueResult[0]?.totalRevenue || 0;
       
       return NextResponse.json({
         stats: {
