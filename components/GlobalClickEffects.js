@@ -136,24 +136,34 @@ export function GlobalClickEffects() {
 
   useEffect(() => {
     const handlePointer = (e) => {
-      // AUDIO: Always play if effects enabled (works on ALL tiers)
-      if (effectsEnabled) {
-        const now = Date.now();
-        if (now - lastSoundTime.current >= soundCooldown) {
-          lastSoundTime.current = now;
-          playClick(); // Synchronous, zero-latency playback
+      try {
+        // AUDIO: Always play if effects enabled (works on ALL tiers)
+        if (effectsEnabled) {
+          const now = Date.now();
+          if (now - lastSoundTime.current >= soundCooldown) {
+            lastSoundTime.current = now;
+            try {
+              playClick(); // Synchronous, zero-latency playback
+            } catch (audioErr) {
+              // CRITICAL: Audio must NEVER crash the click handler
+              // Silently ignore all audio errors
+            }
+          }
         }
+
+        // VISUAL: Only create burst if effects enabled
+        if (!effectsEnabled) return;
+
+        // Get click position
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // Create visual burst at click location
+        createEnergyBurst(x, y);
+      } catch (err) {
+        // CRITICAL: Click handler must NEVER throw
+        // Silently catch ALL errors to ensure UI remains interactive
       }
-
-      // VISUAL: Only create burst if effects enabled
-      if (!effectsEnabled) return;
-
-      // Get click position
-      const x = e.clientX;
-      const y = e.clientY;
-
-      // Create visual burst at click location
-      createEnergyBurst(x, y);
     };
 
     // SINGLE global listener for BOTH audio and visuals
