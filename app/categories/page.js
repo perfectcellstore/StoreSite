@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
@@ -9,75 +9,25 @@ import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Card, CardContent } from '@/components/ui/card';
 
-const categories = [
-  {
-    id: 'collectibles',
-    name: 'Collectibles',
-    nameAr: 'المقتنيات',
-    description: 'Rare and valuable collectible items',
-    descriptionAr: 'قطع مقتنيات نادرة وقيمة',
-    image: 'https://images.pexels.com/photos/1812237/pexels-photo-1812237.jpeg',
-  },
-  {
-    id: 'historical',
-    name: 'Historical Items',
-    nameAr: 'القطع التاريخية',
-    description: 'Authentic historical artifacts and replicas',
-    descriptionAr: 'القطع الأثرية التاريخية ونسخها',
-    image: 'https://images.pexels.com/photos/998641/pexels-photo-998641.jpeg',
-  },
-  {
-    id: 'cosplay',
-    name: 'Cosplay & Gear',
-    nameAr: 'الأزياء والمعدات',
-    description: 'Professional cosplay costumes and accessories',
-    descriptionAr: 'أزياء ومعدات تنكرية احترافية',
-    image: 'https://images.pexels.com/photos/1480690/pexels-photo-1480690.jpeg',
-  },
-  {
-    id: 'weapons',
-    name: 'Weapon Replicas',
-    nameAr: 'نسخ الأسلحة',
-    description: 'High-quality weapon replicas and props',
-    descriptionAr: 'نسخ أسلحة عالية الجودة',
-    image: 'https://images.pexels.com/photos/6091649/pexels-photo-6091649.jpeg',
-  },
-  {
-    id: 'figures',
-    name: 'Figures & Statues',
-    nameAr: 'التماثيل والمجسمات',
-    description: 'Premium figures and statues',
-    descriptionAr: 'تماثيل ومجسمات ممتازة',
-    image: 'https://images.pexels.com/photos/1812237/pexels-photo-1812237.jpeg',
-  },
-  {
-    id: 'masks',
-    name: 'Masks',
-    nameAr: 'الأقنعة',
-    description: 'Detailed masks and face props',
-    descriptionAr: 'أقنعة مفصلة',
-    image: 'https://images.pexels.com/photos/4119179/pexels-photo-4119179.jpeg',
-  },
-  {
-    id: 'toys',
-    name: 'Toys',
-    nameAr: 'الألعاب',
-    description: 'Collectible toys and action figures',
-    descriptionAr: 'ألعاب ومجسمات قابلة للتحريك',
-    image: 'https://images.pexels.com/photos/1812237/pexels-photo-1812237.jpeg',
-  },
-  {
-    id: 'rare',
-    name: 'Rare Items',
-    nameAr: 'القطع النادرة',
-    description: 'Limited edition and rare collectibles',
-    descriptionAr: 'قطع محدودة الإصدار ونادرة',
-    image: 'https://images.pexels.com/photos/998641/pexels-photo-998641.jpeg',
-  },
-];
-
 export default function CategoriesPage() {
   const { t, language } = useLanguage();
+  const [collections, setCollections] = useState([]);
+  
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const response = await fetch('/api/collections');
+        const data = await response.json();
+        if (data.collections) {
+          setCollections(data.collections);
+        }
+      } catch (error) {
+        console.error('Failed to fetch collections:', error);
+      }
+    };
+    
+    fetchCollections();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
