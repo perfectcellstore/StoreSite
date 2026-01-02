@@ -922,7 +922,7 @@ export default function AdminPage() {
             <div className="grid gap-4">
               {collections.map((collection) => (
                 <Card key={collection.id} className="bg-card/50 border-border/40 overflow-hidden">
-                  <div className="flex items-center gap-4 p-4">
+                  <div className="flex items-start gap-4 p-4">
                     {/* Collection Image */}
                     <div className="relative w-32 h-32 flex-shrink-0 rounded overflow-hidden">
                       <Image
@@ -958,20 +958,21 @@ export default function AdminPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 flex-shrink-0">
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleEditCollection(collection)}
-                        className="border-border"
+                        className="border-border hover:border-bio-green-500"
                       >
                         <Edit className="h-4 w-4 mr-1" />
                         Edit
                       </Button>
                       <Button
-                        variant="destructive"
+                        variant="outline"
                         size="sm"
                         onClick={() => handleDeleteCollection(collection.id)}
+                        className="border-border hover:border-destructive text-destructive"
                       >
                         <Trash2 className="h-4 w-4 mr-1" />
                         Delete
