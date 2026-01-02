@@ -4,11 +4,18 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'perfect-sell-jwt-secret';
+// Enforce JWT_SECRET from environment
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET environment variable is required');
+}
 
-// Admin auto-initialization
-const ADMIN_EMAIL = 'perfectcellstore@gmail.com';
-const ADMIN_PASSWORD = 'DragonBall123!';
+// Admin auto-initialization - read from environment
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'perfectcellstore@gmail.com';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  throw new Error('ADMIN_PASSWORD environment variable is required');
+}
 const ADMIN_CHECK_INTERVAL_MS = 60000; // Check every 60 seconds
 let lastAdminCheckTime = 0;
 
