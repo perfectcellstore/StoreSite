@@ -260,8 +260,9 @@ export async function GET(request, { params }) {
         
         // Check user collection
         const userCount = await db.collection('users').countDocuments();
+        const adminEmailLower = (ADMIN_EMAIL || 'perfectcellstore@gmail.com').toLowerCase();
         const adminExists = await db.collection('users').findOne({ 
-          emailLower: 'perfectcellstore@gmail.com' 
+          emailLower: adminEmailLower
         });
         
         return NextResponse.json({
