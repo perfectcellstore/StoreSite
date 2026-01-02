@@ -663,7 +663,7 @@ export default function AdminPage() {
               {products.map((product) => (
                 <Card key={product.id} className="bg-card/50 border-border/40">
                   <CardContent className="p-4">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-start">
                       <div className="w-20 h-20 relative flex-shrink-0 rounded overflow-hidden">
                         <Image src={product.image} alt={product.name} fill className="object-cover" />
                       </div>
@@ -693,7 +693,7 @@ export default function AdminPage() {
                         </div>
                       </div>
                       
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 flex-shrink-0">
                         <Button
                           size="sm"
                           variant="outline"
