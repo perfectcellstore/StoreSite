@@ -5,16 +5,27 @@
  * Run this script whenever admin login fails.
  * 
  * Usage: node scripts/create-admin.js
+ * 
+ * Admin credentials are read from environment variables:
+ * - ADMIN_EMAIL (defaults to perfectcellstore@gmail.com)
+ * - ADMIN_PASSWORD (required from environment)
  */
 
 const { MongoClient } = require('mongodb');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 
-// Admin credentials
-const ADMIN_EMAIL = 'perfectcellstore@gmail.com';
-const ADMIN_PASSWORD = 'admin123456';
+// Read admin credentials from environment
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'perfectcellstore@gmail.com';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const ADMIN_NAME = 'Perfect Cell Admin';
+
+// Validate required environment variables
+if (!ADMIN_PASSWORD) {
+  console.error('❌ ERROR: ADMIN_PASSWORD environment variable is required');
+  console.error('Please set ADMIN_PASSWORD before running this script');
+  process.exit(1);
+}
 
 // MongoDB connection - try multiple possible URLs
 const MONGO_URLS = [
