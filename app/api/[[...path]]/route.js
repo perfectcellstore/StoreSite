@@ -390,7 +390,11 @@ export async function GET(request, { params }) {
 
     // Collections Route (GET - Public)
     if (pathname === 'collections') {
-      const collections = await db.collection('collections').find({}).sort({ createdAt: -1 }).toArray();
+      const collections = await db.collection('collections')
+        .find({})
+        .sort({ createdAt: -1 })
+        .limit(50)
+        .toArray();
       return NextResponse.json({ collections });
     }
 
