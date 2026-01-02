@@ -318,6 +318,9 @@ export async function GET(request, { params }) {
       const category = searchParams.get('category');
       const search = searchParams.get('search');
       const sort = searchParams.get('sort');
+      const page = parseInt(searchParams.get('page') || '1');
+      const limit = parseInt(searchParams.get('limit') || '100');
+      const skip = (page - 1) * limit;
       
       let query = {};
       if (category && category !== 'all') {
@@ -330,7 +333,14 @@ export async function GET(request, { params }) {
         ];
       }
       
-      let products = await db.collection('products').find(query).toArray();
+      // Get total count for pagination
+      const totalCount = await db.collection('products').countDocuments(query);
+      
+      let products = await db.collection('products')
+        .find(query)
+        .skip(skip)
+        .limit(limit)
+        .toArray();
       
       // Sorting
       if (sort === 'price-asc') {
@@ -341,7 +351,15 @@ export async function GET(request, { params }) {
         products.sort((a, b) => a.name.localeCompare(b.name));
       }
       
-      return NextResponse.json({ products });
+      return NextResponse.json({ 
+        products,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      });
     }
 
     if (pathname.startsWith('products/')) {
