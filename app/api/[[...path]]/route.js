@@ -836,6 +836,19 @@ export async function POST(request, { params }) {
 
         if (!validPassword) {
           console.log('[Login] Invalid password for:', emailLower);
+          
+          // Log failed login attempt
+          const ip = getClientIp(request);
+          const userAgent = request.headers.get('user-agent') || 'Unknown';
+          await logLoginAttempt(db, {
+            email: normalizedEmail,
+            userId: user.id,
+            success: false,
+            ip,
+            userAgent,
+            errorReason: 'Invalid password'
+          });
+          
           try {
             await recordAuthFailure(db, rateKey);
           } catch (e) {
