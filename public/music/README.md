@@ -1,79 +1,75 @@
 # Background Music
 
-## Required File
+## Current Music File
 
-Place a calming, soothing background music file here named:
-**`background.mp3`**
+✅ **Active**: `calm_ambient_silence.mp3`
+- **Track**: "Silence" by AShamaluevMusic
+- **Duration**: 5:06 minutes
+- **Style**: Calm ambient meditation music
+- **License**: Royalty-free for commercial use
+- **Source**: AShamaluevMusic (https://www.ashamaluevmusic.com/ambient-music)
 
-## Recommendations
+## Music Characteristics
 
-### Music Style
-- Calm, ambient, peaceful
-- Looping-friendly (smooth start/end for seamless loop)
-- Low intensity, non-distracting
-- Instrumental only (no vocals)
+The current background music is:
+- 🎵 Calm, peaceful, and meditative
+- 🔁 Loops seamlessly (automatic)
+- 🔇 Low volume (20% = 0.20)
+- 🎹 Instrumental ambient (no vocals)
+- 🧘 Perfect for browsing without distraction
 
-### Sources for Royalty-Free Music
+## Features
 
-1. **YouTube Audio Library** (Free)
-   - https://www.youtube.com/audiolibrary
-   - Filter: Genre = "Ambient" or "Cinematic"
-   - License: Free to use
+The background music system:
+- **Auto-starts** after first user interaction (if enabled)
+- **Loops** continuously without interruption
+- **Toggleable** via music button in navigation menu
+- **Respects** user preferences (saved to localStorage)
+- **Default**: Music ON by default
 
-2. **Pixabay Music** (Free)
-   - https://pixabay.com/music/
-   - Search: "calm", "ambient", "peaceful", "lofi"
+## Sources for Alternative Music
+
+If you want to change the background music, here are recommended royalty-free sources:
+
+1. **AShamaluevMusic** (Free, high quality)
+   - https://www.ashamaluevmusic.com/ambient-music
+   - Direct MP3 downloads via Dropbox
    - License: Free for commercial use
+   - Tracks: Silence, Aura, Peaceful, Calm Lake, etc.
 
-3. **Incompetech** (Free with attribution)
-   - https://incompetech.com/music/royalty-free/
-   - Search: "Ambient" category
-   - License: Free with credit
+2. **Mixkit** (Free, no attribution required)
+   - https://mixkit.co/free-stock-music/mood/peaceful/
+   - Tracks: Rest Now, Meditation, Valley Sunset, etc.
+   - License: Mixkit License (royalty-free)
 
-4. **Bensound** (Free with attribution)
-   - https://www.bensound.com/
-   - Try: "Sunny", "Tomorrow", "Tenderness"
-   - License: Free with credit
+3. **Pixabay Music** (Free, no attribution required)
+   - https://pixabay.com/music/search/meditation/
+   - Search: "calm", "ambient", "peaceful", "meditation"
+   - License: Pixabay License (commercial use allowed)
 
-### Recommended Tracks (Examples)
-
-- "Lofi Chill" type beats (search on Pixabay)
-- "Ambient Piano" instrumental
-- "Nature Sounds with Soft Music"
-- Lo-fi hip hop instrumentals
-- Soft electronic ambient
+4. **YouTube Audio Library** (Free)
+   - https://www.youtube.com/audiolibrary
+   - Filter: Genre = "Ambient" or "Meditation"
+   - License: Varies (check per track)
 
 ### Technical Requirements
 
 - **Format**: MP3
-- **File Size**: Under 5MB (recommended)
-- **Length**: 1-3 minutes (will loop automatically)
-- **Volume**: Normalized to -18 LUFS or similar (not too loud)
-- **Bitrate**: 128-192 kbps is sufficient
+- **File Size**: 5-15MB (recommended)
+- **Length**: 3-6 minutes (loops automatically)
+- **Quality**: 128-320 kbps
+- **Volume**: Should be normalized (not too loud)
 
-### Example Search Terms
+### How to Change the Music
 
-On any royalty-free music site, search for:
-- "calm ambient loop"
-- "peaceful background music"
-- "lofi study music"
-- "meditation ambient"
-- "soft instrumental"
+1. Download your chosen track from one of the sources above
+2. Place the MP3 file in `/app/public/music/`
+3. Update `/app/lib/audioManager.js`:
+   - Change `MUSIC_FILE_PATH` to `/music/your-file-name.mp3`
+4. Restart the application
 
-### Installation
-
-1. Download your chosen track
-2. Convert to MP3 if needed (use an online converter)
-3. Rename to `background.mp3`
-4. Place in `/app/public/music/background.mp3`
-5. Restart the application
-
-The music will automatically:
-- Start playing after first user interaction (if enabled)
-- Loop continuously
-- Play at low volume (0.15 = 15%)
-- Can be toggled on/off via the music button in the header
+The new music will automatically loop and play at the configured volume.
 
 ---
 
-**Current Status**: ⚠️ No music file present. Add `background.mp3` to enable background music.
+**Status**: ✅ Background music active and working properly
