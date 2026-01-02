@@ -409,6 +409,9 @@ export async function GET(request, { params }) {
 
       const url = new URL(request.url);
       const search = (url.searchParams.get('search') || '').trim();
+      const page = parseInt(url.searchParams.get('page') || '1');
+      const limit = parseInt(url.searchParams.get('limit') || '100');
+      const skip = (page - 1) * limit;
 
       let query = {};
       if (user?.role !== 'admin') {
@@ -418,8 +421,23 @@ export async function GET(request, { params }) {
         query.id = { $regex: escapeRegExp(search), $options: 'i' };
       }
 
-      const orders = await db.collection('orders').find(query).sort({ createdAt: -1 }).toArray();
-      return NextResponse.json({ orders });
+      const totalCount = await db.collection('orders').countDocuments(query);
+      const orders = await db.collection('orders')
+        .find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+      
+      return NextResponse.json({ 
+        orders,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages: Math.ceil(totalCount / limit)
+        }
+      });
     }
 
     if (pathname.startsWith('orders/')) {
