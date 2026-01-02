@@ -863,19 +863,25 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* Image URL */}
+                    {/* Image */}
                     <div>
-                      <Label>Collection Image URL *</Label>
+                      <Label>Collection Image *</Label>
+                      <ImageUpload
+                        value={collectionForm.image}
+                        onChange={(url) => setCollectionForm({ ...collectionForm, image: url })}
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Upload an image or enter a URL manually below
+                      </p>
                       <Input
                         type="url"
                         value={collectionForm.image}
                         onChange={(e) => setCollectionForm({ ...collectionForm, image: e.target.value })}
-                        required
-                        className="bg-background border-border"
-                        placeholder="https://images.unsplash.com/photo-..."
+                        className="bg-background border-border mt-2"
+                        placeholder="Or paste image URL here (https://...)"
                       />
                       <p className="text-xs text-muted-foreground mt-1">
-                        Collection banner image (recommended: 1200x400px)
+                        Recommended size: 1200x400px
                       </p>
                     </div>
 
