@@ -14,33 +14,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Sparkles, Shield, Zap, TrendingUp } from 'lucide-react';
 
-const categories = [
-  {
-    id: 'collectibles',
-    name: 'Collectibles',
-    nameAr: 'المقتنيات',
-    image: 'https://images.pexels.com/photos/1812237/pexels-photo-1812237.jpeg',
-  },
-  {
-    id: 'weapons',
-    name: 'Weapon Replicas',
-    nameAr: 'نسخ الأسلحة',
-    image: 'https://images.pexels.com/photos/6091649/pexels-photo-6091649.jpeg',
-  },
-  {
-    id: 'figures',
-    name: 'Figures & Statues',
-    nameAr: 'التماثيل',
-    image: 'https://images.pexels.com/photos/1812237/pexels-photo-1812237.jpeg',
-  },
-  {
-    id: 'masks',
-    name: 'Masks',
-    nameAr: 'الأقنعة',
-    image: 'https://images.pexels.com/photos/4119179/pexels-photo-4119179.jpeg',
-  },
-];
-
 export default function HomePage() {
   const { t, language } = useLanguage();
   const perf = usePerf();
