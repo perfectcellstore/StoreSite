@@ -865,17 +865,7 @@ export default function AdminPage() {
                         onChange={(url) => setCollectionForm({ ...collectionForm, image: url })}
                       />
                       <p className="text-xs text-muted-foreground mt-2">
-                        Upload an image or enter a URL manually below
-                      </p>
-                      <Input
-                        type="url"
-                        value={collectionForm.image}
-                        onChange={(e) => setCollectionForm({ ...collectionForm, image: e.target.value })}
-                        className="bg-background border-border mt-2"
-                        placeholder="Or paste image URL here (https://...)"
-                      />
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Recommended size: 1200x400px
+                        Click to upload an image from your computer (recommended: 1200x400px, max 5MB)
                       </p>
                     </div>
 
