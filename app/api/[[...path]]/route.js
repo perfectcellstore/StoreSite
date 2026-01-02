@@ -801,6 +801,19 @@ export async function POST(request, { params }) {
 
         if (!user) {
           console.log('[Login] User not found:', emailLower);
+          
+          // Log failed login attempt
+          const ip = getClientIp(request);
+          const userAgent = request.headers.get('user-agent') || 'Unknown';
+          await logLoginAttempt(db, {
+            email: normalizedEmail,
+            userId: null,
+            success: false,
+            ip,
+            userAgent,
+            errorReason: 'User not found'
+          });
+          
           try {
             await recordAuthFailure(db, rateKey);
           } catch (e) {
