@@ -117,6 +117,7 @@
   - Background music changed to calmer track (Jan 2, 2026) ✅
   - Admin login fixed and login tracking implemented (Jan 2, 2026) ✅
   - Products and Collections management with bilingual support implemented (Jan 2, 2026) ✅
+  - Categories synced with collections, old unused categories removed (Jan 2, 2026) ✅
 
 
 user_problem_statement: |
