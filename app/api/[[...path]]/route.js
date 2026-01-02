@@ -72,6 +72,30 @@ async function ensureAdminUserExists(db) {
   }
 }
 
+// Helper function to log login attempts
+async function logLoginAttempt(db, { email, userId, success, ip, userAgent, errorReason }) {
+  try {
+    const loginLog = {
+      id: uuidv4(),
+      email: email?.toLowerCase().trim(),
+      userId,
+      success,
+      ip,
+      userAgent,
+      errorReason: errorReason || null,
+      timestamp: new Date().toISOString(),
+      createdAt: new Date().toISOString()
+    };
+    
+    await db.collection('login_logs').insertOne(loginLog);
+    console.log(`[Login Log] ${success ? '✅ SUCCESS' : '❌ FAILURE'} - ${email} from ${ip}`);
+    return loginLog;
+  } catch (error) {
+    console.error('[Login Log] Failed to log login attempt:', error.message);
+    // Don't throw - login tracking shouldn't break the login flow
+  }
+}
+
 // Helper function to create a notification
 async function createNotification(db, { userId, title, titleAr, message, messageAr, type }) {
   const notification = {
