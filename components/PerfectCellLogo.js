@@ -402,16 +402,12 @@ export function PerfectCellLogo() {
       quoteTimeoutRef.current = null;
     }, 5000); // 5 seconds for better readability
 
-    // Play robot sound - MUST await to ensure unlock completes
+    // Play robot sound - fire and forget (non-blocking)
     try {
-      const played = await playRobot();
-      if (played) {
-        console.log('[Robot] ✅ Sound played successfully');
-      } else {
-        console.warn('[Robot] ⚠️ Sound failed to play');
-      }
+      playRobot();
+      console.log('[Robot] Sound triggered');
     } catch (err) {
-      console.error('[Robot] ❌ Sound error:', err);
+      console.error('[Robot] Sound error:', err);
     }
   };
 
