@@ -1,20 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
-import { useCurrency } from '@/lib/contexts/CurrencyContext';
-import { useCart } from '@/lib/contexts/CartContext';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ShoppingCart, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
+import { ProductCard } from '@/components/ProductCard';
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
