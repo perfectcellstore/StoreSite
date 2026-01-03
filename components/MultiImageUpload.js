@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
  * - Max 5 images
  */
 
-const MAX_IMAGES = 5;
+const MAX_IMAGES = 20;
 
 export function MultiImageUpload({ value = [], onChange, mainImage }) {
   const [uploading, setUploading] = useState(false);
