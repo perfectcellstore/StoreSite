@@ -118,19 +118,30 @@ export default function ProductDetailPage() {
           <div className="space-y-6">
             <div>
               <h1 className="text-4xl font-bold mb-2">{productName}</h1>
-              <div className="flex items-center gap-4 mb-4 flex-wrap">
-                <p className="text-4xl font-bold text-bio-green-500">{formatPrice(product.price)}</p>
-                {product.stock > 0 ? (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-bio-green-500/10 rounded-full">
-                    <Check className="h-4 w-4 text-bio-green-500" />
-                    <span className="text-sm text-bio-green-500">{t('inStock')}</span>
+              
+              {/* Coming Soon Badge */}
+              {product.comingSoon ? (
+                <div className="flex items-center gap-4 mb-4 flex-wrap">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/20 rounded-full border border-amber-500/50">
+                    <span className="text-2xl">🚀</span>
+                    <span className="text-lg font-bold text-amber-500">Coming Soon</span>
                   </div>
-                ) : (
-                  <div className="px-3 py-1 bg-destructive/10 rounded-full">
-                    <span className="text-sm text-destructive">{t('outOfStock')}</span>
-                  </div>
-                )}
-                {(product.reviewCount || 0) > 0 && (
+                  <p className="text-2xl font-bold text-muted-foreground">Price TBD</p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-4 mb-4 flex-wrap">
+                  <p className="text-4xl font-bold text-bio-green-500">{formatPrice(product.price)}</p>
+                  {product.stock > 0 ? (
+                    <div className="flex items-center gap-2 px-3 py-1 bg-bio-green-500/10 rounded-full">
+                      <Check className="h-4 w-4 text-bio-green-500" />
+                      <span className="text-sm text-bio-green-500">{t('inStock')}</span>
+                    </div>
+                  ) : (
+                    <div className="px-3 py-1 bg-destructive/10 rounded-full">
+                      <span className="text-sm text-destructive">{t('outOfStock')}</span>
+                    </div>
+                  )}
+                  {(product.reviewCount || 0) > 0 && (
                   <div className="flex items-center gap-2 px-3 py-1 bg-card/80 rounded-full border border-border/40">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
