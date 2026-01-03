@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
 import { usePerf } from '@/lib/contexts/PerfContext';
 import { Navigation } from '@/components/Navigation';
