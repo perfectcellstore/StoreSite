@@ -71,10 +71,6 @@ export default function ShopPage() {
     }
   };
 
-  const handleAddToCart = (product) => {
-    addToCart(product, 1);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
