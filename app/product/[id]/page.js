@@ -106,39 +106,12 @@ export default function ProductDetailPage() {
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Images */}
-          <div className="space-y-4">
-            <Card className="overflow-hidden bg-card/50 border-border/40">
-              <div className="aspect-square relative">
-                <Image
-                  src={images[selectedImage]}
-                  alt={productName}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-            </Card>
-            
-            {images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
-                {images.map((img, idx) => (
-                  <Card
-                    key={idx}
-                    className={`cursor-pointer overflow-hidden transition-all ${
-                      selectedImage === idx
-                        ? 'border-bio-green-500 border-2'
-                        : 'border-border/40 hover:border-bio-green-500/50'
-                    }`}
-                    onClick={() => setSelectedImage(idx)}
-                  >
-                    <div className="aspect-square relative">
-                      <Image src={img} alt={`${productName} ${idx + 1}`} fill className="object-cover" />
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
+          {/* Images Gallery */}
+          <div>
+            <ProductGallery 
+              images={images} 
+              productName={productName} 
+            />
           </div>
 
           {/* Product Info */}
