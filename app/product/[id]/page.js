@@ -165,11 +165,12 @@ export default function ProductDetailPage() {
                     </span>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Quantity */}
-            {product.stock > 0 && (
+            {/* Quantity - Only show if not Coming Soon and has stock */}
+            {!product.comingSoon && product.stock > 0 && (
               <div className="space-y-2">
                 <label className="text-sm font-medium">Quantity</label>
                 <div className="flex items-center gap-4">
