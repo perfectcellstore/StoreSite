@@ -631,14 +631,24 @@ export default function AdminPage() {
                     </div>
 
                     <div>
-                      <Label>Product Image</Label>
+                      <Label>Product Image (Main)</Label>
                       <ImageUpload
                         value={productForm.image}
                         onChange={(url) => setProductForm({ ...productForm, image: url })}
                       />
                       <p className="text-xs text-muted-foreground mt-2">
-                        Click to upload an image from your computer (max 5MB)
+                        Click to upload the main product image (max 5MB)
                       </p>
+                    </div>
+
+                    {/* Additional Product Images */}
+                    <div>
+                      <Label>Additional Images (Gallery)</Label>
+                      <MultiImageUpload
+                        value={productForm.images}
+                        onChange={(images) => setProductForm({ ...productForm, images })}
+                        mainImage={productForm.image}
+                      />
                     </div>
 
                     <div className="flex gap-3 pt-4">
