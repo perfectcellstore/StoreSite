@@ -55,7 +55,8 @@ export default function AdminPage() {
     price: '',
     originalPrice: '', // For discount feature
     category: 'collectibles',
-    image: '',
+    image: '', // Main/primary image
+    images: [], // Additional images array
     stock: '',
     onSale: false, // Whether product is on sale
     dealLabel: '', // Optional: "Limited Time", "Hot Deal", etc.
