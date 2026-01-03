@@ -340,6 +340,7 @@ export default function AdminPage() {
       onSale: false,
       dealLabel: '',
       featured: false,
+      comingSoon: false,
       tags: ''
     });
   };
@@ -351,15 +352,16 @@ export default function AdminPage() {
       nameAr: product.nameAr || '',
       description: product.description,
       descriptionAr: product.descriptionAr || '',
-      price: product.price.toString(),
+      price: product.price ? product.price.toString() : '',
       originalPrice: product.originalPrice ? product.originalPrice.toString() : '',
       category: product.category,
       image: product.image,
       images: product.images || [],
-      stock: product.stock.toString(),
+      stock: product.stock ? product.stock.toString() : '',
       onSale: product.onSale || false,
       dealLabel: product.dealLabel || '',
       featured: product.featured || false,
+      comingSoon: product.comingSoon || false,
       tags: product.tags || ''
     });
     setShowProductDialog(true);
