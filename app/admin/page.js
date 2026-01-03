@@ -62,6 +62,7 @@ export default function AdminPage() {
     onSale: false, // Whether product is on sale
     dealLabel: '', // Optional: "Limited Time", "Hot Deal", etc.
     featured: false, // Featured on homepage
+    comingSoon: false, // Coming Soon - price/stock optional
     tags: '' // Comma-separated tags for SEO
   });
 
