@@ -8,9 +8,9 @@ const STORAGE_KEY = 'perfect_sell_language_selected';
 export function LanguageSelectionPopup() {
   const [showPopup, setShowPopup] = useState(false);
   const [animationPhase, setAnimationPhase] = useState('hidden'); // 'hidden' | 'burst' | 'visible' | 'exit'
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const { language, toggleLanguage } = useLanguage();
   const popupRef = useRef(null);
-  const prefersReducedMotion = useRef(false);
 
   // Check for first visit and reduced motion preference
   useEffect(() => {
