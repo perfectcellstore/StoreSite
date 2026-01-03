@@ -14,8 +14,6 @@ import { ProductCard } from '@/components/ProductCard';
 export default function ShopPage() {
   const searchParams = useSearchParams();
   const { t, language } = useLanguage();
-  const { formatPrice } = useCurrency();
-  const { addToCart } = useCart();
   
   const [products, setProducts] = useState([]);
   const [collections, setCollections] = useState([]);
