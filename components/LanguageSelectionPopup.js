@@ -56,7 +56,7 @@ export function LanguageSelectionPopup() {
     // Remove popup after exit animation
     setTimeout(() => {
       setShowPopup(false);
-    }, prefersReducedMotion.current ? 50 : 200);
+    }, prefersReducedMotion ? 50 : 200);
   }, [language, toggleLanguage]);
 
   if (!showPopup) return null;
