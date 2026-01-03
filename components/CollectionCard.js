@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -20,13 +20,7 @@ import { ImageOff } from 'lucide-react';
 const FALLBACK_IMAGE = '/placeholder-product.svg';
 
 function ImageWithFallback({ src, alt, className, fill }) {
-  const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
-
-  useEffect(() => {
-    setImgSrc(src);
-    setHasError(false);
-  }, [src]);
 
   const handleError = () => {
     console.warn(`[CollectionCard] Image failed to load: ${src}`);
@@ -43,7 +37,8 @@ function ImageWithFallback({ src, alt, className, fill }) {
 
   return (
     <Image
-      src={imgSrc}
+      key={src} // Reset component when src changes
+      src={src}
       alt={alt || 'Collection image'}
       fill={fill}
       className={className}
