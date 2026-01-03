@@ -261,8 +261,8 @@ export function ProductCard({ product, priority = false }) {
             </div>
           )}
           
-          {/* Out of Stock Badge */}
-          {product.stock === 0 && (
+          {/* Out of Stock Badge (not for coming soon) */}
+          {!product.comingSoon && product.stock === 0 && (
             <div className="absolute top-3 right-3 z-10 px-2 py-1 bg-destructive text-white text-xs font-medium rounded shadow-lg">
               {t('outOfStock')}
             </div>
@@ -278,40 +278,60 @@ export function ProductCard({ product, priority = false }) {
           </h3>
         </Link>
         
-        {/* Price with discount */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {product.onSale && product.originalPrice ? (
-            <>
-              <p className="text-2xl font-bold text-bio-green-500">
-                {formatPrice(product.price)}
-              </p>
-              <p className="text-sm text-muted-foreground line-through">
-                {formatPrice(product.originalPrice)}
-              </p>
-            </>
-          ) : (
-            <p className="text-2xl font-bold text-bio-green-500">
-              {formatPrice(product.price)}
+        {/* Price section - different for Coming Soon */}
+        {product.comingSoon ? (
+          <div className="flex items-center gap-2">
+            <p className="text-xl font-bold text-amber-500">
+              Price TBD
             </p>
-          )}
-        </div>
-        
-        {/* Savings */}
-        {product.onSale && product.originalPrice && (
-          <p className="text-xs text-destructive font-semibold">
-            Save {formatPrice(product.originalPrice - product.price)}!
-          </p>
+          </div>
+        ) : (
+          <>
+            {/* Price with discount */}
+            <div className="flex items-center gap-2 flex-wrap">
+              {product.onSale && product.originalPrice ? (
+                <>
+                  <p className="text-2xl font-bold text-bio-green-500">
+                    {formatPrice(product.price)}
+                  </p>
+                  <p className="text-sm text-muted-foreground line-through">
+                    {formatPrice(product.originalPrice)}
+                  </p>
+                </>
+              ) : (
+                <p className="text-2xl font-bold text-bio-green-500">
+                  {formatPrice(product.price)}
+                </p>
+              )}
+            </div>
+            
+            {/* Savings */}
+            {product.onSale && product.originalPrice && (
+              <p className="text-xs text-destructive font-semibold">
+                Save {formatPrice(product.originalPrice - product.price)}!
+              </p>
+            )}
+          </>
         )}
         
-        {/* Add to Cart Button */}
-        <Button
-          onClick={handleAddToCart}
-          disabled={product.stock === 0}
-          className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white btn-glow"
-        >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          {t('addToCart')}
-        </Button>
+        {/* Add to Cart Button or Notify Button for Coming Soon */}
+        {product.comingSoon ? (
+          <Button
+            disabled
+            className="w-full bg-amber-500/20 text-amber-500 border border-amber-500/50 cursor-not-allowed"
+          >
+            🔔 Coming Soon
+          </Button>
+        ) : (
+          <Button
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
+            className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white btn-glow"
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            {t('addToCart')}
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
