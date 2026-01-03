@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useLanguage } from '@/lib/contexts/LanguageContext';
@@ -11,7 +11,30 @@ import { Footer } from '@/components/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Trash2, Plus, Minus, ShoppingBag, ImageOff } from 'lucide-react';
+
+// Cart item image with fallback
+function CartItemImage({ src, alt }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (!src || hasError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-800/50">
+        <ImageOff className="w-8 h-8 text-gray-600" />
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt || 'Product'}
+      fill
+      className="object-cover"
+      onError={() => setHasError(true)}
+    />
+  );
+}
 
 export default function CartPage() {
   const router = useRouter();
