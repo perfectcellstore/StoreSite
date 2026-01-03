@@ -82,11 +82,9 @@ export default function CartPage() {
                   <CardContent className="p-4">
                     <div className="flex gap-4">
                       <div className="w-24 h-24 relative flex-shrink-0 rounded overflow-hidden">
-                        <Image
+                        <CartItemImage
                           src={item.image}
                           alt={itemName}
-                          fill
-                          className="object-cover"
                         />
                       </div>
                       
