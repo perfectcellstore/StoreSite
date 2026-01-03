@@ -190,7 +190,7 @@ export function MultiImageUpload({ value = [], onChange, mainImage }) {
 
       {/* Helper Text */}
       <p className="text-xs text-muted-foreground">
-        {allImages.length}/{MAX_IMAGES} images • Click + to add more images
+        {allImages.length}/{MAX_IMAGES} images • Click + to add more images (max 20)
       </p>
     </div>
   );
