@@ -32,7 +32,7 @@ export function LanguageSelectionPopup() {
           // Transition to visible state after burst animation
           setTimeout(() => {
             setAnimationPhase('visible');
-          }, prefersReducedMotion.current ? 50 : 250);
+          }, prefersReducedMotion ? 50 : 250);
         });
       }, 100);
       
