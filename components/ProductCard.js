@@ -231,22 +231,31 @@ export function ProductCard({ product, priority = false }) {
             priority={priority}
           />
           
-          {/* Discount Badge - Top Left */}
-          {product.onSale && product.discountPercentage > 0 && (
-            <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
-              <div className="bg-destructive text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg animate-pulse">
-                {product.discountPercentage}% OFF
+          {/* Coming Soon Badge - Top Left (priority over discount) */}
+          {product.comingSoon ? (
+            <div className="absolute top-3 left-3 z-10">
+              <div className="bg-amber-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg">
+                🚀 Coming Soon
               </div>
-              {product.dealLabel && (
-                <div className="bg-bio-green-500 text-white text-xs font-semibold px-2 py-1 rounded-lg shadow-lg">
-                  {product.dealLabel}
-                </div>
-              )}
             </div>
+          ) : (
+            /* Discount Badge - Top Left */
+            product.onSale && product.discountPercentage > 0 && (
+              <div className="absolute top-3 left-3 z-10 flex flex-col gap-1">
+                <div className="bg-destructive text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg animate-pulse">
+                  {product.discountPercentage}% OFF
+                </div>
+                {product.dealLabel && (
+                  <div className="bg-bio-green-500 text-white text-xs font-semibold px-2 py-1 rounded-lg shadow-lg">
+                    {product.dealLabel}
+                  </div>
+                )}
+              </div>
+            )
           )}
           
-          {/* Stock Badge - Top Right (Only for low stock) */}
-          {product.stock > 0 && product.stock <= 5 && (
+          {/* Stock Badge - Top Right (Only for low stock, not for coming soon) */}
+          {!product.comingSoon && product.stock > 0 && product.stock <= 5 && (
             <div className="absolute top-3 right-3 z-10 px-2 py-1 bg-amber-500 text-white text-xs font-medium rounded shadow-lg">
               Only {product.stock} left
             </div>
