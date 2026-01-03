@@ -19,8 +19,18 @@ export default function ShopPage() {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState(searchParams.get('category') || 'all');
   const [sort, setSort] = useState('price-asc');
+  
+  // Get category from URL, default to 'all'
+  const urlCategory = searchParams.get('category');
+  const [category, setCategory] = useState(urlCategory || 'all');
+  
+  // Update category when URL changes (e.g., navigating from collection card)
+  useEffect(() => {
+    if (urlCategory) {
+      setCategory(urlCategory);
+    }
+  }, [urlCategory]);
 
   // Fetch collections for the category filter
   useEffect(() => {
