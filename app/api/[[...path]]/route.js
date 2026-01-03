@@ -330,7 +330,7 @@ export async function GET(request, { params }) {
 
     // Products Routes
     if (pathname === 'products') {
-      const category = searchParams.get('category');
+      const category = searchParams.get('category')?.trim(); // Trim whitespace
       const search = searchParams.get('search');
       const sort = searchParams.get('sort');
       const page = parseInt(searchParams.get('page') || '1');
@@ -339,7 +339,8 @@ export async function GET(request, { params }) {
       
       let query = {};
       if (category && category !== 'all') {
-        query.category = category;
+        // Use case-insensitive regex to handle variations
+        query.category = { $regex: new RegExp(`^${category.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i') };
       }
       if (search) {
         query.$or = [
