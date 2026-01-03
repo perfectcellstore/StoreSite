@@ -17,7 +17,7 @@ export function LanguageSelectionPopup() {
     if (typeof window === 'undefined') return;
 
     // Check reduced motion preference
-    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setPrefersReducedMotion(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
     // Check if user has already selected a language
     const hasSelectedLanguage = localStorage.getItem(STORAGE_KEY);
