@@ -1079,6 +1079,136 @@ export async function POST(request, { params }) {
       }
     }
 
+    // Google OAuth Callback - Exchange session_id for user data
+    if (pathname === 'auth/google/callback') {
+      try {
+        const { session_id } = body;
+        
+        if (!session_id) {
+          return NextResponse.json({ error: 'Missing session_id' }, { status: 400 });
+        }
+
+        console.log('[Google Auth] Processing callback with session_id');
+
+        // Exchange session_id with Emergent Auth
+        const authResponse = await fetch('https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data', {
+          method: 'GET',
+          headers: {
+            'X-Session-ID': session_id
+          }
+        });
+
+        if (!authResponse.ok) {
+          console.error('[Google Auth] Session exchange failed:', authResponse.status);
+          return NextResponse.json({ error: 'Invalid or expired session' }, { status: 401 });
+        }
+
+        const authData = await authResponse.json();
+        console.log('[Google Auth] Got user data:', authData.email);
+
+        // Find or create user
+        const emailLower = authData.email.toLowerCase();
+        let user = await db.collection('users').findOne({ emailLower });
+
+        if (!user) {
+          // Create new user
+          user = {
+            id: uuidv4(),
+            email: authData.email,
+            emailLower,
+            name: authData.name || authData.email.split('@')[0],
+            picture: authData.picture || null,
+            role: 'customer',
+            provider: 'google',
+            googleId: authData.id,
+            createdAt: new Date().toISOString()
+          };
+          await db.collection('users').insertOne(user);
+          console.log('[Google Auth] Created new user:', user.id);
+        } else {
+          // Update existing user with Google info if needed
+          if (!user.googleId) {
+            await db.collection('users').updateOne(
+              { id: user.id },
+              { 
+                $set: { 
+                  googleId: authData.id,
+                  picture: authData.picture || user.picture,
+                  provider: user.provider || 'google'
+                }
+              }
+            );
+          }
+          console.log('[Google Auth] Found existing user:', user.id);
+        }
+
+        // Store session token
+        const sessionToken = authData.session_token;
+        const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+        
+        await db.collection('user_sessions').updateOne(
+          { userId: user.id },
+          {
+            $set: {
+              userId: user.id,
+              sessionToken,
+              expiresAt,
+              updatedAt: new Date().toISOString()
+            }
+          },
+          { upsert: true }
+        );
+
+        // Generate JWT token for compatibility with existing auth
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
+
+        // Log the login
+        const ip = getClientIp(request);
+        const userAgent = request.headers.get('user-agent') || 'Unknown';
+        await logLoginAttempt(db, {
+          email: user.email,
+          userId: user.id,
+          success: true,
+          ip,
+          userAgent,
+          errorReason: null,
+          provider: 'google'
+        });
+
+        const { password: _, ...userWithoutPassword } = user;
+        console.log('[Google Auth] ✅ Login successful:', user.email);
+        
+        return NextResponse.json({ 
+          token, 
+          user: userWithoutPassword,
+          sessionToken 
+        });
+
+      } catch (error) {
+        console.error('[Google Auth] ❌ Error:', error.message);
+        return NextResponse.json({ 
+          error: 'Google authentication failed',
+          errorCode: 'GOOGLE_AUTH_ERROR'
+        }, { status: 500 });
+      }
+    }
+
+    // Logout endpoint
+    if (pathname === 'auth/logout') {
+      try {
+        const decoded = verifyToken(request);
+        if (decoded) {
+          // Delete session from database
+          await db.collection('user_sessions').deleteOne({ userId: decoded.userId });
+          console.log('[Logout] Session cleared for user:', decoded.userId);
+        }
+        return NextResponse.json({ success: true });
+      } catch (error) {
+        console.error('[Logout] Error:', error.message);
+        return NextResponse.json({ success: true }); // Return success even if error
+      }
+    }
+
     // Products Routes
     if (pathname === 'products') {
       const decoded = verifyToken(request);
