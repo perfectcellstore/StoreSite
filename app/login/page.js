@@ -23,14 +23,24 @@ export default function LoginPage() {
   // Next.js build requires useSearchParams to be within Suspense.
   // This page is client-only, but we still comply for production prerender.
 
-  const { login, register } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
   const { toast } = useToast();
   
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
 
   const redirect = searchParams.get('redirect') || '/';
+
+  /**
+   * Handle Google OAuth Login
+   * REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+   */
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    loginWithGoogle();
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
