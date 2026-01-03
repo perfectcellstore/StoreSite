@@ -61,7 +61,7 @@ export function LanguageSelectionPopup() {
 
   if (!showPopup) return null;
 
-  const isReduced = prefersReducedMotion.current;
+  const isReduced = prefersReducedMotion;
 
   return (
     <div 
