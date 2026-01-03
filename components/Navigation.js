@@ -32,10 +32,18 @@ export function Navigation() {
   // Initialize music state from localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      // First check localStorage directly for immediate state
+      const savedMusic = localStorage.getItem('musicEnabled');
+      if (savedMusic !== null) {
+        setMusicEnabled(savedMusic === 'true');
+      }
+      
+      // Then also sync with audioManager
       const loadAudioManager = async () => {
         try {
           const { getMusicEnabled } = await import('@/lib/audioManager');
-          setMusicEnabled(getMusicEnabled());
+          const currentState = getMusicEnabled();
+          setMusicEnabled(currentState);
         } catch (err) {
           console.error('Failed to load audio manager:', err);
         }
