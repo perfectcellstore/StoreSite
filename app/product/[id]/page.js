@@ -198,32 +198,53 @@ export default function ProductDetailPage() {
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <Button
-                onClick={handleAddToCart}
-                disabled={product.stock === 0}
-                className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg py-6 btn-glow"
-              >
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                {t('addToCart')}
-              </Button>
-              
-              <Button
-                onClick={handleBuyNow}
-                disabled={product.stock === 0}
-                variant="outline"
-                className="w-full border-bio-green-500 text-bio-green-500 hover:bg-bio-green-500 hover:text-white text-lg py-6"
-              >
-                {t('buyNow')}
-              </Button>
-              
-              <Button
-                onClick={handleWhatsAppBuy}
-                variant="outline"
-                className="w-full border-border hover:border-bio-green-500 hover:bg-bio-green-500/10 text-lg py-6"
-              >
-                <MessageCircle className="mr-2 h-5 w-5" />
-                {t('buyViaWhatsApp')}
-              </Button>
+              {product.comingSoon ? (
+                <>
+                  <Button
+                    disabled
+                    className="w-full bg-amber-500/20 text-amber-500 border border-amber-500/50 text-lg py-6 cursor-not-allowed"
+                  >
+                    🔔 Coming Soon - Stay Tuned!
+                  </Button>
+                  <Button
+                    onClick={handleWhatsAppBuy}
+                    variant="outline"
+                    className="w-full border-border hover:border-bio-green-500 hover:bg-bio-green-500/10 text-lg py-6"
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    Ask About This Product
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={handleAddToCart}
+                    disabled={product.stock === 0}
+                    className="w-full bg-bio-green-500 hover:bg-bio-green-600 text-white text-lg py-6 btn-glow"
+                  >
+                    <ShoppingCart className="mr-2 h-5 w-5" />
+                    {t('addToCart')}
+                  </Button>
+                  
+                  <Button
+                    onClick={handleBuyNow}
+                    disabled={product.stock === 0}
+                    variant="outline"
+                    className="w-full border-bio-green-500 text-bio-green-500 hover:bg-bio-green-500 hover:text-white text-lg py-6"
+                  >
+                    {t('buyNow')}
+                  </Button>
+                  
+                  <Button
+                    onClick={handleWhatsAppBuy}
+                    variant="outline"
+                    className="w-full border-border hover:border-bio-green-500 hover:bg-bio-green-500/10 text-lg py-6"
+                  >
+                    <MessageCircle className="mr-2 h-5 w-5" />
+                    {t('buyViaWhatsApp')}
+                  </Button>
+                </>
+              )}
             </div>
 
             {/* Product Details Tabs */}
