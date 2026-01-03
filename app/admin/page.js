@@ -514,18 +514,19 @@ export default function AdminPage() {
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <Label>Sale Price (USD) *</Label>
+                        <Label>Sale Price (USD) {productForm.comingSoon ? '(Optional)' : '*'}</Label>
                         <Input
                           type="number"
                           step="0.01"
                           value={productForm.price}
                           onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
-                          required
+                          required={!productForm.comingSoon}
                           className="bg-background border-border"
-                          placeholder="399.99"
+                          placeholder={productForm.comingSoon ? "TBD" : "399.99"}
+                          disabled={productForm.comingSoon}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
-                          Current selling price
+                          {productForm.comingSoon ? 'Not required for Coming Soon' : 'Current selling price'}
                         </p>
                       </div>
                       <div>
@@ -537,25 +538,28 @@ export default function AdminPage() {
                           onChange={(e) => setProductForm({ ...productForm, originalPrice: e.target.value })}
                           className="bg-background border-border"
                           placeholder="799.99"
+                          disabled={productForm.comingSoon}
                         />
                         <p className="text-xs text-muted-foreground mt-1">
                           Before discount (optional)
                         </p>
                       </div>
                       <div>
-                        <Label>Stock</Label>
+                        <Label>Stock {productForm.comingSoon ? '(Optional)' : '*'}</Label>
                         <Input
                           type="number"
                           value={productForm.stock}
                           onChange={(e) => setProductForm({ ...productForm, stock: e.target.value })}
-                          required
+                          required={!productForm.comingSoon}
                           className="bg-background border-border"
+                          placeholder={productForm.comingSoon ? "TBD" : "10"}
+                          disabled={productForm.comingSoon}
                         />
                       </div>
                     </div>
 
                     {/* Discount Preview */}
-                    {productForm.price && productForm.originalPrice && parseFloat(productForm.originalPrice) > parseFloat(productForm.price) && (
+                    {!productForm.comingSoon && productForm.price && productForm.originalPrice && parseFloat(productForm.originalPrice) > parseFloat(productForm.price) && (
                       <div className="bg-bio-green-500/10 border border-bio-green-500/30 rounded-lg p-3">
                         <div className="flex items-center justify-between">
                           <div>
