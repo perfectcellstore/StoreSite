@@ -27,19 +27,14 @@ const FALLBACK_IMAGE = '/placeholder-product.svg';
 
 // ImageWithFallback: Handles broken images gracefully
 function ImageWithFallback({ src, alt, className, fill, priority, sizes, onLoad }) {
-  const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
-
-  // Reset error state when src changes
-  useEffect(() => {
-    setImgSrc(src);
-    setHasError(false);
-  }, [src]);
+  
+  // Use src as key to reset state when image changes
+  const imgSrc = hasError ? FALLBACK_IMAGE : src;
 
   const handleError = () => {
     console.warn(`[ProductCard] Image failed to load: ${src}`);
     setHasError(true);
-    setImgSrc(FALLBACK_IMAGE);
   };
 
   // If image is empty or undefined, show fallback immediately
@@ -61,6 +56,7 @@ function ImageWithFallback({ src, alt, className, fill, priority, sizes, onLoad 
 
   return (
     <Image
+      key={src} // Reset component when src changes
       src={imgSrc}
       alt={alt || 'Product image'}
       fill={fill}
