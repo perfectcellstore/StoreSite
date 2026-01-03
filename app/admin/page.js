@@ -606,6 +606,24 @@ export default function AdminPage() {
                           <p className="text-xs text-muted-foreground">Show on homepage carousel</p>
                         </div>
                       </div>
+                      <div className="flex items-center space-x-2 border border-amber-500/50 rounded-lg p-4 bg-amber-500/10">
+                        <input
+                          type="checkbox"
+                          id="comingSoon"
+                          checked={productForm.comingSoon}
+                          onChange={(e) => setProductForm({ ...productForm, comingSoon: e.target.checked })}
+                          className="w-4 h-4 text-amber-500 border-gray-300 rounded focus:ring-amber-500"
+                        />
+                        <div className="flex-1">
+                          <Label htmlFor="comingSoon" className="cursor-pointer font-semibold text-amber-500">
+                            🚀 Coming Soon
+                          </Label>
+                          <p className="text-xs text-muted-foreground">Price & stock become optional</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label>Tags (Optional)</Label>
                         <Input
@@ -618,9 +636,6 @@ export default function AdminPage() {
                           Comma-separated (for search & SEO)
                         </p>
                       </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label>Category</Label>
                         <Select value={productForm.category} onValueChange={(value) => setProductForm({ ...productForm, category: value })}>
