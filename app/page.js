@@ -13,6 +13,7 @@ import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Sparkles, Shield, Zap, TrendingUp } from 'lucide-react';
+import { CollectionCard } from '@/components/CollectionCard';
 
 export default function HomePage() {
   const { t, language } = useLanguage();
