@@ -127,12 +127,14 @@ export default function AdminPage() {
       const url = editingProduct ? `/api/products/${editingProduct.id}` : '/api/products';
       const method = editingProduct ? 'PUT' : 'POST';
 
-      // Calculate discount percentage if both prices are provided
-      const finalPrice = parseFloat(productForm.price);
+      // For Coming Soon products, price and stock are optional
+      const isComingSoon = productForm.comingSoon;
+      const finalPrice = productForm.price ? parseFloat(productForm.price) : 0;
       const originalPrice = productForm.originalPrice ? parseFloat(productForm.originalPrice) : null;
+      const finalStock = productForm.stock ? parseInt(productForm.stock) : 0;
       
-      // If originalPrice is provided and greater than price, mark as on sale
-      const isOnSale = originalPrice && originalPrice > finalPrice;
+      // If originalPrice is provided and greater than price, mark as on sale (only if not coming soon)
+      const isOnSale = !isComingSoon && originalPrice && originalPrice > finalPrice;
       const discountPercentage = isOnSale 
         ? Math.round(((originalPrice - finalPrice) / originalPrice) * 100)
         : 0;
@@ -147,16 +149,18 @@ export default function AdminPage() {
           ...productForm,
           price: finalPrice,
           originalPrice: originalPrice || null,
-          stock: parseInt(productForm.stock),
+          stock: finalStock,
           onSale: isOnSale,
-          discountPercentage: discountPercentage
+          discountPercentage: discountPercentage,
+          comingSoon: isComingSoon
         })
       });
 
       if (response.ok) {
+        const statusMsg = isComingSoon ? ' as Coming Soon' : (isOnSale ? ` with ${discountPercentage}% discount` : '');
         toast({
           title: 'Success',
-          description: `Product ${editingProduct ? 'updated' : 'created'} successfully${isOnSale ? ` with ${discountPercentage}% discount` : ''}`
+          description: `Product ${editingProduct ? 'updated' : 'created'} successfully${statusMsg}`
         });
         setShowProductDialog(false);
         setEditingProduct(null);
