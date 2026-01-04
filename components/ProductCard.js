@@ -29,6 +29,9 @@ const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 function ImageWithFallback({ src, alt, className, fill, priority, sizes, onLoad }) {
   const [hasError, setHasError] = useState(false);
   
+  // Check if it's an SVG - use unoptimized for SVGs
+  const isSvg = src && src.endsWith('.svg');
+  
   // Use src as key to reset state when image changes
   const imgSrc = hasError ? FALLBACK_IMAGE : src;
 
@@ -65,6 +68,7 @@ function ImageWithFallback({ src, alt, className, fill, priority, sizes, onLoad 
       className={className}
       onError={handleError}
       onLoad={onLoad}
+      unoptimized={isSvg} // Don't optimize SVGs
     />
   );
 }
