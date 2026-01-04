@@ -961,10 +961,10 @@ export default function AdminPage() {
             {/* Collections Grid */}
             <div className="grid gap-4">
               {collections.map((collection) => (
-                <Card key={collection.id} className="bg-card/50 border-border/40 overflow-hidden">
+                <Card key={collection.id} className="bg-card/50 border-border/40">
                   <div className="flex items-start gap-4 p-4">
                     {/* Collection Image */}
-                    <div className="relative w-32 h-32 flex-shrink-0 rounded overflow-hidden">
+                    <div className="relative w-24 h-24 flex-shrink-0 rounded overflow-hidden">
                       <Image
                         src={collection.image}
                         alt={collection.name}
@@ -974,8 +974,8 @@ export default function AdminPage() {
                     </div>
                     
                     {/* Collection Info */}
-                    <div className="flex-grow">
-                      <div className="flex items-center gap-2 mb-2">
+                    <div className="flex-grow min-w-0">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <span className="text-2xl">{collection.icon}</span>
                         <h3 className="font-semibold text-lg">{collection.name}</h3>
                         {collection.showOnHome && (
@@ -998,7 +998,7 @@ export default function AdminPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex flex-col gap-2 flex-shrink-0">
+                    <div className="flex flex-col gap-2 flex-shrink-0 ml-auto">
                       <Button
                         variant="outline"
                         size="sm"
