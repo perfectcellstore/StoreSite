@@ -17,7 +17,7 @@ import { ImageOff } from 'lucide-react';
  * - Hover effects
  */
 
-const FALLBACK_IMAGE = '/placeholder-product.svg';
+const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 
 function ImageWithFallback({ src, alt, className, fill }) {
   const [hasError, setHasError] = useState(false);
