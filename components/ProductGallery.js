@@ -21,18 +21,18 @@ const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 
 // ImageWithFallback for broken images
 function ImageWithFallback({ src, alt, className, fill, priority, sizes, onClick }) {
-  const [imgSrc, setImgSrc] = useState(src);
   const [hasError, setHasError] = useState(false);
+  
+  // Check if it's an SVG - use unoptimized for SVGs
+  const isSvg = src && src.endsWith('.svg');
 
   React.useEffect(() => {
-    setImgSrc(src);
     setHasError(false);
   }, [src]);
 
   const handleError = () => {
     console.warn(`[ProductGallery] Image failed to load: ${src}`);
     setHasError(true);
-    setImgSrc(FALLBACK_IMAGE);
   };
 
   if (!src || src === '' || hasError) {
@@ -48,7 +48,7 @@ function ImageWithFallback({ src, alt, className, fill, priority, sizes, onClick
 
   return (
     <Image
-      src={imgSrc}
+      src={src}
       alt={alt || 'Product image'}
       fill={fill}
       priority={priority}
@@ -56,6 +56,7 @@ function ImageWithFallback({ src, alt, className, fill, priority, sizes, onClick
       className={className}
       onError={handleError}
       onClick={onClick}
+      unoptimized={isSvg} // Don't optimize SVGs
     />
   );
 }
