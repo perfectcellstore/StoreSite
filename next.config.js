@@ -3,6 +3,10 @@ const nextConfig = {
   images: {
     // Enable Next.js image optimization (AVIF/WebP) for performance.
     formats: ['image/avif', 'image/webp'],
+    // Allow SVG images to be served unoptimized
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       { 
         protocol: 'https', 
