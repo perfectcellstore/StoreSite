@@ -17,7 +17,7 @@ import { Card } from '@/components/ui/card';
  * - Image error handling
  */
 
-const FALLBACK_IMAGE = '/placeholder-product.svg';
+const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 
 // ImageWithFallback for broken images
 function ImageWithFallback({ src, alt, className, fill, priority, sizes, onClick }) {
