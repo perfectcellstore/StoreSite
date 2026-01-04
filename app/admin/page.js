@@ -939,15 +939,19 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    {/* Image */}
+                    {/* Image URL */}
                     <div>
-                      <Label>Collection Image *</Label>
-                      <ImageUpload
+                      <Label>Collection Image URL *</Label>
+                      <Input
+                        type="url"
                         value={collectionForm.image}
-                        onChange={(url) => setCollectionForm({ ...collectionForm, image: url })}
+                        onChange={(e) => setCollectionForm({ ...collectionForm, image: e.target.value })}
+                        required
+                        className="bg-background border-border"
+                        placeholder="https://cdn.discordapp.com/attachments/..."
                       />
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Click to upload an image from your computer (recommended: 1200x400px, max 5MB)
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Paste Discord/Imgur/any direct image URL
                       </p>
                     </div>
 
