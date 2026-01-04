@@ -658,24 +658,66 @@ export default function AdminPage() {
                     </div>
 
                     <div>
-                      <Label>Product Image (Main)</Label>
-                      <ImageUpload
+                      <Label>Main Image URL *</Label>
+                      <Input
+                        type="url"
                         value={productForm.image}
-                        onChange={(url) => setProductForm({ ...productForm, image: url })}
+                        onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
+                        className="bg-background border-border"
+                        placeholder="https://cdn.discordapp.com/attachments/..."
+                        required={!productForm.comingSoon}
                       />
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Click to upload the main product image (max 5MB)
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Paste Discord/Imgur/any direct image URL
                       </p>
                     </div>
 
-                    {/* Additional Product Images */}
+                    {/* Additional Product Images - Up to 20 URLs */}
                     <div>
-                      <Label>Additional Images (Gallery)</Label>
-                      <MultiImageUpload
-                        value={productForm.images}
-                        onChange={(images) => setProductForm({ ...productForm, images })}
-                        mainImage={productForm.image}
-                      />
+                      <Label>Additional Image URLs (up to 20)</Label>
+                      <div className="space-y-2 mt-2">
+                        {(productForm.images || []).map((url, idx) => (
+                          <div key={idx} className="flex gap-2">
+                            <Input
+                              type="url"
+                              value={url}
+                              onChange={(e) => {
+                                const newImages = [...(productForm.images || [])];
+                                newImages[idx] = e.target.value;
+                                setProductForm({ ...productForm, images: newImages });
+                              }}
+                              className="bg-background border-border flex-1"
+                              placeholder={`Image URL ${idx + 2}`}
+                            />
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newImages = (productForm.images || []).filter((_, i) => i !== idx);
+                                setProductForm({ ...productForm, images: newImages });
+                              }}
+                              className="text-destructive hover:bg-destructive/10"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ))}
+                        {(productForm.images || []).length < 19 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newImages = [...(productForm.images || []), ''];
+                              setProductForm({ ...productForm, images: newImages });
+                            }}
+                            className="w-full border-dashed"
+                          >
+                            + Add Image URL ({(productForm.images || []).length + 1}/20)
+                          </Button>
+                        )}
+                      </div>
                     </div>
 
                     <div className="flex gap-3 pt-4">
