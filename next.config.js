@@ -18,6 +18,26 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
+      { 
+        protocol: 'https', 
+        hostname: 'cdn.discordapp.com',
+        pathname: '/**',
+      },
+      { 
+        protocol: 'https', 
+        hostname: 'media.discordapp.net',
+        pathname: '/**',
+      },
+      { 
+        protocol: 'https', 
+        hostname: 'i.imgur.com',
+        pathname: '/**',
+      },
+      { 
+        protocol: 'https', 
+        hostname: '**.imgur.com',
+        pathname: '/**',
+      },
     ],
     minimumCacheTTL: 60 * 60 * 24 * 30,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
