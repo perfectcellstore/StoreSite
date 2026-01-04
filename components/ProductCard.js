@@ -23,7 +23,7 @@ import { useCart } from '@/lib/contexts/CartContext';
  */
 
 // Default placeholder for broken images
-const FALLBACK_IMAGE = '/placeholder-product.svg';
+const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 
 // ImageWithFallback: Handles broken images gracefully
 function ImageWithFallback({ src, alt, className, fill, priority, sizes, onLoad }) {
