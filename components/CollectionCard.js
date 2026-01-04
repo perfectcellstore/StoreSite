@@ -21,6 +21,9 @@ const FALLBACK_IMAGE = '/placeholders/product-default.svg';
 
 function ImageWithFallback({ src, alt, className, fill }) {
   const [hasError, setHasError] = useState(false);
+  
+  // Check if it's an SVG - use unoptimized for SVGs
+  const isSvg = src && src.endsWith('.svg');
 
   const handleError = () => {
     console.warn(`[CollectionCard] Image failed to load: ${src}`);
@@ -43,6 +46,7 @@ function ImageWithFallback({ src, alt, className, fill }) {
       fill={fill}
       className={className}
       onError={handleError}
+      unoptimized={isSvg} // Don't optimize SVGs
     />
   );
 }
