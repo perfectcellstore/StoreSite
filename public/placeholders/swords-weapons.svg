@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+  </defs>
+  <rect fill="url(#bg3)" width="400" height="400"/>
+  <text x="200" y="180" fill="#22c55e" font-size="80" text-anchor="middle">⚔️</text>
+  <text x="200" y="250" fill="#ffffff" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle">Swords & Weapons</text>
+  <text x="200" y="280" fill="#6b7280" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">Replica Blades</text>
+</svg>
