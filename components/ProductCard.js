@@ -213,10 +213,11 @@ export function ProductCard({ product, priority = false }) {
   // Get product name based on language
   const productName = language === 'ar' && product.nameAr ? product.nameAr : product.name;
   
-  // Get images array (fallback to single image if images array doesn't exist)
-  const productImages = product.images && product.images.length > 0 
-    ? product.images 
-    : [product.image];
+  // Combine main image with additional images array
+  const productImages = [
+    product.image,
+    ...(product.images || [])
+  ].filter(img => img && img.trim() !== ''); // Filter out empty strings
 
   const handleAddToCart = (e) => {
     e.preventDefault();
