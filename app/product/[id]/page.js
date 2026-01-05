@@ -98,7 +98,12 @@ export default function ProductDetailPage() {
 
   const productName = language === 'ar' && product.nameAr ? product.nameAr : product.name;
   const productDescription = language === 'ar' && product.descriptionAr ? product.descriptionAr : product.description;
-  const images = product.images && product.images.length > 0 ? product.images : [product.image];
+  
+  // Combine main image with additional images array
+  const images = [
+    product.image,
+    ...(product.images || [])
+  ].filter(img => img && img.trim() !== ''); // Filter out empty strings
 
   return (
     <div className="min-h-screen bg-background">
