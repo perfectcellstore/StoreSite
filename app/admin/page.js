@@ -661,24 +661,56 @@ export default function AdminPage() {
                       </div>
                     </div>
 
-                    <div>
-                      <Label>Main Image URL *</Label>
-                      <Input
-                        type="url"
-                        value={productForm.image}
-                        onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                        className="bg-background border-border"
-                        placeholder="https://cdn.discordapp.com/attachments/..."
-                        required={!productForm.comingSoon}
+                    {/* Variant Selection Toggle */}
+                    <div className="flex items-center space-x-2 border border-purple-500/50 rounded-lg p-4 bg-purple-500/10">
+                      <input
+                        type="checkbox"
+                        id="hasVariants"
+                        checked={productForm.hasVariants}
+                        onChange={(e) => setProductForm({ ...productForm, hasVariants: e.target.checked })}
+                        className="w-4 h-4 text-purple-500 border-gray-300 rounded focus:ring-purple-500"
                       />
+                      <div className="flex-1">
+                        <Label htmlFor="hasVariants" className="cursor-pointer font-semibold text-purple-400">
+                          🎯 Selectable Variants
+                        </Label>
+                        <p className="text-xs text-muted-foreground">Let customers choose specific items from images (e.g., different rings)</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label>Main Image URL {productForm.hasVariants ? '(Variant 1)' : '*'}</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="url"
+                          value={productForm.image}
+                          onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
+                          className="bg-background border-border flex-1"
+                          placeholder="https://cdn.discordapp.com/attachments/..."
+                          required={!productForm.comingSoon}
+                        />
+                        {productForm.hasVariants && (
+                          <Input
+                            type="text"
+                            value={productForm.variantLabels?.[0] || ''}
+                            onChange={(e) => {
+                              const newLabels = [...(productForm.variantLabels || [])];
+                              newLabels[0] = e.target.value;
+                              setProductForm({ ...productForm, variantLabels: newLabels });
+                            }}
+                            className="bg-background border-border w-32"
+                            placeholder="Label (e.g., Gold)"
+                          />
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Paste Discord/Imgur/any direct image URL
+                        {productForm.hasVariants ? 'Add a label for this variant' : 'Paste Discord/Imgur/any direct image URL'}
                       </p>
                     </div>
 
                     {/* Additional Product Images - Up to 20 URLs */}
                     <div>
-                      <Label>Additional Image URLs (up to 20)</Label>
+                      <Label>Additional Image URLs {productForm.hasVariants ? '(More Variants)' : '(up to 20)'}</Label>
                       <div className="space-y-2 mt-2">
                         {(productForm.images || []).map((url, idx) => (
                           <div key={idx} className="flex gap-2">
@@ -693,13 +725,27 @@ export default function AdminPage() {
                               className="bg-background border-border flex-1"
                               placeholder={`Image URL ${idx + 2}`}
                             />
+                            {productForm.hasVariants && (
+                              <Input
+                                type="text"
+                                value={productForm.variantLabels?.[idx + 1] || ''}
+                                onChange={(e) => {
+                                  const newLabels = [...(productForm.variantLabels || [])];
+                                  newLabels[idx + 1] = e.target.value;
+                                  setProductForm({ ...productForm, variantLabels: newLabels });
+                                }}
+                                className="bg-background border-border w-32"
+                                placeholder={`Variant ${idx + 2}`}
+                              />
+                            )}
                             <Button
                               type="button"
                               variant="outline"
                               size="sm"
                               onClick={() => {
                                 const newImages = (productForm.images || []).filter((_, i) => i !== idx);
-                                setProductForm({ ...productForm, images: newImages });
+                                const newLabels = (productForm.variantLabels || []).filter((_, i) => i !== idx + 1);
+                                setProductForm({ ...productForm, images: newImages, variantLabels: newLabels });
                               }}
                               className="text-destructive hover:bg-destructive/10"
                             >
