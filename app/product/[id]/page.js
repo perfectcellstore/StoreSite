@@ -51,15 +51,41 @@ export default function ProductDetailPage() {
     fetchProduct();
   };
 
+  // Toggle variant selection
+  const toggleVariant = (index) => {
+    if (selectedVariants.includes(index)) {
+      setSelectedVariants(selectedVariants.filter(i => i !== index));
+    } else {
+      setSelectedVariants([...selectedVariants, index]);
+    }
+  };
+
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      // If product has variants and some are selected, include variant info
+      if (product.hasVariants && selectedVariants.length > 0) {
+        const variantInfo = selectedVariants.map(idx => {
+          const label = product.variantLabels?.[idx] || `Option ${idx + 1}`;
+          return label;
+        }).join(', ');
+        addToCart({ ...product, selectedVariant: variantInfo }, quantity);
+      } else {
+        addToCart(product, quantity);
+      }
     }
   };
 
   const handleBuyNow = () => {
     if (product) {
-      addToCart(product, quantity);
+      if (product.hasVariants && selectedVariants.length > 0) {
+        const variantInfo = selectedVariants.map(idx => {
+          const label = product.variantLabels?.[idx] || `Option ${idx + 1}`;
+          return label;
+        }).join(', ');
+        addToCart({ ...product, selectedVariant: variantInfo }, quantity);
+      } else {
+        addToCart(product, quantity);
+      }
       router.push('/cart');
     }
   };
@@ -67,7 +93,11 @@ export default function ProductDetailPage() {
   const handleWhatsAppBuy = () => {
     if (product) {
       const productName = language === 'ar' && product.nameAr ? product.nameAr : product.name;
-      const message = `Hi! I'm interested in: ${productName} (${formatPrice(product.price)})`;
+      let message = `Hi! I'm interested in: ${productName} (${formatPrice(product.price)})`;
+      if (product.hasVariants && selectedVariants.length > 0) {
+        const variantInfo = selectedVariants.map(idx => product.variantLabels?.[idx] || `Option ${idx + 1}`).join(', ');
+        message += ` - Selected: ${variantInfo}`;
+      }
       const whatsappUrl = `https://wa.me/9647733797713?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
     }
