@@ -206,6 +206,54 @@ export default function ProductDetailPage() {
               )}
             </div>
 
+            {/* Variant Selection - Show if product has variants */}
+            {product.hasVariants && images.length > 0 && (
+              <div className="space-y-3">
+                <label className="text-sm font-medium flex items-center gap-2">
+                  🎯 Select Your Option(s)
+                  <span className="text-xs text-muted-foreground">
+                    ({selectedVariants.length} selected)
+                  </span>
+                </label>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                  {images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => toggleVariant(idx)}
+                      className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                        selectedVariants.includes(idx)
+                          ? 'border-bio-green-500 ring-2 ring-bio-green-500/50'
+                          : 'border-border hover:border-bio-green-500/50'
+                      }`}
+                    >
+                      <Image
+                        src={img}
+                        alt={product.variantLabels?.[idx] || `Option ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                      {selectedVariants.includes(idx) && (
+                        <div className="absolute inset-0 bg-bio-green-500/20 flex items-center justify-center">
+                          <div className="bg-bio-green-500 rounded-full p-1">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/70 px-1 py-0.5">
+                        <p className="text-[10px] text-white text-center truncate">
+                          {product.variantLabels?.[idx] || `Option ${idx + 1}`}
+                        </p>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+                {selectedVariants.length === 0 && (
+                  <p className="text-xs text-amber-500">⚠️ Please select at least one option</p>
+                )}
+              </div>
+            )}
+
             {/* Quantity - Only show if not Coming Soon and has stock */}
             {!product.comingSoon && product.stock > 0 && (
               <div className="space-y-2">
