@@ -366,6 +366,8 @@ export default function AdminPage() {
       dealLabel: product.dealLabel || '',
       featured: product.featured || false,
       comingSoon: product.comingSoon || false,
+      hasVariants: product.hasVariants || false,
+      variantLabels: product.variantLabels || [],
       tags: product.tags || ''
     });
     setShowProductDialog(true);
