@@ -345,6 +345,8 @@ export default function AdminPage() {
       dealLabel: '',
       featured: false,
       comingSoon: false,
+      hasVariants: false,
+      variantLabels: [],
       tags: ''
     });
   };
