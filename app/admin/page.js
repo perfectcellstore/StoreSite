@@ -61,6 +61,8 @@ export default function AdminPage() {
     dealLabel: '', // Optional: "Limited Time", "Hot Deal", etc.
     featured: false, // Featured on homepage
     comingSoon: false, // Coming Soon - price/stock optional
+    hasVariants: false, // Enable variant selection per image
+    variantLabels: [], // Labels for each image variant (e.g., "Gold Ring", "Silver Ring")
     tags: '' // Comma-separated tags for SEO
   });
 
